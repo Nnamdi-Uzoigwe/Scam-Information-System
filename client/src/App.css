@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
 
+.swiper-pagination-bullet {
+    background-color: gray !important;  /* Change this to any color you want */
+    opacity: 1;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: black !important; /* Active dot color */
+  }
+
+
 /* #0F766E  Dark Teal */
 /* #EA580C  Orange */
+/* EBBFAE Peach*/
 /* #fff  White */

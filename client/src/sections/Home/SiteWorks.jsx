@@ -29,7 +29,7 @@ export default function SiteWorks() {
   ];
   return (
     <div className="px-30 py-20 border-y-2 border-gray-300">
-      <h2 className="text-[35px] text-center font-semibold">How it works</h2>
+      <h2 className="text-[35px] text-center font-semibold">How to use</h2>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 justify-items-center lg:grid-cols-3 gap-4">
         {worksArray.map((item) => (
