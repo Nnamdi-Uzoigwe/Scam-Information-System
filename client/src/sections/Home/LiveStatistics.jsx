@@ -2,7 +2,7 @@ import AnimatedCounter from "../../components/AnimatedCounter"
 
 export default function LiveStatistics() {
     return (
-        <div className="mt-10 px-8 lg:px-30" id="statistics">
+        <div className="border-b-2 border-gray-300 mt-10 pb-20 px-8 lg:px-30" id="statistics">
             <h3 className="text-center mb-8 text-3xl font-medium">Site Statistics</h3>
 
             <section className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -35,7 +35,7 @@ export default function LiveStatistics() {
                 </div>
             </section>
 
-            <p className="text-center mt-8 text-gray-600 text-xl">
+            <p className="text-center mt-8 text-gray-600 text-base">
                 Our community is growing every day. See how we're working together to stop online fraud.
             </p>
         </div>
