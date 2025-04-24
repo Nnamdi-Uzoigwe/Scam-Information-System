@@ -146,7 +146,7 @@ export default function ReportScam() {
                           value={formData.scamType}
                           onChange={handleChange}
                           required
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                         >
                           <option value="">Select a scam type</option>
                           {scamTypes.map(type => (
@@ -169,7 +169,7 @@ export default function ReportScam() {
                           value={formData.scamTitle}
                           onChange={handleChange}
                           required
-                          className="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                          className="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-2 p-2 border-gray-300 rounded-md"
                         />
                       </div>
                     </div>
@@ -186,7 +186,7 @@ export default function ReportScam() {
                           value={formData.description}
                           onChange={handleChange}
                           required
-                          className="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                          className="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-2 border-gray-300 rounded-md"
                           placeholder="Please describe what happened in detail, including any conversations, promises made, and how you discovered it was a scam..."
                         />
                       </div>
@@ -204,7 +204,7 @@ export default function ReportScam() {
                           value={formData.dateOccurred}
                           onChange={handleChange}
                           required
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                         />
                         <FiCalendar className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
                       </div>
@@ -226,7 +226,7 @@ export default function ReportScam() {
                           onChange={handleChange}
                           min="0"
                           step="0.01"
-                          className="block w-full pl-7 pr-12 py-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          className="block w-full pl-7 pr-12 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           placeholder="0.00"
                         />
                         <FiDollarSign className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -244,7 +244,7 @@ export default function ReportScam() {
                           value={formData.contactMethod}
                           onChange={handleChange}
                           required
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                         >
                           <option value="">Select contact method</option>
                           {contactMethods.map(method => (
@@ -266,7 +266,7 @@ export default function ReportScam() {
                           rows={3}
                           value={formData.scammerDetails}
                           onChange={handleChange}
-                          className="block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                          className="block w-full shadow-sm focus:ring-indigo-500 p-2 focus:border-indigo-500 sm:text-sm border-2 border-gray-300 rounded-md"
                           placeholder="Provide any identifying information about the scammer..."
                         />
                       </div>
@@ -362,7 +362,8 @@ export default function ReportScam() {
                           name="yourName"
                           value={formData.yourName}
                           onChange={handleChange}
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300  sm:text-sm rounded-md"
+                          placeholder="Enter your name"
                         />
                         <FiUser className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
                       </div>
@@ -379,7 +380,8 @@ export default function ReportScam() {
                           name="yourEmail"
                           value={formData.yourEmail}
                           onChange={handleChange}
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          placeholder="Enter your email"
                         />
                         <FiMail className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
                       </div>
@@ -396,7 +398,8 @@ export default function ReportScam() {
                           name="yourPhone"
                           value={formData.yourPhone}
                           onChange={handleChange}
-                          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          className="block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          placeholder="Your phone number"
                         />
                         <FiPhone className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
                       </div>

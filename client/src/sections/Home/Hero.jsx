@@ -21,7 +21,7 @@ export default function Hero() {
                            Join the movement to combat online fraud. Report Suspicious activities and verfiy
                            identities in seconds.
                         </p>
-                        <div className="flex flex-row gap-4 justify-center pt-6">
+                        <div className="flex flex-col lg:flex-row gap-4 justify-center items-center pt-6">
                             <Button>
                                 <Link to="/dashboard">Report a Scam</Link>
                             </Button>
