@@ -66,7 +66,7 @@ export default function Navbar() {
               Report Scam
             </Link>
             <Link 
-              to="/contact" 
+              to="/" 
               className="hover:text-[#0F766E] transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >
