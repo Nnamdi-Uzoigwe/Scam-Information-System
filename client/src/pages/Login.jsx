@@ -2,20 +2,23 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+import Spinner from '../components/Spinner';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate()
-
+  const [loading, setLoading] = useState(false);
+  
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const validationErrors = {};
   
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) { 
       validationErrors.email = 'Email is invalid';
     }
   
@@ -29,7 +32,6 @@ export default function Login() {
       setErrors(validationErrors);
       return;
     }
-  
     try {
       const res = await fetch('https://scam-information-system-1.onrender.com/api/auth/login', {
         method: 'POST',
@@ -58,6 +60,8 @@ export default function Login() {
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ api: 'An unexpected error occurred' });
+    } finally {
+      setLoading(false)
     }
   };
   
@@ -135,10 +139,7 @@ export default function Login() {
               onClick={handleSubmit}
               className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FaArrowRight className="h-5 w-5 text-white group-hover:text-gray-200 transition-colors" />
-              </span>
-              Sign in
+              {loading ? <Spinner /> : <span>Login</span>}
             </button>
           </div>
         </form>
