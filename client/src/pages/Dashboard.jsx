@@ -19,7 +19,7 @@ const Dashboard = () => {
       <div className="flex-1 flex flex-col">
         {/* Hamburger icon for mobile */}
         <button
-          className="md:hidden p-4 text-2xl text-white bg-gray-800 hover:bg-gray-700"
+          className="md:hidden p-4 text-2xl text-white bg-[#063F3A] hover:bg-[#063F3A]"
           onClick={toggleSidebar}
         >
           <FaBars />
