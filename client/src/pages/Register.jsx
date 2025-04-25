@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -10,39 +11,67 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
-    
+  
     if (!name.trim()) {
       validationErrors.name = 'Name is required';
     }
-
+  
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       validationErrors.email = 'Email is invalid';
     }
-    
+  
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
       validationErrors.password = 'Password should be at least 6 characters';
     }
-
+  
     if (password !== confirmPassword) {
       validationErrors.confirmPassword = 'Passwords do not match';
     }
-    
+  
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
-    // Submit logic here (API call, etc.)
-    console.log('Register submitted:', { name, email, password });
+  
+    try {
+      const res = await fetch('http://localhost:3030/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: name, email, password })
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        setErrors({ api: data.message || 'Registration failed' });
+        return;
+      }
+  
+      // Store token or navigate based on your app flow
+      localStorage.setItem('token', data.token);
+  
+      console.log('Registration successful:', data);
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
+      // Optionally redirect or update UI here
+    } catch (error) {
+      console.error('Registration error:', error);
+      setErrors({ api: 'An unexpected error occurred' });
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

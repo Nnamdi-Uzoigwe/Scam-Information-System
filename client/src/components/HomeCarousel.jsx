@@ -59,7 +59,7 @@ const HomeCarousel = () => {
                   </span>
                   <p className="text-gray-700 text-sm">{card.description}</p>
                 </div>
-                <div className="mt-6 flex justify-center cursor-pointer">
+                <div className="mt-6 pb-2 flex justify-center cursor-pointer">
                   <Button>
                     View Full Report
                   </Button>
