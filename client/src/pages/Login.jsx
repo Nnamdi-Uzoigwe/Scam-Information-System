@@ -1,37 +1,66 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
-    
+  
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       validationErrors.email = 'Email is invalid';
     }
-    
+  
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
       validationErrors.password = 'Password should be at least 6 characters';
     }
-    
+  
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
-    // Submit logic here (API call, etc.)
-    console.log('Login submitted:', { email, password });
+  
+    try {
+      const res = await fetch('http://localhost:3030/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        // Handle API errors
+        setErrors({ api: data.message || 'Login failed' });
+        return;
+      }
+  
+      // Save token (optional - based on your flow)
+      localStorage.setItem('token', data.token);
+  
+      console.log('Login successful:', data);
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 3000)
+      // redirect or update UI accordingly
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ api: 'An unexpected error occurred' });
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
