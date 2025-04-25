@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -11,9 +12,11 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     const validationErrors = {};
   
@@ -69,6 +72,8 @@ export default function Register() {
     } catch (error) {
       console.error('Registration error:', error);
       setErrors({ api: 'An unexpected error occurred' });
+    } finally {
+      setLoading(false)
     }
   };
   
@@ -190,10 +195,7 @@ export default function Register() {
               onClick={handleSubmit}
               className=" cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FaArrowRight className="h-5 w-5 text-white group-hover:text-gray-200 transition-colors" />
-              </span>
-              Sign up
+              {loading ? <Spinner /> : <span>"Sign in"</span>}
             </button>
           </div>
         </form>
