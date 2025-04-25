@@ -31,7 +31,7 @@ export default function Login() {
     }
   
     try {
-      const res = await fetch('https://scam-information-system-1.onrender.com/api/auth/register', {
+      const res = await fetch('https://scam-information-system-1.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
