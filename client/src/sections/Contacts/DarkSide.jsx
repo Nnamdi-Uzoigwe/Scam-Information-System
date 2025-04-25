@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { MdPhoneInTalk, MdMail } from "react-icons/md";
 import { TiLocation } from "react-icons/ti";
-import { FaXTwitter, FaInstagram, FaGithubAlt, FaCheckCircle } from "react-icons/fa";
-import Button from "../../components/Button"
+import { FaInstagram, FaGithubAlt, FaCheckCircle } from "react-icons/fa";
+import  {FaXTwitter} from "react-icons/fa6"
+
 
 const DarkSide = () => {
   const [selectChecked, setSelectChecked] = useState("");
