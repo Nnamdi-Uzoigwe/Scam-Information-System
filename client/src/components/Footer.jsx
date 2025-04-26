@@ -61,11 +61,11 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <FaMapMarkerAlt className="mt-1 mr-3 flex-shrink-0 text-gray-400" />
-                <span className="text-gray-400">123 Main Ave, Cyber City</span>
+                <span className="text-gray-400">123 Main Ave, Cyber City, Nigeria</span>
               </li>
               <li className="flex items-center">
                 <FaPhoneAlt className="mr-3 text-gray-400" />
-                <a href="tel:+1234567890" className="text-gray-400 hover:text-white transition">+ 234 904 567 0890</a>
+                <a href="tel:+1234567890" className="text-gray-400 hover:text-white transition">+234 004 346 4089</a>
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="mr-3 text-gray-400" />

@@ -6,21 +6,21 @@ const TeamPage = () => {
   const myArr = [
     {
       id: 1,
-      image: "/Honorable.jpeg",
-      name: "Ofana Oboh",
-      Title: "MERN Stack Developer, Algorithm, Data Structure",
+      image: "/burnbi.jpeg",
+      name: "Clifford Eyare",
+      Title: "FullStack Developer",
     },
     {
       id: 2,
-      image: "/burnbi.jpeg",
-      name: "Onye Emmanuel",
+      image: "/Honorable.jpeg",
+      name: "Ofana Oboh",
       Title: "MERN Stack Developer, Algorithm, Data Structure",
     },
     {
       id: 3,
       image: "/Passport photo.jpeg",
       name: "Nnamdi Uzoigwe",
-      Title: "MERN Stack Developer, Algorithm, Data Structure",
+      Title: "Database Engineer",
     },
     {
       id: 4,

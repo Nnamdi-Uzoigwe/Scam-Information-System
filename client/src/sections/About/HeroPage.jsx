@@ -23,7 +23,7 @@ const HeroPage = () => {
       {/* Info Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-4 md:p-10 justify-items-center">
         {/* About Us */}
-        <div className="bg-white shadow-md w-[400px] lg:w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
+        <div className="bg-white shadow-md w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#0F766E] mb-2">About Us</h1>
           <p className="text-gray-600 text-sm sm:text-base">
             The Scam Information System raises awareness and helps prevent fraud
@@ -33,7 +33,7 @@ const HeroPage = () => {
         </div>
 
         {/* Mission */}
-        <div className="bg-white shadow-md w-[400px] lg:w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
+        <div className="bg-white shadow-md w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#0F766E] mb-2">🎯 Our Mission</h2>
           <p className="text-gray-700 text-sm sm:text-base">
             Our mission is to protect people from scams by offering up-to-date info and
@@ -43,7 +43,7 @@ const HeroPage = () => {
         </div>
 
         {/* Goals */}
-        <div className="bg-white shadow-md w-[400px] lg:w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
+        <div className="bg-white shadow-md w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#0F766E] mb-2">🎯 Our Goals</h2>
           <p className="text-gray-700 text-sm sm:text-base">
             We aim to educate the public on common scams and create a space for sharing
@@ -52,7 +52,7 @@ const HeroPage = () => {
         </div>
 
         {/* How It Works */}
-        <div className="bg-white shadow-md w-[400px] lg:w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
+        <div className="bg-white shadow-md w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#0F766E] mb-2">⚙️ How the System Works</h2>
           <p className="text-gray-700 text-sm sm:text-base">
             The system gathers scam data from users and trusted sources. It categorizes

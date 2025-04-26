@@ -79,9 +79,9 @@ export default function Navbar() {
             >
               Search
             </Link>
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center">
               <Button>
-                <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                <Link to="/login" onClick={() => setIsOpen(false)} className="px-10">Login</Link>
               </Button>
             </div>
           </div>

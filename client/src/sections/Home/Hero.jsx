@@ -18,7 +18,7 @@ export default function Hero() {
                             Protect Youself. Report Scammers. Stay Ahead.
                         </h1>
                         <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-                           Join the movement to combat online fraud. Report Suspicious activities and verfiy
+                           Join the movement to combat online fraud. Report Suspicious activities and verify
                            identities in seconds.
                         </p>
                         <div className="flex flex-col lg:flex-row gap-4 justify-center items-center pt-6">
