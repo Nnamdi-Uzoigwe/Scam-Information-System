@@ -20,7 +20,7 @@ const TeamPage = () => {
       id: 3,
       image: "/Passport photo.jpeg",
       name: "Nnamdi Uzoigwe",
-      Title: "MERN Stack Developer, Algorithm, Data Structure",
+      Title: "Database Engineer",
     },
     {
       id: 4,

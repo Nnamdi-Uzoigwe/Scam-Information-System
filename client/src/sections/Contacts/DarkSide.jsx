@@ -12,31 +12,30 @@ const DarkSide = () => {
     <div className='flex flex-col lg:flex-row gap-10 p-4 lg:p-10'>
       
       {/* Left Section */}
-      <div className='relative overflow-hidden bg-black w-full lg:w-[500px] text-white rounded-2xl p-6 flex flex-col'>
+      <div className='relative overflow-hidden bg-[#0F766E] w-full lg:w-[500px] text-white rounded-2xl py-6 px-4 lg:p-6 flex flex-col'>
         <h1 className='text-2xl font-semibold'>Contact Information</h1>
-        <p className='mt-2 text-lg'>Say something to start a live chat!</p>
 
-        <div className='mt-16 flex flex-col gap-10'>
+        <div className='mt-10 flex flex-col gap-8'>
           <p className='flex items-center gap-5'>
             <MdPhoneInTalk size={23} />
-            <span>+1012 3456 789</span>
+            <span>+234 004 346 4089</span>
           </p>
 
           <p className='flex items-center gap-5'>
             <MdMail size={23} />
-            <span>demo@gmail.com</span>
+            <span>help@cliffordreporters.com</span>
           </p>
 
           <p className='flex items-start gap-5'>
             <TiLocation size={23} />
-            <span>132 Dartmouth Street Boston,<br />Massachusetts 02156 United States</span>
+            <span>123 Main Ave, Cyber City, <br />Calabar, Nigeria.</span>
           </p>
         </div>
 
-        <div className='absolute w-36 h-36 bg-[#484848] rounded-full top-[430px] right-20 hidden md:block'></div>
-        <div className='absolute w-[269px] h-[269px] bg-[#1a1a1a] rounded-full top-[470px] right-[-60px] hidden md:block'></div>
+        <div className='absolute w-36 h-36 bg-green-900 rounded-full top-[470px] right-20 hidden md:block'></div>
+        <div className='absolute w-[269px] h-[269px] bg-green-950 rounded-full top-[470px] right-[-60px] hidden md:block'></div>
 
-        <div className='mt-12 flex gap-4'>
+        <div className='mt-10 flex justify-center md:justify-start gap-4'>
           <div className='h-12 w-12 bg-[#1B1B1B] hover:bg-gray-600 rounded-full flex items-center justify-center'>
             <FaXTwitter size={20} />
           </div>
