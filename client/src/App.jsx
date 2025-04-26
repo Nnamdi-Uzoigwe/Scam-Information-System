@@ -14,12 +14,12 @@ import Contact from "./pages/Contact";
 function App() {
   const location = useLocation();
 
-  // List of routes where the Footer should not appear
+  
   const noFooterRoutes = ['/dashboard', '/login', '/register'];
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Conditionally render Navbar */}
+      
       {location.pathname !== '/dashboard' && location.pathname !== '/login' && location.pathname !== '/register' && <Navbar />}
 
       <div className="flex-grow">
@@ -30,7 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<PageNotFound />} /> 
-          <Route path="/report" element={<ReportScam />} />
+          <Route path="/report-scam" element={<ReportScam />} />
           <Route path="/contact" element={<Contact/>} />
         </Routes>
       </div>

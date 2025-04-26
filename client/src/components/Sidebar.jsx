@@ -73,7 +73,13 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
         {/* Links */}
         <div className="flex flex-col items-center justify-center h-full space-y-4 z-50">
           <Link
-            to="/search"
+              to="/"
+              className="text-xl text-white"
+          >
+            Back to Home
+          </Link>
+          <Link
+            to="/dashboard"
             className="text-white text-xl"
             onClick={toggleSidebar}
           >
