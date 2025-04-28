@@ -20,7 +20,7 @@ export default function Navbar() {
       <div className="hidden md:flex items-center gap-8">
         <Link to="/" className="hover:text-[#0F766E] transition-colors">Home</Link>
         <Link to="/about" className="hover:text-[#0F766E] transition-colors">About</Link>
-        <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
+        <Link to="/report-scam" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
         <Link to="/contact" className="hover:text-[#0F766E] transition-colors">Contact us</Link>
         <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Search</Link>
       </div>
@@ -59,7 +59,7 @@ export default function Navbar() {
               About
             </Link>
             <Link 
-              to="/dashboard" 
+              to="/report-scam" 
               className="hover:text-[#0F766E] transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >

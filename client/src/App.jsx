@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import PageNotFound from "./pages/PageNotFound";
 import ReportScam from "./sections/Dashboard/ReportScam";
 import Contact from "./pages/Contact";
+import ScamDetail from "./pages/ScamDetail";
 
 function App() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
           <Route path="/*" element={<PageNotFound />} /> 
           <Route path="/report-scam" element={<ReportScam />} />
           <Route path="/contact" element={<Contact/>} />
+          <Route path="/scam/:id" element={<ScamDetail />} />
         </Routes>
       </div>
 
