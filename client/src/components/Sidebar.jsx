@@ -31,7 +31,7 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
               <span>Search the Database</span>
             </Link>
             <Link
-              to="/report"
+              to="/report-scam"
               className="flex items-center space-x-2 p-3 hover:bg-[#063F3A] rounded-md text-white"
             >
               <FaExclamationTriangle className="w-5 h-5" />
