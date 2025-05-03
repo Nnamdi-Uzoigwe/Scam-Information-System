@@ -17,7 +17,7 @@ export default function SearchDatabase() {
         setLoading(true);
 
         // Make the API request to fetch scams
-        const response = await fetch("https://scam-information-system-1.onrender.com/api/scam-reports"); 
+        const response = await fetch("https://scam-information-system.onrender.com/api/scam-reports"); 
         if (!response.ok) {
           throw new Error("Failed to fetch scam data");
         }
@@ -37,7 +37,8 @@ export default function SearchDatabase() {
   // Filter scams based on search query
   const filteredScams = scamData.filter(scam =>
     (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.type || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -129,13 +130,16 @@ export default function SearchDatabase() {
                     <div className="flex items-start">
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h3 className="text-lg leading-6 font-medium text-gray-900">{scam.title}</h3>
-                          <div className="flex items-center">
-                            <span className="ml-1 text-sm text-gray-500">{scam.severity}</span>
-                          </div>
+                          <h3 className="text-lg leading-6 font-medium text-gray-900">Name of Scammer: {scam.scammerName}</h3>
                         </div>
-                        <div className="mt-1 text-sm text-gray-500">
-                          <span className="font-medium">{scam.type}</span> • Reported on {scam.reportedDate}
+                        <div className="flex items-center">
+                          <span className="text-sm text-gray-600 font-semibold">Type of Scam: {scam.scamType}</span>
+                        </div>
+                        <div className="mt-1 text-sm text-gray-600 font-bold">
+                          Case No: <span className="text-amber-500">{scam.caseId}</span>
+                        </div>
+                        <div className="mt-1 text-sm text-gray-500 font-semibold">
+                          <span className="font-medium">{scam.type}</span>Reported on {scam.dateReported.split('T')[0]}
                         </div>
                       </div>
                     </div>
