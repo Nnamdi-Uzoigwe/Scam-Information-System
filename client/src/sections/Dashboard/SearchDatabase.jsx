@@ -37,7 +37,8 @@ export default function SearchDatabase() {
   // Filter scams based on search query
   const filteredScams = scamData.filter(scam =>
     (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.type || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
