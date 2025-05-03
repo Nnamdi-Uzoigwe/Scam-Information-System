@@ -12,45 +12,54 @@ const getAllScamReports = async (req, res) => {
     }
 };
 
-// Get a single scam report by ID
+// Get a single scam report by case ID
 const getScamReportById = async (req, res) => {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'Invalid scam report ID' });
-    }
-
     try {
-        const report = await ScamReport.findById(id).populate('reportedBy', 'name email'); // Optional: Populate user details
+        const report = await ScamReport.findOne({ caseId: id }); // Optional: Populate user details
         if (!report) {
             return res.status(404).json({ message: 'Scam report not found' });
         }
         res.status(200).json(report);
     } catch (error) {
-        console.error(error);
+        console.error('Error in getAllScamReports:', error.message);
         res.status(500).json({ message: 'Error fetching scam report' });
     }
 };
 
 // Submit a new scam report
 const submitScamReport = async (req, res) => {
-    const { scammerName, scamType, description, reportedBy, status, evidence } = req.body;
+    const { 
+        scammerName, 
+        scamType, 
+        description, 
+        scammerEmail, 
+        scammerAccountNumber,
+         reportedBy, 
+         status, 
+         evidence
+        } = req.body;
 
     // Validate that required fields are provided
-    if (!scammerName || !scamType || !description) {
+    if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
         return res.status(400).json({ message: 'All required fields must be provided' });
     }
 
     try {
+        const reportCount = await ScamReport.countDocuments();
+        const caseId = (reportCount + 1).toString().padStart(3, '0');
         const newReport = new ScamReport({
             scammerName,
             scamType,
             description,
+            scammerEmail,
+            scammerAccountNumber,
             reportedBy, // This can be a user ID from the logged-in user
             status: status || 'pending', // Default to 'pending'
             evidence, // This can be a URL of the image file
+            caseId,
         });
-
         await newReport.save();
         res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
     } catch (error) {
