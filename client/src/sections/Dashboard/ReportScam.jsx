@@ -69,11 +69,9 @@ const ScamReportPage = () => {
         scammerEmail: formData.scammerEmail,
         scammerAccountNumber: formData.scammerAccountNumber,
         evidence: evidenceUrl, 
-        // reportedBy: userId,
-        // status: 'pending',
       };
   
-      const response = await fetch('https://scam-information-system-1.onrender.com/api/scam-reports', {
+      const response = await fetch('https://scam-information-system.onrender.com/api/scam-reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

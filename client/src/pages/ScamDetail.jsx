@@ -17,7 +17,7 @@ useEffect(() => {
         setError(null);
         
         // Fetch scam report data
-        const response = await fetch(`https://scam-information-system-1.onrender.com/api/scam-reports/${id}`);
+        const response = await fetch(`https://scam-information-system.onrender.com/api/scam-reports/${id}`);
         
         if (!response.ok) {
           const errorData = await response.json();
