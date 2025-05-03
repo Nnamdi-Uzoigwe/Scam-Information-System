@@ -15,6 +15,14 @@ const scamReportSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    scammerEmail: {
+        type: String,
+        required: true
+    },
+    scammerAccountNumber: {
+        type: String,
+        required: true
+    },
     dateReported: {
         type: Date,
         default: Date.now,
@@ -28,11 +36,15 @@ const scamReportSchema = mongoose.Schema({
         type: String,
         enum: ['pending', 'verified'],
         default: 'pending',
-      },
+    },
       evidence: {
         type: String,
         required: false,
-      },
+    },
+    caseId: {
+        type: String,
+        unique: true
+    }
 })
 
 module.exports = mongoose.models.ScamReport || mongoose.model("ScamReport", scamReportSchema)
