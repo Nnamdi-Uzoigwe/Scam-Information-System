@@ -11,6 +11,7 @@ import PageNotFound from "./pages/PageNotFound";
 import ReportScam from "./sections/Dashboard/ReportScam";
 import Contact from "./pages/Contact";
 import ScamDetail from "./pages/ScamDetail";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   const location = useLocation();
@@ -31,7 +32,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<PageNotFound />} /> 
+          <Route element={<RequireAuth />}>
           <Route path="/report-scam" element={<ReportScam />} />
+          </Route>
           <Route path="/contact" element={<Contact/>} />
           <Route path="/scam/:id" element={<ScamDetail />} />
         </Routes>

@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between sticky top-0 z-50 w-full">
       {/* Logo */}
-      <div className="logo text-[#0F766E] font-bold text-xl">CLIFFORD_REPORTERS</div>
+      <div className="logo text-[#0F766E] font-bold text-xl">ScamTrackr</div>
 
       <div className="hidden md:flex items-center gap-8">
         <Link to="/" className="hover:text-[#0F766E] transition-colors">Home</Link>

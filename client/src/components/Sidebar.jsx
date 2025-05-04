@@ -9,7 +9,7 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
       <div
         className={`${
           isSidebarOpen ? "block" : "hidden"
-        } md:block fixed inset-0 z-10 bg-[#063F3A] bg-opacity-80 md:w-64 md:h-full`}
+        } lg:block fixed inset-0 z-10 bg-[#063F3A] bg-opacity-80 md:w-64 md:h-full`}
       >
         <div className="flex flex-col h-full">
           <div className="flex-shrink-0 p-4 bg-transparent text-white">
@@ -38,7 +38,7 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
               <span>Report a Scam</span>
             </Link>
             <Link
-              to="/view-reports"
+              to="/dashboard/view-reports"
               className="flex items-center space-x-2 p-3 hover:bg-[#063F3A] rounded-md text-white"
             >
               <FaListAlt className="w-5 h-5" />
@@ -86,14 +86,14 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             Search the Database
           </Link>
           <Link
-            to="/report-scam"
+            to="/dashboard/report-scam"
             className="text-white text-xl"
             onClick={toggleSidebar}
           >
             Report a Scam
           </Link>
           <Link
-            to="/view-reports"
+            to="/dashboard/view-reports"
             className="text-white text-xl"
             onClick={toggleSidebar}
           >

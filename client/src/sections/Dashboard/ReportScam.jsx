@@ -89,7 +89,7 @@ const ScamReportPage = () => {
           scammerAccountNumber: '',
           evidence: '',
         });
-        setTimeout(() => navigate('/'), 3000);
+        setTimeout(() => navigate('/dashboard'), 3000);
       } else {
         const errorData = await response.json();
         setMessage(errorData.message || 'Failed to submit report. Please try again.');
@@ -241,7 +241,7 @@ const ScamReportPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 bg-[#0F766E] text-white font-medium rounded-md hover:bg-[#0F766E] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:ring-offset-2 disabled:opacity-50"
+            className="px-6 py-2 cursor-pointer bg-[#0F766E] text-white font-medium rounded-md hover:bg-[#0F766E] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:ring-offset-2 disabled:opacity-50"
           >
             {isSubmitting ? 'Submitting...' : 'Submit Report'}
           </button>
