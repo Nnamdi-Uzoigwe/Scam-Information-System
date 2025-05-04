@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar"; // Import the sidebar
-import { FaBars } from "react-icons/fa"; // Hamburger icon
+import Sidebar from "../components/Sidebar"; 
+import { FaBars } from "react-icons/fa"; 
 import SearchDatabase from "../sections/Dashboard/SearchDatabase";
 
 const Dashboard = () => {
@@ -15,17 +15,16 @@ const Dashboard = () => {
       {/* Sidebar on small screens */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
         {/* Hamburger icon for mobile */}
         <button
-          className="md:hidden p-4 text-2xl text-white bg-gray-800 hover:bg-gray-700"
+          className="lg:hidden p-4 text-2xl text-white bg-[#063F3A] hover:bg-[#063F3A]"
           onClick={toggleSidebar}
         >
           <FaBars />
         </button>
 
-        <main className="flex-1 p-6 ml-0 md:ml-50">
+        <main className="flex-1 p-6 ml-0 lg:ml-50">
           <SearchDatabase />
         </main>
       </div>

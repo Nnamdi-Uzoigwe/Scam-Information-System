@@ -10,7 +10,18 @@
     background-color: black !important; /* Active dot color */
   }
 
-
+  @media (max-width: 640px) {
+    .swiper-pagination {
+      display: none !important;
+    }
+  }
+  
+  /* (optional) re-show on larger screens */
+  @media (min-width: 641px) {
+    .swiper-pagination {
+      display: block !important;
+    }
+  }
 /* #0F766E  Dark Teal */
 /* #EA580C  Orange */
 /* EBBFAE Peach*/

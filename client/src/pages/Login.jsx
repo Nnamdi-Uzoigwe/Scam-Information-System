@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+import Spinner from '../components/Spinner';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+<<<<<<< HEAD
   const navigate = useNavigate();
 
   const handleLoginSuccess = (userData) => {
@@ -18,27 +20,80 @@ export default function Login() {
     e.preventDefault();
     const validationErrors = {};
 
+=======
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  
+  const handleSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const validationErrors = {};
+  
+>>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) { 
       validationErrors.email = 'Email is invalid';
     }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
       validationErrors.password = 'Password should be at least 6 characters';
     }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
+<<<<<<< HEAD
 
     // Example: simulate successful login
     handleLoginSuccess({ email, username: email.split('@')[0] });
     navigate('/dashboard'); // redirect to dashboard or wherever after login
+=======
+    try {
+      const res = await fetch('https://scam-information-system.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        // Handle API errors
+        setErrors({ api: data.message || 'Login failed' });
+        return;
+      }
+  
+      // Save token (optional - based on your flow)
+      localStorage.setItem('token', data.token);
+  
+      console.log('Login successful:', data);
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 3000)
+      // redirect or update UI accordingly
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ api: 'An unexpected error occurred' });
+    } finally {
+      setLoading(false)
+    }
+>>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -103,12 +158,14 @@ export default function Login() {
           <div>
             <button
               type="submit"
+<<<<<<< HEAD
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+=======
+              onClick={handleSubmit}
+              className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+>>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FaArrowRight className="h-5 w-5 text-white group-hover:text-gray-200 transition-colors" />
-              </span>
-              Sign in
+              {loading ? <Spinner /> : <span>Login</span>}
             </button>
           </div>
         </form>
