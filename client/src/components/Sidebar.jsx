@@ -103,8 +103,11 @@
 
 import { Link } from "react-router-dom";
 import { FaSearch, FaExclamationTriangle, FaListAlt, FaSignOutAlt, FaTimes } from "react-icons/fa"; 
+import UserAvatar from "../sections/About/UserAvatar";
 
 const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
+
+  const user = localStorage.getItem("UserIdentity")
   return (
     <div>
       {/* Sidebar content */}
@@ -114,8 +117,9 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
         } md:block fixed inset-0 z-10 bg-gray-800 bg-opacity-80 md:w-64 md:h-full`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex-shrink-0 p-4 bg-gray-900 text-white">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
+          <div className="flex gap-5 flex-shrink-0 p-4 bg-gray-900 text-white">
+            <div className="">{user ? null : <UserAvatar/> }</div>
+            <h1 className="text-2xl  font-bold">Dashboard</h1>
           </div>
           <div className="flex-grow overflow-y-auto">
             <Link

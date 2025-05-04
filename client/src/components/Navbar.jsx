@@ -29,6 +29,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import { FaBars, FaTimes } from "react-icons/fa";
+import UserAvatar from "../sections/About/UserAvatar";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,9 @@ export default function Navbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const user = localStorage.getItem('userIdentity');
+
 
   return (
     <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between relative">
@@ -51,9 +55,13 @@ export default function Navbar() {
       </div>
 
       <div className="hidden lg:flex">
-        <Button>
-          <Link to="/login">Login</Link>
-        </Button>
+
+        {
+          user ? <UserAvatar/> : 
+              <Button>
+                <Link to="/login">Login</Link>
+              </Button> 
+        }
       </div>
 
       <div className="md:hidden">
@@ -105,9 +113,10 @@ export default function Navbar() {
               Search
             </Link>
             <div className="pt-2">
+              {user ? <UserAvatar/> : 
               <Button>
                 <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
-              </Button>
+              </Button>}
             </div>
           </div>
         </div>

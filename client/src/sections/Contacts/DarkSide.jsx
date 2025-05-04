@@ -12,7 +12,7 @@ const DarkSide = () => {
     <div className='flex flex-col lg:flex-row gap-10 p-4 lg:p-10'>
       
       {/* Left Section */}
-      <div className='relative overflow-hidden bg-black w-full lg:w-[500px] text-white rounded-2xl p-6 flex flex-col'>
+      <div className='relative overflow-hidden bg-black w-full lg:w-[800px] text-white lg:rounded-tl-2xl rounded-2xl p-6 flex flex-col'>
         <h1 className='text-2xl font-semibold'>Contact Information</h1>
         <p className='mt-2 text-lg'>Say something to start a live chat!</p>
 
@@ -36,7 +36,7 @@ const DarkSide = () => {
         <div className='absolute w-36 h-36 bg-[#484848] rounded-full top-[430px] right-20 hidden md:block'></div>
         <div className='absolute w-[269px] h-[269px] bg-[#1a1a1a] rounded-full top-[470px] right-[-60px] hidden md:block'></div>
 
-        <div className='mt-12 flex gap-4'>
+        <div className='mt-46 flex gap-4'>
           <div className='h-12 w-12 bg-[#1B1B1B] hover:bg-gray-600 rounded-full flex items-center justify-center'>
             <FaXTwitter size={20} />
           </div>
@@ -78,9 +78,9 @@ const DarkSide = () => {
         {/* Subject Selection */}
         <div className='flex flex-col gap-3 mt-8'>
           <h1 className='text-lg font-semibold'>Select Subject?</h1>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
 
-            {["General Inquiry", "Partnership Request", "Support", "Feedback"].map((label, index) => (
+            {["General Inquiry", "Partnership ", "Support", "Feedback"].map((label, index) => (
               <div className='flex items-center gap-3' key={index}>
                 <FaCheckCircle
                   onClick={() => setSelectChecked(index.toString())}
