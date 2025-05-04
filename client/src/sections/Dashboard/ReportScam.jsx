@@ -109,8 +109,14 @@ const ScamReportPage = () => {
 
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-[#0F766E] mb-6">Report a Scam</h1>
+    <div className="max-w-2xl mx-auto p-6 my-10 bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-center text-[#0F766E] mb-2">Report a Scam</h1>
+      <div className='flex justify-center'>
+      <p className="mb-8 text-sm w-[80%] text-center text-gray-500">
+        Please provide details of the fraud case you are a victim of in the form below if any.
+        Note that until verified, this is an allegation.
+      </p>
+      </div>
       
       {message && (
         <div className={`p-4 mb-6 rounded-lg ${
@@ -125,7 +131,7 @@ const ScamReportPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="scammerName" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Name/Username *
+            Scammer's Name
           </label>
           <input
             id="scammerName"
@@ -135,12 +141,13 @@ const ScamReportPage = () => {
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder='Name of Scammer'
           />
         </div>
 
         <div>
           <label htmlFor="scamType" className="block text-md font-medium text-gray-500 mb-1">
-            Type of Scam *
+            Type of Scam
           </label>
           <select
             id="scamType"
@@ -162,7 +169,7 @@ const ScamReportPage = () => {
 
         <div>
           <label htmlFor="scammerEmail" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Email/Contact *
+            Scammer's Email/Contact Info
           </label>
           <input
             id="scammerEmail"
@@ -172,12 +179,13 @@ const ScamReportPage = () => {
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder='Scammer Email or Contact'
           />
         </div>
 
         <div>
           <label htmlFor="scammerAccountNumber" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Account Number/Details *
+            Scammer's Bank Account Details
           </label>
           <input
             id="scammerAccountNumber"
@@ -187,12 +195,13 @@ const ScamReportPage = () => {
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder='Enter Scammer Account Info...'
           />
         </div>
 
         <div>
           <label htmlFor="description" className="block text-md font-medium text-gray-500 mb-1">
-            Description of the Scam *
+            Description of the Scam
           </label>
           <textarea
             id="description"
@@ -202,6 +211,7 @@ const ScamReportPage = () => {
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder='Write a detailed description of how you were defrauded...'
           />
         </div>
 
@@ -237,7 +247,7 @@ const ScamReportPage = () => {
         </div>
       )}
 
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <button
             type="submit"
             disabled={isSubmitting}

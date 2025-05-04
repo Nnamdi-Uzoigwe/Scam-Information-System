@@ -139,7 +139,7 @@ export default function Login() {
               onClick={handleSubmit}
               className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
-              {loading ? <Spinner /> : <span>Login</span>}
+              {loading ? <span>Logging in <Spinner /></span> : <span>Login</span>}
             </button>
           </div>
         </form>
