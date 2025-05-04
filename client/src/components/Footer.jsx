@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Logo and Description */}
           <div className="space-y-4">
             <div className="flex flex-col ">
-            <div className="logo text-[#0F766E] font-bold">CLIFFORD_REPORTERS</div>
+            <div className="logo text-[#0F766E] font-bold">ScamTrackr</div>
               <span className="text-white text-xl font-bold">ScamAlert</span>
             </div>
             <p className="text-gray-400">

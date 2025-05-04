@@ -40,12 +40,9 @@ useEffect(() => {
                 filePaths.map(async (path) => {
                   const trimmedPath = path.trim();
                   console.log("Processing path:", trimmedPath);
-          
-                  // Extract just the filename from the path (removes any URL parts)
                   const fileName = trimmedPath.split('/').pop();
                   console.log("Extracted filename:", fileName);
           
-                  // Manually construct the correct URL
                   const correctUrl = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fileName}`;
                   console.log("Constructed correct URL:", correctUrl);
           
@@ -110,12 +107,12 @@ useEffect(() => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
       <div className="border-b border-gray-200 pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">{scamDetail.scammerName}</h1>
+        <h1 className="text-3xl font-bold text-[#0F766E] my-3">Alleged Scammer: {scamDetail.scammerName}</h1>
         <div className="mt-2 flex items-center">
-          <span className="px-3 py-1 bg-[#063F3A] text-white text-sm font-medium rounded-full">
+          <span className="bg-pink-100 border-[2px] border-pink-300 py-[6px] px-2 rounded-full">
             {scamDetail.scamType}
           </span>
-          <span className="ml-4 text-gray-500">Case ID: {scamDetail.caseId}</span>
+          <span className="ml-4 text-gray-600 font-semibold">Case ID: <span className="text-amber-600">{scamDetail.caseId}</span></span>
         </div>
       </div>
 
@@ -153,15 +150,6 @@ useEffect(() => {
           </div>
         </div>
       </div>
-
-      {/* {scamDetail.evidence && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Evidence</h2>
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="whitespace-pre-line">{scamDetail.evidence}</p>
-          </div>
-        </div>
-      )} */}
 
 {imageUrls.length > 0 && (
         <div className="mt-8">

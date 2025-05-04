@@ -8,7 +8,7 @@ export default function SearchDatabase() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [scamsPerPage] = useState(20);
+  const [scamsPerPage] = useState(8);
 
   // Fetch scams data from the database
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function SearchDatabase() {
   // Filter scams based on search query
   const filteredScams = scamData.filter(scam =>
     (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (scam.scammerName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
@@ -130,21 +131,21 @@ export default function SearchDatabase() {
                     <div className="flex items-start">
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h3 className="text-lg leading-6 font-medium text-gray-900">Name of Scammer: {scam.scammerName}</h3>
+                          <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: {scam.scammerName}</h3>
                         </div>
-                        <div className="flex items-center">
-                          <span className="text-sm text-gray-600 font-semibold">Type of Scam: {scam.scamType}</span>
+                        <div className="my-2">
+                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="bg-pink-100 border-[2px] border-pink-300 py-[6px] px-2 rounded-2xl">{scam.scamType}</span></span>
                         </div>
                         <div className="mt-1 text-sm text-gray-600 font-bold">
-                          Case No: <span className="text-amber-500">{scam.caseId}</span>
+                          Case No: <span className="text-amber-600">{scam.caseId}</span>
                         </div>
-                        <div className="mt-1 text-sm text-gray-500 font-semibold">
-                          <span className="font-medium">{scam.type}</span>Reported on {scam.dateReported.split('T')[0]}
+                        <div className="mt-1 text-sm text-gray-600 font-semibold">
+                          <span className="">Reported on {scam.dateReported.split('T')[0]}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4">
-                      <p className="text-sm text-gray-600">{scam.description}</p>
+                    <div className="mt-4 w-full">
+                      <p className="text-sm text-gray-600 truncate">{scam.description}</p>
                     </div>
                     <div className="mt-5 flex justify-between items-center">
                       <Link
@@ -187,9 +188,9 @@ export default function SearchDatabase() {
                       onClick={() => paginate(index + 1)}
                       className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
                         currentPage === index + 1
-                          ? "bg-indigo-600 text-white"
+                          ? "bg-[#0F766E] text-white"
                           : "text-gray-500 bg-white"
-                      } border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                      } border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0F766E]`}
                     >
                       {index + 1}
                     </button>
