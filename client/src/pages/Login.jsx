@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+import Spinner from '../components/Spinner';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleLoginSuccess = (userData) => {
     const { email, username } = userData;
@@ -14,7 +16,8 @@ export default function Login() {
     localStorage.setItem('userIdentity', identity);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const validationErrors = {};
 
@@ -32,13 +35,41 @@ export default function Login() {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setLoading(false);
       return;
     }
 
-    // Example: simulate successful login
-    handleLoginSuccess({ email, username: email.split('@')[0] });
-    navigate('/dashboard'); // redirect to dashboard or wherever after login
+    try {
+      const res = await fetch('https://scam-information-system.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ api: data.message || 'Login failed' });
+        return;
+      }
+
+      // Save token and user data
+      localStorage.setItem('token', data.token);
+      handleLoginSuccess(data.user || { email, username: email.split('@')[0] });
+      
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 3000);
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ api: 'An unexpected error occurred' });
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -100,17 +131,14 @@ export default function Login() {
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FaArrowRight className="h-5 w-5 text-white group-hover:text-gray-200 transition-colors" />
-              </span>
-              Sign in
-            </button>
-          </div>
+         <div>
+          <button
+            type="submit"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+          >
+            {loading ? <Spinner /> : <span>Login</span>}
+          </button>
+        </div>
         </form>
 
         <div className="text-center text-sm mt-4">

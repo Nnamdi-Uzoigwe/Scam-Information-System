@@ -1,28 +1,3 @@
-// import { Link } from "react-router-dom";
-// import Button from "./Button";
-
-// export default function Navbar() {
-//     return (
-//         <div className="bg-white h-[80px] px-30 flex items-center justify-between">
-//             <div className="logo text-[#0F766E] font-bold">CLIFFORD_REPORTERS</div>
-
-//             <div className="hidden links md:flex items-center gap-10">
-//                 <Link smooth to="/">Home</Link>
-//                 <Link smooth to="/about">About</Link>
-//                 <Link smooth to="/dashboard">Report Scam</Link>
-//                 <Link smooth to="/">Contact us</Link>
-//                 <Link smooth to="/dashboard">Search</Link>
-//             </div>
-
-//             <div className="hidden lg:flex">
-//                     <Button>
-//                         <Link>Login</Link>
-//                     </Button>
-//             </div>
-                
-//         </div>
-//     )
-// }
 
 
 import { useState } from "react";
@@ -42,14 +17,14 @@ export default function Navbar() {
 
 
   return (
-    <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between relative">
+    <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between sticky top-0 z-50 w-full">
       {/* Logo */}
-      <div className="logo text-[#0F766E] font-bold text-xl">CLIFFORD_REPORTERS</div>
+      <div className="logo text-[#0F766E] font-bold text-xl">ScamTrackr</div>
 
       <div className="hidden md:flex items-center gap-8">
         <Link to="/" className="hover:text-[#0F766E] transition-colors">Home</Link>
         <Link to="/about" className="hover:text-[#0F766E] transition-colors">About</Link>
-        <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
+        <Link to="/report-scam" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
         <Link to="/contact" className="hover:text-[#0F766E] transition-colors">Contact us</Link>
         <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Search</Link>
       </div>
@@ -92,7 +67,7 @@ export default function Navbar() {
               About
             </Link>
             <Link 
-              to="/dashboard" 
+              to="/report-scam" 
               className="hover:text-[#0F766E] transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >

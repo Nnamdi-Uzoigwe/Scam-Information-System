@@ -7,13 +7,6 @@ import 'swiper/css/pagination';
 import '../App.css'
 import Button from './Button';
 
-// const cards = [
-//   { id: 1, scammerName: 'John D.', scamType: 'Email Fraud', dateReported: "Apr 10, 2025", description: "Compromised Email..."},
-//   { id: 2, scammerName: 'Favour E.', scamType: 'Fake Celebrity', dateReported: "Dec 12, 2024", description: "Disguised as popular Will Smith to..."},
-//   { id: 3, scammerName: 'Regina H.', scamType: 'Phone Scam', dateReported: "Sep 04, 2023", description: "Posed as a bank agen requesting for OTP..."},
-//   { id: 4, scammerName: 'Taiwo U.', scamType: 'Phishing Link', dateReported: "Aug 23, 2024", description: "Sent a spam link to my email..."},
-// ];
-
 const cards = [
   {
     id: 1,
@@ -66,7 +59,7 @@ const HomeCarousel = () => {
                   </span>
                   <p className="text-gray-700 text-sm">{card.description}</p>
                 </div>
-                <div className="mt-6 flex justify-center cursor-pointer">
+                <div className="mt-6 pb-2 flex justify-center cursor-pointer">
                   <Button>
                     View Full Report
                   </Button>

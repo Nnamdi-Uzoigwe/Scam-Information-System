@@ -10,16 +10,18 @@ import Register from "./pages/Register";
 import PageNotFound from "./pages/PageNotFound";
 import ReportScam from "./sections/Dashboard/ReportScam";
 import Contact from "./pages/Contact";
+import ScamDetail from "./pages/ScamDetail";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   const location = useLocation();
 
-  // List of routes where the Footer should not appear
+  
   const noFooterRoutes = ['/dashboard', '/login', '/register'];
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Conditionally render Navbar */}
+      
       {location.pathname !== '/dashboard' && location.pathname !== '/login' && location.pathname !== '/register' && <Navbar />}
 
       <div className="flex-grow">
@@ -30,8 +32,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<PageNotFound />} /> 
-          <Route path="/report" element={<ReportScam />} />
+          <Route element={<RequireAuth />}>
+          <Route path="/report-scam" element={<ReportScam />} />
+          </Route>
           <Route path="/contact" element={<Contact/>} />
+          <Route path="/scam/:id" element={<ScamDetail />} />
         </Routes>
       </div>
 
