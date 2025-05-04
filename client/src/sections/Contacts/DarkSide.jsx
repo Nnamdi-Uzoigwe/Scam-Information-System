@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { MdPhoneInTalk, MdMail } from "react-icons/md";
 import { TiLocation } from "react-icons/ti";
 import { FaInstagram, FaGithubAlt, FaCheckCircle } from "react-icons/fa";
-import  {FaXTwitter} from "react-icons/fa6"
-
+import { FaXTwitter } from "react-icons/fa6";
 
 const DarkSide = () => {
   const [selectChecked, setSelectChecked] = useState("");
@@ -78,7 +77,6 @@ const DarkSide = () => {
         <div className='flex flex-col gap-3 mt-8'>
           <h1 className='text-lg font-semibold'>Select Subject?</h1>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4'>
-
             {["General Inquiry", "Partnership Request", "Support", "Feedback"].map((label, index) => (
               <div className='flex items-center gap-3' key={index}>
                 <FaCheckCircle
@@ -103,7 +101,7 @@ const DarkSide = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default DarkSide;
