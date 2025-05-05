@@ -12,6 +12,7 @@ import ReportScam from "./sections/Dashboard/ReportScam";
 import Contact from "./pages/Contact";
 import ScamDetail from "./pages/ScamDetail";
 import RequireAuth from "./components/RequireAuth";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const location = useLocation();
@@ -49,6 +50,7 @@ function App() {
 function AppWrapper() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <App />
     </BrowserRouter>
   );
