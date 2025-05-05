@@ -1,8 +1,11 @@
 import { supabase } from '../../lib/supabaseClient';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../components/Sidebar';
+import { FaBars } from "react-icons/fa"; 
 
 const ScamReportPage = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     scammerName: '',
@@ -32,6 +35,10 @@ const ScamReportPage = () => {
     }
   };
 
+ 
+const toggleSidebar = () => {
+  setIsSidebarOpen(prev => !prev); // Using functional update for safety
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,157 +114,186 @@ const ScamReportPage = () => {
     setFormData({ ...formData, evidence: '' }); 
   };
 
-
   return (
-    <div className="max-w-2xl mx-auto p-6 my-10 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-center text-[#0F766E] mb-2">Report a Scam</h1>
-      <div className='flex justify-center'>
-      <p className="mb-8 text-sm w-[80%] text-center text-gray-500">
-        Please provide details of the fraud case you are a victim of in the form below if any.
-        Note that until verified, this is an allegation.
-      </p>
-      </div>
-      
-      {message && (
-        <div className={`p-4 mb-6 rounded-lg ${
-          message.includes('success') 
-            ? 'bg-green-100 text-green-700' 
-            : 'bg-red-100 text-red-700'
-        }`}>
-          {message}
-        </div>
-      )}
+    <div className="flex min-h-screen bg-gray-50">
+            {/* Sidebar: hidden on mobile */}
+            {/* <div className="hidden lg:block w-64">
+              <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            </div> */}
+            <div className={`${isSidebarOpen ? 'block' : 'hidden'} lg:block w-64 fixed lg:relative z-50`}>
+              <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            </div>
+            {/* Main content container */}
+            <div className="flex flex-col flex-1">
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="scammerName" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Name
-          </label>
-          <input
-            id="scammerName"
-            name="scammerName"
-            type="text"
-            value={formData.scammerName}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder='Name of Scammer'
-          />
-        </div>
+              {/* Mobile Topbar */}
+              <div className="block lg:hidden w-full bg-[#063F3A]">
+                <button
+                  className="cursor-pointer p-4 text-2xl text-white"
+                  onClick={toggleSidebar}
+                >
+                  <FaBars />
+                </button>
+              </div>
 
-        <div>
-          <label htmlFor="scamType" className="block text-md font-medium text-gray-500 mb-1">
-            Type of Scam
-          </label>
-          <select
-            id="scamType"
-            name="scamType"
-            value={formData.scamType}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Select scam type</option>
-            <option value="Phishing">Phishing</option>
-            <option value="Investment Scam">Investment Scam</option>
-            <option value="Romance Scam">Romance Scam</option>
-            <option value="Fake Marketplace">Fake Marketplace</option>
-            <option value="Impersonation">Impersonation</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+              {/* Actual page content */}
+              <div className="flex-1 flex justify-center">
+                <div className="w-full max-w-[700px] p-6 my-10">
+                <h1 className="text-2xl font-bold text-center text-[#0F766E] mb-2">Report a Scam</h1>
+                  <div className='flex justify-center'>
+                  <p className="mb-8 text-sm w-[80%] text-center text-gray-500">
+                    Please provide details of the fraud case you are a victim of in the form below if any.
+                    Note that until verified, this is an allegation.
+                  </p>
+                  </div>
+                    
+                    {message && (
+                      <div className={`p-4 mb-6 rounded-lg ${
+                        message.includes('success') 
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-red-100 text-red-700'
+                      }`}>
+                        {message}
+                      </div>
+                    )}
 
-        <div>
-          <label htmlFor="scammerEmail" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Email/Contact Info
-          </label>
-          <input
-            id="scammerEmail"
-            name="scammerEmail"
-            type="text"
-            value={formData.scammerEmail}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder='Scammer Email or Contact'
-          />
-        </div>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label htmlFor="scammerName" className="block text-md font-medium text-gray-500 mb-1">
+                          Scammer's Name
+                        </label>
+                        <input
+                          id="scammerName"
+                          name="scammerName"
+                          type="text"
+                          value={formData.scammerName}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder='Name of Scammer'
+                          />
+                      </div>
 
-        <div>
-          <label htmlFor="scammerAccountNumber" className="block text-md font-medium text-gray-500 mb-1">
-            Scammer's Bank Account Details
-          </label>
-          <input
-            id="scammerAccountNumber"
-            name="scammerAccountNumber"
-            type="text"
-            value={formData.scammerAccountNumber}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder='Enter Scammer Account Info...'
-          />
-        </div>
+                      <div>
+                        <label htmlFor="scamType" className="block text-md font-medium text-gray-500 mb-1">
+                          Type of Scam
+                        </label>
+                        <select
+                          id="scamType"
+                          name="scamType"
+                          value={formData.scamType}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          >
+                          <option value="">Select scam type</option>
+                          <option value="Phishing">Phishing</option>
+                          <option value="Investment Scam">Investment Scam</option>
+                          <option value="Romance Scam">Romance Scam</option>
+                          <option value="Fake Marketplace">Fake Marketplace</option>
+                          <option value="Impersonation">Impersonation</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
 
-        <div>
-          <label htmlFor="description" className="block text-md font-medium text-gray-500 mb-1">
-            Description of the Scam
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            rows={4}
-            value={formData.description}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder='Write a detailed description of how you were defrauded...'
-          />
-        </div>
+                      <div>
+                        <label htmlFor="scammerEmail" className="block text-md font-medium text-gray-500 mb-1">
+                          Scammer's Email/Contact Info
+                        </label>
+                        <input
+                          id="scammerEmail"
+                          name="scammerEmail"
+                          type="text"
+                          value={formData.scammerEmail}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder='Scammer Email or Contact'
+                          />
+                      </div>
 
-       
-        <div>
-            <label htmlFor="evidence" className="block text-md font-medium text-gray-500 mb-1">
-              Upload Evidence (Image file)
-            </label>
-            <input
-              type="file"
-              id="evidence"
-              name="evidence"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            />
-        </div>
+                      <div>
+                        <label htmlFor="scammerAccountNumber" className="block text-md font-medium text-gray-500 mb-1">
+                          Scammer's Bank Account Details
+                        </label>
+                        <input
+                          id="scammerAccountNumber"
+                          name="scammerAccountNumber"
+                          type="text"
+                          value={formData.scammerAccountNumber}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder='Enter Scammer Account Info...'
+                          />
+                      </div>
 
-        {imagePreview && (
-        <div className="mt-4 flex justify-between items-center">
-          <img
-            src={imagePreview}
-            alt="Image Preview"
-            className="max-w-[200px] h-auto rounded-md"
-          />
-          <button
-            type="button"
-            onClick={handleImageDelete}
-            className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
-          >
-            DELETE
-          </button>
-        </div>
-      )}
+                      <div>
+                        <label htmlFor="description" className="block text-md font-medium text-gray-500 mb-1">
+                          Description of the Scam
+                        </label>
+                        <textarea
+                          id="description"
+                          name="description"
+                          rows={4}
+                          value={formData.description}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder='Write a detailed description of how you were defrauded...'
+                          />
+                      </div>
 
-        <div className="flex justify-start">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-6 py-2 cursor-pointer bg-[#0F766E] text-white font-medium rounded-md hover:bg-[#0F766E] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:ring-offset-2 disabled:opacity-50"
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit Report'}
-          </button>
-        </div>
-      </form>
+                    
+                      <div>
+                          <label htmlFor="evidence" className="block text-md font-medium text-gray-500 mb-1">
+                            Upload Evidence (Image file)
+                          </label>
+                          <input
+                            type="file"
+                            id="evidence"
+                            name="evidence"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            />
+                      </div>
+
+                      {imagePreview && (
+                        <div className="mt-4 flex justify-between items-center">
+                        <img
+                          src={imagePreview}
+                          alt="Image Preview"
+                          className="max-w-[200px] h-auto rounded-md"
+                          />
+                        <button
+                          type="button"
+                          onClick={handleImageDelete}
+                          className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
+                          >
+                          DELETE
+                        </button>
+                      </div>
+                    )}
+
+                      <div className="flex justify-start">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="px-6 py-2 cursor-pointer bg-[#0F766E] text-white font-medium rounded-md hover:bg-[#0F766E] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:ring-offset-2 disabled:opacity-50"
+                          >
+                          {isSubmitting ? 'Submitting...' : 'Submit Report'}
+                        </button>
+                      </div>
+                    </form>
+                </div>
+              </div>
+
+            </div>
     </div>
+
+
+  
   );
 };
 

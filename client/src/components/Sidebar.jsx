@@ -64,7 +64,7 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
       >
         {/* Close button */}
         <button
-          className="absolute top-4 right-4 text-white text-3xl z-50"
+          className="cursor-pointer absolute top-4 left-4 text-white text-3xl z-50"
           onClick={toggleSidebar}
         >
           <FaTimes />
@@ -86,7 +86,7 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             Search the Database
           </Link>
           <Link
-            to="/dashboard/report-scam"
+            to="/report-scam"
             className="text-white text-xl"
             onClick={toggleSidebar}
           >

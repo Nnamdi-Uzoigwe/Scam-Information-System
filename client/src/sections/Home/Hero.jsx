@@ -23,10 +23,10 @@ export default function Hero() {
                         </p>
                         <div className="flex flex-col lg:flex-row gap-4 justify-center items-center pt-6">
                             <Button>
-                                <Link to="/dashboard">Report a Scam</Link>
+                                <Link to="/report-scam">Report a Scam</Link>
                             </Button>
                             <ButtonOutline>
-                                <Link to="/dashboard">Search Database</Link>
+                                <Link to="/search">Search Database</Link>
                             </ButtonOutline>
                         </div>
                         </div>

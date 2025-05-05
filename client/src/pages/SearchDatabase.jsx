@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiSearch, FiAlertTriangle } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import LoadingState from "../../components/LoadingState";
+import LoadingState from "../components/LoadingState";
 
 export default function SearchDatabase() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,7 +108,7 @@ export default function SearchDatabase() {
             {/* Scam Results */}
             <div className="grid gap-6 md:grid-cols-2">
               {currentScams.map((scam) => (
-                <div key={scam.id} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
+                <div key={scam.caseId} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-start">
                       <div className="flex-1">

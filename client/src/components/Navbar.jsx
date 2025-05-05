@@ -22,7 +22,7 @@ export default function Navbar() {
         <Link to="/about" className="hover:text-[#0F766E] transition-colors">About</Link>
         <Link to="/report-scam" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
         <Link to="/contact" className="hover:text-[#0F766E] transition-colors">Contact us</Link>
-        <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Search</Link>
+        <Link to="/search" className="hover:text-[#0F766E] transition-colors">Search</Link>
       </div>
 
       <div className="hidden lg:flex">
