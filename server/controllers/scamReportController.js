@@ -99,9 +99,28 @@ const updateScamReport = async (req, res) => {
     }
 };
 
+// Find user specific scam report
+const getUserScamReports = async (req, res) => {
+    try {
+        // Explicitly use the authenticated user's ID
+        const reports = await ScamReport.find({ 
+            reportedBy: req.user._id 
+        }).sort({ dateReported: -1 });
+        
+        res.status(200).json(reports);
+    } catch (error) {
+        console.error('Error in getUserScamReports:', error.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch your reports',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+};
+
 module.exports = {
     getAllScamReports,
     getScamReportById,
     submitScamReport,
     updateScamReport,
+    getUserScamReports,
 };
