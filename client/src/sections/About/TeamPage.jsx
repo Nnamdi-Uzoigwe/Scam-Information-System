@@ -43,7 +43,7 @@ const TeamPage = () => {
   ];
 
   return (
-    <div className='bg-slate-50 px-4 md:px-10 xl:px-20 overflow-hidden border-t-[1.5px] border-gray-200'>
+    <div className='bg-slate-50 px-4 md:px-10 xl:px-20 overflow-hidden border-t-[1.5px] border-gray-200 mb-10'>
       {/* Title */}
       <div className='flex justify-center py-6'>
         <h2 className='flex items-center gap-3 font-bold text-3xl sm:text-4xl text-[#0F766E] text-center'>
@@ -73,11 +73,7 @@ const TeamPage = () => {
       </div>
 
       {/* View More Button */}
-      <div className='flex justify-center mt-10 mb-24'>
-        <button className='px-8 py-2 text-[18px] bg-[#0F766E] text-white font-semibold rounded-xl hover:scale-105 transition duration-200'>
-          View More
-        </button>
-      </div>
+      
     </div>
   );
 };

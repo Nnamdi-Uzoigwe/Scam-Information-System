@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaExclamationTriangle, FaListAlt, FaSignOutAlt, FaTimes, FaHome } from "react-icons/fa"; 
+
 import { FcFeedback } from "react-icons/fc";
 import LogoutModal from "./LogoutModal";
 
+
 const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   return (
     <div>
       {/* Sidebar content */}
@@ -15,7 +16,8 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
         } lg:block fixed inset-0 z-10 bg-[#063F3A] bg-opacity-80 md:w-64 md:h-full`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex-shrink-0 p-4 bg-transparent text-white">
+          <div className="flex items-center gap-4 flex-shrink-0 p-4 bg-gray-900 text-white">
+            {user ? <UserAvatar/> : null }
             <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
           <div className="flex-grow overflow-y-auto">
