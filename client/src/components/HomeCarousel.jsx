@@ -8,48 +8,16 @@ import '../App.css'
 import Button from './Button';
 import { Link } from 'react-router-dom';
 
-const cards = [
-  
-  {
-    id: 1,
-    scammerName: 'John D.',
-    scamType: 'Email Fraud',
-    dateReported: "Apr 10, 2025",
-    description: "Received an email appearing to be from my bank, requesting immediate verification of account details due to a supposed security breach. The email contained a link to a fake website designed to capture personal information."
-  },
-  {
-    id: 2,
-    scammerName: 'Favour E.',
-    scamType: 'Fake Celebrity',
-    dateReported: "Dec 12, 2024",
-    description: "Encountered a social media profile impersonating actor Will Smith, promoting a fraudulent investment scheme promising high returns. The scammer used doctored images and fake testimonials to appear legitimate."
-  },
-  {
-    id: 3,
-    scammerName: 'Regina H.',
-    scamType: 'Phone Scam',
-    dateReported: "Sep 04, 2023",
-    description: "Received a call from someone claiming to be a bank representative, stating there was suspicious activity on my account. They requested my OTP to 'secure' the account, which was then used to authorize unauthorized transactions."
-  },
-  {
-    id: 4,
-    scammerName: 'Taiwo U.',
-    scamType: 'Phishing Link',
-    dateReported: "Aug 23, 2024",
-    description: "Got an email that seemed to be from a well-known online retailer, offering a special discount. Clicking the link led to a counterfeit site that mimicked the retailer's login page, aiming to steal my credentials."
-  },
-];
-
-
 const HomeCarousel = () => {
-
+  const [loading, setLoading] = useState(false)
   const [reports, setReports] = useState([])
+  const [error, setError] = useState("")
   
   useEffect(()=>{
     const fetchReports = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('https://scam-information-system.onrender.com/api/scam-reports/my-reports', {
+        const token = sessionStorage.getItem('authToken');
+        const response = await fetch('https://scam-information-system.onrender.com/api/scam-reports/', {
           headers: { 
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -87,9 +55,9 @@ const HomeCarousel = () => {
                   <SwiperSlide key={report._id || index}>
                     <div className="rounded-2xl bg-[#fcfbf9] p-6 h-auto flex flex-col items-center text-center">
                       <div className="flex flex-col items-center text-center">
-                        <div className="text-sm text-gray-500 mb-1">{report.dateReported}</div>
+                        <div className="text-sm text-gray-500 mb-1">{report.dateReported.split('T')[0]}</div>
                         <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                          Name of Scammer: {report.scammerName}
+                          Alleged Fraudster: {report.scammerName}
                         </h3>
                         <span className="inline-block bg-red-100 text-red-600 text-xs font-medium px-3 py-1 rounded-full mb-4">
                           {report.scamType}

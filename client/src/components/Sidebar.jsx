@@ -1,23 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaExclamationTriangle, FaListAlt, FaSignOutAlt, FaTimes, FaHome } from "react-icons/fa"; 
-
 import { FcFeedback } from "react-icons/fc";
 import LogoutModal from "./LogoutModal";
-
+import UserAvatar from "./UserAvatar";
 
 const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const initials = sessionStorage.getItem('userInitials');
+    const email = sessionStorage.getItem('userEmail');
+    
+    if (initials && email) {
+      setUser({
+        initials,
+        email
+      });
+    }
+  }, []);
   return (
     <div>
-      {/* Sidebar content */}
       <div
         className={`${
           isSidebarOpen ? "block" : "hidden"
         } lg:block fixed inset-0 z-10 bg-[#063F3A] bg-opacity-80 md:w-64 md:h-full`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center gap-4 flex-shrink-0 p-4 bg-gray-900 text-white">
-            {user ? <UserAvatar/> : null }
+          <div className="flex items-center gap-4 flex-shrink-0 p-4 bg-gray-400 text-white">
+            {user ? <UserAvatar setShowLogoutModal={setShowLogoutModal} /> : null }
             <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
           <div className="flex-grow overflow-y-auto">
@@ -67,7 +79,6 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
           </div>
         </div>
 
-        {/* Render the modal */}
         {showLogoutModal && (
           <LogoutModal onClose={() => setShowLogoutModal(false)} />
         )}
@@ -80,18 +91,19 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
         } fixed inset-0 z-40 bg-[#063F3A] bg-opacity-50 md:hidden`}
         onClick={toggleSidebar}
       >
-        {/* Close button */}
         <button
           className="cursor-pointer absolute top-4 left-4 text-white text-3xl z-50"
           onClick={(e) => {
             e.stopPropagation()
             toggleSidebar()
           }}
-        >
+          >
           <FaTimes />
         </button>
+        <div className="absolute top-4 border-2 border-gray-400 rounded-full right-4" onClick={(e) => e.stopPropagation()}>
+          {user ? <UserAvatar setShowLogoutModal={setShowLogoutModal} /> : null}
+        </div>
 
-        {/* Links */}
         <div className="flex flex-col items-center justify-center h-full space-y-4 z-50">
           <Link
               to="/"

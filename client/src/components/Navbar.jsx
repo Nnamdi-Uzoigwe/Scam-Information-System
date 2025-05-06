@@ -4,23 +4,29 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import { FaBars, FaTimes } from "react-icons/fa";
-import UserAvatar from "../sections/About/UserAvatar";
+import UserAvatar from "./UserAvatar";
+import LogoutModal from "./LogoutModal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const initials = sessionStorage.getItem('userInitials');
+    const email = sessionStorage.getItem('userEmail');
+    
+    if (initials && email) {
+      setUser({
+        initials,
+        email
+      });
     }
   }, []);
-
 
   return (
     <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between sticky top-0 z-50 w-full">
@@ -35,15 +41,16 @@ export default function Navbar() {
         <Link to="/search" className="hover:text-[#0F766E] transition-colors">Search</Link>
       </div>
 
-      <div className="hidden lg:flex">
-
-        {
-          user ? <UserAvatar/> :  
+      <div className="hidden lg:flex items-center gap-4">
+        {user ? (
+          <div className="flex items-center gap-2">
+            <UserAvatar setShowLogoutModal={setShowLogoutModal} />
+          </div>
+        ) : (
           <Button>
-          <Link to="/login">Login</Link>
-        </Button>  
-              
-        }
+            <Link to="/login">Login</Link>
+          </Button>
+        )}
       </div>
 
       <div className="md:hidden">
@@ -95,13 +102,27 @@ export default function Navbar() {
               Search
             </Link>
             <div className="pt-2">
-              <Button>
-                <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
-              </Button>
+            <div className="pt-2">
+              {user ? (
+                <div className="flex justify-center">
+                  <UserAvatar setShowLogoutModal={setShowLogoutModal} />
+                </div>
+              ) : (
+                <Button>
+                  <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                </Button>
+              )}
+            </div>
             </div>
           </div>
         </div>
       )}
+
+      
+      {/* Render the modal */}
+      {showLogoutModal && (
+          <LogoutModal onClose={() => setShowLogoutModal(false)} />
+        )}
     </nav>
   );
 }
