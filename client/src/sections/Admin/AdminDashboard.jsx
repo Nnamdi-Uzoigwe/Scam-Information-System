@@ -71,10 +71,9 @@ const AdminDashboard = () => {
   }, [navigate, activeTab]);
 
   const handleDeleteReports = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this testimonial?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`https://scam-information-system.onrender.com/api/scam-report/${caseId}`, {
+      const response = await fetch(`https://scam-information-system.onrender.com/api/scam-report/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
