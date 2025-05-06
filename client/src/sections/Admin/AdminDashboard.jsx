@@ -71,6 +71,7 @@ const AdminDashboard = () => {
   }, [navigate, activeTab]);
 
   const handleDeleteReports = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this testimonial?')) return;
     try {
       const token = localStorage.getItem('adminToken');
       const response = await fetch(`https://scam-information-system.onrender.com/api/scam-report/${caseId}`, {
@@ -108,7 +109,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
-    navigate('/admin');
+    navigate('/');
   };
 
   if (loading.reports && activeTab === 'reports') return <div className="text-center py-8">Loading reports...</div>;
@@ -173,7 +174,7 @@ const AdminDashboard = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-[#0F766E] hover:text-[#0d625b] mr-3"><Link to={`/scam/${report.caseId}`}>View</Link></button>
-                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                    <button className="text-red-600 hover:text-red-900" onClick={handleDeleteReports(report.caseId)}>Delete</button>
                   </td>
                 </tr>
               ))}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaExclamationTriangle, FaListAlt, FaSignOutAlt, FaTimes, FaHome } from "react-icons/fa"; 
+import { FcFeedback } from "react-icons/fc";
 import LogoutModal from "./LogoutModal";
 
 const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
@@ -45,6 +46,13 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             >
               <FaListAlt className="w-5 h-5" />
               <span>View Submitted Reports</span>
+            </Link>
+            <Link
+              to="/submit-testimonial"
+              className="flex items-center space-x-2 p-3 hover:bg-[#063F3A] rounded-md text-white"
+            >
+              <FcFeedback className="w-5 h-5" />
+              <span>Submit Testimonial</span>
             </Link>
             <Link
               to=""
@@ -109,6 +117,13 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             onClick={toggleSidebar}
           >
             View Submitted Reports
+          </Link>
+          <Link
+            to="/submit-testimonial"
+            className="text-white text-xl"
+            onClick={toggleSidebar}
+          >
+            Submit Testimonial
           </Link>
           <Link
             to=""
