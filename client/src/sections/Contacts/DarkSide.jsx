@@ -80,9 +80,10 @@ const DarkSide = () => {
         </div>
       </div>
 
+    </div>
       {/* Right Section */}
-      <div className="w-full bg-white rounded-2xl p-4">
-        {/* Name Inputs */}
+      <div className=" w-full bg-white rounded-2xl p-4">
+        
         <form id="Get in Touch">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
@@ -193,7 +194,6 @@ const DarkSide = () => {
         {status && <p className="mt-4 text-2xl text-gray-600">{status}</p>  }
 
       </div>
-    </div>
     </div>
   );
 };
