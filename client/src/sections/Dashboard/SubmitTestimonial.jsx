@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
 import { FaBars, FaPaperPlane } from 'react-icons/fa';
-import Sidebar from '../../components/Sidebar'; // Adjust path as needed
+import Sidebar from '../../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 export default function SubmitTestimonial() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function SubmitTestimonial() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate()
   
     const toggleSidebar = () => {
       setIsSidebarOpen(!isSidebarOpen);
@@ -32,12 +34,12 @@ export default function SubmitTestimonial() {
       setSuccess(false);
   
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('authToken');
         if (!token) {
           throw new Error('You must be logged in to submit a testimonial');
         }
   
-        const response = await fetch('https://scam-information-system.onrender.com/api/testimonials', {
+        const response = await fetch('https://scam-information-system.onrender.com/api/testimonial', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -53,6 +55,9 @@ export default function SubmitTestimonial() {
   
         setSuccess(true);
         setFormData({ name: '', message: '' });
+        setTimeout(() => {
+          navigate("/dashboard")
+        }, 3000)
       } catch (err) {
         setError(err.message);
       } finally {
