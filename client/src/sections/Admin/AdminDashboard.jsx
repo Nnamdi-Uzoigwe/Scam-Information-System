@@ -255,7 +255,7 @@ const AdminDashboard = () => {
 
       {/* Reports Tab */}
       {activeTab === 'reports' && (
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="bg-white shadow rounded-lg overflow-hidden overflow-x-auto">
           <div className="px-4 py-5 sm:px-6 bg-gray-50">
           <h3 className="text-lg font-medium leading-6 text-gray-900">All Scam Reports</h3>
         </div>
