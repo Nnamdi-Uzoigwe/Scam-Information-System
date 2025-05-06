@@ -161,7 +161,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const response = await fetch('https://scam-information-system.onrender.com/api/testimonials', {
+        const response = await fetch('https://scam-information-system.onrender.com/api/testimonial', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -185,7 +185,7 @@ const AdminDashboard = () => {
     
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`https://scam-information-system.onrender.com/api/testimonials/${id}`, {
+      const response = await fetch(`https://scam-information-system.onrender.com/api/testimonial/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
