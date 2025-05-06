@@ -180,9 +180,25 @@ const AdminDashboard = () => {
     if (activeTab === 'testimonials') fetchTestimonials();
   }, [navigate, activeTab]);
 
+  const handleDeleteReports = async (id) => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`https://scam-information-system.onrender.com/api/scam-report/${caseId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to delete report');
+      
+      setReports(prev => prev.filter(t => t._id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleDeleteTestimonial = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this testimonial?')) return;
-    
     try {
       const token = localStorage.getItem('adminToken');
       const response = await fetch(`https://scam-information-system.onrender.com/api/testimonial/${id}`, {
@@ -240,7 +256,42 @@ const AdminDashboard = () => {
       {/* Reports Tab */}
       {activeTab === 'reports' && (
         <div className="bg-white shadow rounded-lg overflow-hidden">
-          {/* ... (your existing reports table code) ... */}
+          <div className="px-4 py-5 sm:px-6 bg-gray-50">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">All Scam Reports</h3>
+        </div>
+        <div className="border-t border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Case ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scammer Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scam Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {reports.map((report) => (
+                <tr key={report._id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.caseId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{report.scammerName}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.scamType}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      report.status === 'verified' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {report.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-[#0F766E] hover:text-[#0d625b] mr-3">View</button>
+                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         </div>
       )}
 
@@ -276,7 +327,7 @@ const AdminDashboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={() => handleDeleteTestimonial(testimonial._id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="cursor-pointer text-red-600 hover:text-red-900"
                         >
                           Delete
                         </button>
