@@ -10,8 +10,6 @@ const createTestimonial = async (req, res) => {
       name,
       message,
     });
-
-    // Save the new testimonial to the database
     await newTestimonial.save();
 
     return res.status(201).json({

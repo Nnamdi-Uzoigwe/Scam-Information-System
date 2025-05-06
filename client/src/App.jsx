@@ -17,12 +17,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import SearchDatabase from "./pages/SearchDatabase";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewReports from "./sections/Dashboard/ViewReports";
+import SubmitTestimonial from "./sections/Dashboard/SubmitTestimonial";
 
 function App() {
   const location = useLocation();
 
   
-  const noFooterRoutes = ['/dashboard', '/login', '/register', '/report-scam', '/view-report', '/admin', '/admin/dashboard'];
+  const noFooterRoutes = ['/dashboard', '/login', '/register', '/report-scam', '/view-report', '/admin', '/admin/dashboard', '/submit-testimonial'];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -33,7 +34,8 @@ function App() {
         && location.pathname !== '/report-scam'
         && location.pathname !== '/view-report'
         && location.pathname !== '/admin'
-        && location.pathname !== '/admin/dashboard' &&
+        && location.pathname !== '/admin/dashboard' 
+        && location.pathname !== '/submit-testimonial' &&
         <Navbar />
       }
 
@@ -47,6 +49,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/report-scam" element={<ReportScam />} />
             <Route path="/view-report" element={<ViewReports />} />
+            <Route path="/submit-testimonial" element={<SubmitTestimonial />} />
           </Route>
           <Route path="/search" element={<SearchDatabase />} />
           <Route path="/contact" element={<Contact/>} />
