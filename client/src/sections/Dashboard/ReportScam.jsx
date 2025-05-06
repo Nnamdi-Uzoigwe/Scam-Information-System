@@ -116,10 +116,7 @@ const toggleSidebar = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-            {/* Sidebar: hidden on mobile */}
-            {/* <div className="hidden lg:block w-64">
-              <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-            </div> */}
+            
             <div className={`${isSidebarOpen ? 'block' : 'hidden'} lg:block w-64 fixed lg:relative z-50`}>
               <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             </div>

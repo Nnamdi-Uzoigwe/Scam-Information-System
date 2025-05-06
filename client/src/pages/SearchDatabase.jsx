@@ -116,7 +116,7 @@ export default function SearchDatabase() {
                           <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: {scam.scammerName}</h3>
                         </div>
                         <div className="my-2">
-                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="text-xs bg-pink-100 border-[2px] border-pink-300 py-[4px] px-2 rounded-2xl">{scam.scamType}</span></span>
+                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="text-xs bg-pink-100 text-red-400 py-[4px] px-2 rounded-2xl">{scam.scamType}</span></span>
                         </div>
                         <div className="mt-1 text-sm text-gray-600 font-bold">
                           Case No: <span className="text-amber-600">{scam.caseId}</span>
