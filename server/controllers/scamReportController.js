@@ -117,10 +117,30 @@ const getUserScamReports = async (req, res) => {
     }
 };
 
+
+// In your scamReportController
+const deleteScamReport = async (req, res) => {
+    try {
+      const report = await ScamReport.findOneAndDelete({ 
+        caseId: req.params.id,
+        reportedBy: req.user._id 
+      });
+      
+      if (!report) {
+        return res.status(404).json({ error: 'Report not found' });
+      }
+      
+      res.status(200).json({ message: 'Report deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Error deleting report' });
+    }
+}
+
 module.exports = {
     getAllScamReports,
     getScamReportById,
     submitScamReport,
     updateScamReport,
     getUserScamReports,
+    deleteScamReport,
 };

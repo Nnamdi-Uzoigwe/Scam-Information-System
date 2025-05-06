@@ -9,5 +9,6 @@ router.get('/my-reports', authenticateUser, scamReportController.getUserScamRepo
 router.get('/:id', scamReportController.getScamReportById);
 router.post('/', scamReportController.submitScamReport);
 router.patch('/:id', scamReportController.updateScamReport);
+router.delete('/:id', authenticateUser, scamReportController.deleteScamReport);
 
 module.exports = router;
