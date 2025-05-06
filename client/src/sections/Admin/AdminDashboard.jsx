@@ -292,3 +292,5 @@ const AdminDashboard = () => {
     </div>
   );
 };
+
+export default AdminDashboard
