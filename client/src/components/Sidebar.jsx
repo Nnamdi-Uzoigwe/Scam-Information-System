@@ -1,8 +1,10 @@
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaExclamationTriangle, FaListAlt, FaSignOutAlt, FaTimes, FaHome } from "react-icons/fa"; 
+import LogoutModal from "./LogoutModal";
 
 const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   return (
     <div>
       {/* Sidebar content */}
@@ -38,14 +40,15 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
               <span>Report a Scam</span>
             </Link>
             <Link
-              to="/dashboard/view-reports"
+              to="/view-report"
               className="flex items-center space-x-2 p-3 hover:bg-[#063F3A] rounded-md text-white"
             >
               <FaListAlt className="w-5 h-5" />
               <span>View Submitted Reports</span>
             </Link>
             <Link
-              to="/logout"
+              to=""
+              onClick={() => setShowLogoutModal(true)}
               className="flex items-center space-x-2 p-3 hover:bg-[#063F3A] rounded-md text-white"
             >
               <FaSignOutAlt className="w-5 h-5" />
@@ -53,6 +56,11 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             </Link>
           </div>
         </div>
+
+        {/* Render the modal */}
+        {showLogoutModal && (
+          <LogoutModal onClose={() => setShowLogoutModal(false)} />
+        )}
       </div>
 
       {/* Overlay for mobile */}
@@ -65,7 +73,10 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
         {/* Close button */}
         <button
           className="cursor-pointer absolute top-4 left-4 text-white text-3xl z-50"
-          onClick={toggleSidebar}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleSidebar()
+          }}
         >
           <FaTimes />
         </button>
@@ -93,21 +104,26 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
             Report a Scam
           </Link>
           <Link
-            to="/dashboard/view-reports"
+            to="/view-report"
             className="text-white text-xl"
             onClick={toggleSidebar}
           >
             View Submitted Reports
           </Link>
           <Link
-            to="/logout"
+            to=""
+            onClick={() => setShowLogoutModal(true)}
             className="text-white text-xl"
-            onClick={toggleSidebar}
           >
             Logout
           </Link>
         </div>
       </div>
+
+      {/* Render the modal */}
+      {showLogoutModal && (
+          <LogoutModal onClose={() => setShowLogoutModal(false)} />
+        )}
     </div>
   );
 };
