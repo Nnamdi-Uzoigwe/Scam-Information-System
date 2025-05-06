@@ -17,6 +17,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import SearchDatabase from "./pages/SearchDatabase";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewReports from "./sections/Dashboard/ViewReports";
+import SubmitTestimonial from "./sections/Dashboard/SubmitTestimonial";
 
 function App() {
   const location = useLocation();
@@ -47,6 +48,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/report-scam" element={<ReportScam />} />
             <Route path="/view-report" element={<ViewReports />} />
+            <Route path="/submit-testimonial" element={<SubmitTestimonial />} />
           </Route>
           <Route path="/search" element={<SearchDatabase />} />
           <Route path="/contact" element={<Contact/>} />
