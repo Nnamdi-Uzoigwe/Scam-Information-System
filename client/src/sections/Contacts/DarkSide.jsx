@@ -194,6 +194,7 @@ const DarkSide = () => {
 
       </div>
     </div>
+    </div>
   );
 };
 
