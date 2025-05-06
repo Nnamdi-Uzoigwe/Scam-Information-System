@@ -10,8 +10,8 @@ const createAdmin = async () => {
     useUnifiedTopology: true,
   });
 
-  const email = 'graceShelby1@.com';
-  const plainPassword = 'graceshelby';
+  const email = 'admin@gmail.com';
+  const plainPassword = 'examplePassword';
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
   const existing = await Admin.findOne({ email });
@@ -21,7 +21,7 @@ const createAdmin = async () => {
   }
 
   const admin = new Admin({
-    username: 'SuperAdmin',
+    username: 'Admin001',
     email,
     password: hashedPassword,
   });

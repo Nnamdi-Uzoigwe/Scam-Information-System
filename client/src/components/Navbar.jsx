@@ -25,14 +25,14 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md h-[80px] px-4 sm:px-8 lg:px-30 flex items-center justify-between sticky top-0 z-50 w-full">
       {/* Logo */}
-      <div className="logo text-[#0F766E] font-bold text-xl">ScamTrackr</div>
+      <div className="logo text-[#0F766E] font-bold text-xl">FraudTrackr</div>
 
       <div className="hidden md:flex items-center gap-8">
         <Link to="/" className="hover:text-[#0F766E] transition-colors">Home</Link>
         <Link to="/about" className="hover:text-[#0F766E] transition-colors">About</Link>
         <Link to="/report-scam" className="hover:text-[#0F766E] transition-colors">Report Scam</Link>
         <Link to="/contact" className="hover:text-[#0F766E] transition-colors">Contact us</Link>
-        <Link to="/dashboard" className="hover:text-[#0F766E] transition-colors">Search</Link>
+        <Link to="/search" className="hover:text-[#0F766E] transition-colors">Search</Link>
       </div>
 
       <div className="hidden lg:flex">

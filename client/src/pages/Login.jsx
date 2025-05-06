@@ -50,23 +50,15 @@ export default function Login() {
         setErrors({ api: data.message || 'Login failed' });
         return;
       }
-
-      console.log('Login successful:', data); // Inspect what the backend sends
-
-          const { token, user } = data; // Rename based on actual response structure
-          localStorage.setItem('token', token);
-
-          // Ensure 'user' exists before calling handleLoginSuccess
-          if (user) {
-            handleLoginSuccess({ email: user.email, username: user.username });
-          } else {
-            console.warn('User data missing in login response');
-          }
-
-        
-       setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+  
+      // Save token (optional - based on your flow)
+      localStorage.setItem('token', data.token);
+  
+      console.log('Login successful:', data);
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 3000)
+      // redirect or update UI accordingly
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ api: 'An unexpected error occurred' });
@@ -86,7 +78,7 @@ export default function Login() {
         {errors.api && <p className="text-center text-red-600 text-sm">{errors.api}</p>}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email address
@@ -144,7 +136,7 @@ export default function Login() {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
-              {loading ? <Spinner /> : <span>Login</span>}
+              {loading ? <span className='text-sm flex gap-2'>Logging in <Spinner /></span> : <span>Login</span>}
             </button>
           </div>
         </form>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiSearch, FiAlertTriangle } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import LoadingState from "../components/LoadingState";
 
 export default function SearchDatabase() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,13 +11,11 @@ export default function SearchDatabase() {
   const [currentPage, setCurrentPage] = useState(1);
   const [scamsPerPage] = useState(8);
 
-  // Fetch scams data from the database
   useEffect(() => {
     const fetchScams = async () => {
       try {
         setLoading(true);
 
-        // Make the API request to fetch scams
         const response = await fetch("https://scam-information-system.onrender.com/api/scam-reports"); 
         if (!response.ok) {
           throw new Error("Failed to fetch scam data");
@@ -64,7 +63,6 @@ export default function SearchDatabase() {
           </p>
         </div>
         <div className="max-w-3xl mx-auto mb-16">
-          {/* Search Bar */}
           <div className="relative rounded-md shadow-sm">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FiSearch className="h-5 w-5 text-gray-400" />
@@ -86,23 +84,7 @@ export default function SearchDatabase() {
 
         {/* Loading State */}
         {loading && (
-          <div className="grid gap-6 md:grid-cols-2">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6 animate-pulse">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 mr-3 h-5 w-5 bg-gray-200 rounded-full"></div>
-                    <div className="flex-1 space-y-3">
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <LoadingState />
         )}
 
         {/* Error State */}
@@ -126,7 +108,7 @@ export default function SearchDatabase() {
             {/* Scam Results */}
             <div className="grid gap-6 md:grid-cols-2">
               {currentScams.map((scam) => (
-                <div key={scam.id} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
+                <div key={scam.caseId} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-start">
                       <div className="flex-1">
@@ -134,7 +116,7 @@ export default function SearchDatabase() {
                           <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: {scam.scammerName}</h3>
                         </div>
                         <div className="my-2">
-                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="bg-pink-100 border-[2px] border-pink-300 py-[6px] px-2 rounded-2xl">{scam.scamType}</span></span>
+                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="text-xs bg-pink-100 text-red-400 py-[4px] px-2 rounded-2xl">{scam.scamType}</span></span>
                         </div>
                         <div className="mt-1 text-sm text-gray-600 font-bold">
                           Case No: <span className="text-amber-600">{scam.caseId}</span>
@@ -173,12 +155,12 @@ export default function SearchDatabase() {
 
             {/* Pagination */}
             {filteredScams.length > scamsPerPage && (
-              <div className="flex justify-center mt-6">
+              <div className="flex justify-center mt-6 ">
                 <nav className="inline-flex rounded-md shadow-sm">
                   <button
                     onClick={() => paginate(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="cursor-pointer relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     Previous
                   </button>
@@ -186,7 +168,7 @@ export default function SearchDatabase() {
                     <button
                       key={index}
                       onClick={() => paginate(index + 1)}
-                      className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
+                      className={`cursor-pointer relative inline-flex items-center px-4 py-2 text-sm font-medium ${
                         currentPage === index + 1
                           ? "bg-[#0F766E] text-white"
                           : "text-gray-500 bg-white"
@@ -198,7 +180,7 @@ export default function SearchDatabase() {
                   <button
                     onClick={() => paginate(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="cursor-pointer relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     Next
                   </button>

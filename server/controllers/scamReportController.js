@@ -99,9 +99,48 @@ const updateScamReport = async (req, res) => {
     }
 };
 
+// Find user specific scam report
+const getUserScamReports = async (req, res) => {
+    try {
+        // Explicitly use the authenticated user's ID
+        const reports = await ScamReport.find({ 
+            reportedBy: req.user._id 
+        }).sort({ dateReported: -1 });
+        
+        res.status(200).json(reports);
+    } catch (error) {
+        console.error('Error in getUserScamReports:', error.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch your reports',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+};
+
+
+// In your scamReportController
+const deleteScamReport = async (req, res) => {
+    try {
+      const report = await ScamReport.findOneAndDelete({ 
+        caseId: req.params.id,
+        reportedBy: req.user._id 
+      });
+      
+      if (!report) {
+        return res.status(404).json({ error: 'Report not found' });
+      }
+      
+      res.status(200).json({ message: 'Report deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Error deleting report' });
+    }
+}
+
 module.exports = {
     getAllScamReports,
     getScamReportById,
     submitScamReport,
     updateScamReport,
+    getUserScamReports,
+    deleteScamReport,
 };

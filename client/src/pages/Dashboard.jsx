@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar"; 
 import { FaBars } from "react-icons/fa"; 
-import SearchDatabase from "../sections/Dashboard/SearchDatabase";
+import SearchDatabase from "./SearchDatabase";
 
 const Dashboard = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

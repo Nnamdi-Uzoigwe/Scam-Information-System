@@ -6,6 +6,7 @@ const adminMiddleware = require('../middleware/adminMiddleware');
 router.post('/login', adminController.loginAdmin);
 
 router.get('/scam-reports', adminMiddleware, adminController.getAllScamReports);
+router.get('/testimonials', adminMiddleware, adminController.getAllTestimonials);
 router.delete('/scam-reports/:id', adminMiddleware, adminController.deleteScamReport);
 router.delete('/testimonials/:id', adminMiddleware, adminController.deleteTestimonial);
 
