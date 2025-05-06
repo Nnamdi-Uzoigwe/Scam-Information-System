@@ -251,7 +251,7 @@ const ViewReports = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('authToken');
         const response = await fetch('https://scam-information-system.onrender.com/api/scam-reports/my-reports', {
           headers: { 
             'Authorization': `Bearer ${token}`,
@@ -279,7 +279,7 @@ const ViewReports = () => {
   const handleDelete = async (caseId) => {
     
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(
         `https://scam-information-system.onrender.com/api/scam-reports/${caseId}`,
         {
