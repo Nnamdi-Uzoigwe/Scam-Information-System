@@ -127,7 +127,10 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
           </Link>
           <Link
             to=""
-            onClick={() => setShowLogoutModal(true)}
+            onClick={() => {
+              toggleSidebar();
+              setShowLogoutModal(true);
+            }}
             className="text-white text-xl"
           >
             Logout

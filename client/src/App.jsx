@@ -23,7 +23,7 @@ function App() {
   const location = useLocation();
 
   
-  const noFooterRoutes = ['/dashboard', '/login', '/register', '/report-scam', '/view-report', '/admin', '/admin/dashboard'];
+  const noFooterRoutes = ['/dashboard', '/login', '/register', '/report-scam', '/view-report', '/admin', '/admin/dashboard', '/submit-testimonial'];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -34,7 +34,8 @@ function App() {
         && location.pathname !== '/report-scam'
         && location.pathname !== '/view-report'
         && location.pathname !== '/admin'
-        && location.pathname !== '/admin/dashboard' &&
+        && location.pathname !== '/admin/dashboard' 
+        && location.pathname !== '/submit-testimonial' &&
         <Navbar />
       }
 
