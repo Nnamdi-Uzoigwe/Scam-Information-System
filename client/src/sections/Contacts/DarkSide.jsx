@@ -63,11 +63,12 @@ const DarkSide = () => {
           </p>
         </div>
 
-        <div className="absolute w-36 h-36 bg-green-900 rounded-full top-[470px] right-20 hidden md:block"></div>
-        <div className="absolute w-[269px] h-[269px] bg-green-950 rounded-full top-[470px] right-[-60px] hidden md:block"></div>
+        <div className='absolute w-36 h-36 bg-green-900 rounded-full top-[470px] right-20 hidden md:block'></div>
+        <div className='absolute w-[269px] h-[269px] bg-green-950 rounded-full top-[470px] right-[-60px] hidden md:block'></div>
 
-        <div className="mt-12 flex gap-4">
-          <div className="h-12 w-12 bg-[#1B1B1B] hover:bg-gray-600 rounded-full flex items-center justify-center">
+        <div className='mt-46 flex gap-4'>
+        <div className='mt-10 flex justify-center md:justify-start gap-4'>
+          <div className='h-12 w-12 bg-[#1B1B1B] hover:bg-gray-600 rounded-full flex items-center justify-center'>
             <FaXTwitter size={20} />
           </div>
           <div className="h-12 w-12 bg-[#1B1B1B] hover:bg-red-400 rounded-full flex items-center justify-center">

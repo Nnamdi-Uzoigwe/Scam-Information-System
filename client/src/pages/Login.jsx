@@ -9,12 +9,18 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleLoginSuccess = (userData) => {
+    const { email, username } = userData;
+    const identity = username || email;
+    localStorage.setItem('userIdentity', identity);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setLoading(true);
+    e.preventDefault();
     const validationErrors = {};
 
     if (!email.trim()) {
@@ -50,15 +56,14 @@ export default function Login() {
         setErrors({ api: data.message || 'Login failed' });
         return;
       }
-  
-      // Save token (optional - based on your flow)
+
+      // Save token and user data
       localStorage.setItem('token', data.token);
-  
-      console.log('Login successful:', data);
+      handleLoginSuccess(data.user || { email, username: email.split('@')[0] });
+      
       setTimeout(() => {
-        navigate('/dashboard')
-      }, 3000)
-      // redirect or update UI accordingly
+        navigate('/dashboard');
+      }, 3000);
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ api: 'An unexpected error occurred' });

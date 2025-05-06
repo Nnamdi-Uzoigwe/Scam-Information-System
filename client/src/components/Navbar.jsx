@@ -97,7 +97,7 @@ export default function Navbar() {
             <div className="pt-2">
               <Button>
                 <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
-              </Button>
+              </Button>}
             </div>
           </div>
         </div>
