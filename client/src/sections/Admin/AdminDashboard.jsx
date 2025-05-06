@@ -160,7 +160,7 @@ const AdminDashboard = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {reports.map((report) => (
-                <tr key={report._id}>
+                <tr key={report.caseId}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.caseId}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{report.scammerName}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.scamType}</td>
@@ -173,7 +173,7 @@ const AdminDashboard = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-[#0F766E] hover:text-[#0d625b] mr-3"><Link to={`/scam/${report.caseId}`}>View</Link></button>
-                    <button className="text-red-600 hover:text-red-900" onClick={handleDeleteReports(report.caseId)}>Delete</button>
+                    <button className="text-red-600 hover:text-red-900" onClick={() => handleDeleteReports(report.caseId)}>Delete</button>
                   </td>
                 </tr>
               ))}
