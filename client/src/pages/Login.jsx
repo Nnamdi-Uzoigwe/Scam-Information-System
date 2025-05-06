@@ -1,65 +1,40 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 import Spinner from '../components/Spinner';
+import { handleLoginSuccess } from '../sections/About/UserAvatar.jsx';
 
 export default function Login() {
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-<<<<<<< HEAD
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = (userData) => {
-    const { email, username } = userData;
-    const identity = username || email;
-    localStorage.setItem('userIdentity', identity);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = {};
-
-=======
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false);
-  
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
     const validationErrors = {};
-  
->>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
+
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) { 
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       validationErrors.email = 'Email is invalid';
     }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
       validationErrors.password = 'Password should be at least 6 characters';
     }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setLoading(false);
       return;
     }
-<<<<<<< HEAD
 
-    // Example: simulate successful login
-    handleLoginSuccess({ email, username: email.split('@')[0] });
-    navigate('/dashboard'); // redirect to dashboard or wherever after login
-=======
     try {
       const res = await fetch('https://scam-information-system.onrender.com/api/auth/login', {
         method: 'POST',
@@ -68,30 +43,36 @@ export default function Login() {
         },
         body: JSON.stringify({ email, password })
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
-        // Handle API errors
         setErrors({ api: data.message || 'Login failed' });
         return;
       }
-  
-      // Save token (optional - based on your flow)
-      localStorage.setItem('token', data.token);
-  
-      console.log('Login successful:', data);
-      setTimeout(() => {
-        navigate('/dashboard')
-      }, 3000)
-      // redirect or update UI accordingly
+
+      console.log('Login successful:', data); // Inspect what the backend sends
+
+          const { token, user } = data; // Rename based on actual response structure
+          localStorage.setItem('token', token);
+
+          // Ensure 'user' exists before calling handleLoginSuccess
+          if (user) {
+            handleLoginSuccess({ email: user.email, username: user.username });
+          } else {
+            console.warn('User data missing in login response');
+          }
+
+        
+       setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ api: 'An unexpected error occurred' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
->>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
   };
   
 
@@ -101,6 +82,8 @@ export default function Login() {
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold text-gray-900">Sign in to your account</h2>
         </div>
+
+        {errors.api && <p className="text-center text-red-600 text-sm">{errors.api}</p>}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
@@ -120,6 +103,7 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-2 border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E]`}
                   placeholder="you@example.com"
+                  autoCapitalize="none"
                 />
               </div>
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -158,12 +142,7 @@ export default function Login() {
           <div>
             <button
               type="submit"
-<<<<<<< HEAD
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
-=======
-              onClick={handleSubmit}
-              className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
->>>>>>> 1ed19e9e4666797052ff09b0d9d6cf1a2e45d52a
             >
               {loading ? <Spinner /> : <span>Login</span>}
             </button>
@@ -180,3 +159,155 @@ export default function Login() {
     </div>
   );
 }
+
+
+
+// import { useState } from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
+// import Spinner from '../components/Spinner';
+
+// export default function Login() {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [errors, setErrors] = useState({});
+//   const navigate = useNavigate()
+//   const [loading, setLoading] = useState(false);
+  
+//   const handleSubmit = async (e) => {
+//     setLoading(true);
+//     e.preventDefault();
+//     const validationErrors = {};
+  
+//     if (!email.trim()) {
+//       validationErrors.email = 'Email is required';
+//     } else if (!/^\S+@\S+\.\S+$/.test(email)) { 
+//       validationErrors.email = 'Email is invalid';
+//     }
+  
+//     if (!password.trim()) {
+//       validationErrors.password = 'Password is required';
+//     } else if (password.length < 6) {
+//       validationErrors.password = 'Password should be at least 6 characters';
+//     }
+  
+//     if (Object.keys(validationErrors).length > 0) {
+//       setErrors(validationErrors);
+//       return;
+//     }
+//     try {
+//       const res = await fetch('https://scam-information-system.onrender.com/api/auth/login', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ email, password })
+//       });
+  
+//       const data = await res.json();
+  
+//       if (!res.ok) {
+//         // Handle API errors
+//         setErrors({ api: data.message || 'Login failed' });
+//         return;
+//       }
+  
+//       // Save token (optional - based on your flow)
+//       localStorage.setItem('token', data.token);
+  
+//       console.log('Login successful:', data);
+//       setTimeout(() => {
+//         navigate('/dashboard')
+//       }, 3000)
+//       // redirect or update UI accordingly
+//     } catch (error) {
+//       console.error('Login error:', error);
+//       setErrors({ api: 'An unexpected error occurred' });
+//     } finally {
+//       setLoading(false)
+//     }
+//   };
+//   handleLoginSuccess({ email, username: 'YourUsername' });
+
+  
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+//       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+//         <div className="text-center">
+//           <h2 className="mt-6 text-3xl font-bold text-gray-900">Sign in to your account</h2>
+//         </div>
+
+//         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+//           <div className="rounded-md shadow-sm space-y-4">
+//             <div>
+//               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Email address
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaEnvelope className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="email"
+//                   name="email"
+//                   type="email"
+//                   value={email}
+//                   onChange={(e) => setEmail(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E]`}
+//                   placeholder="you@example.com"
+//                 />
+//               </div>
+//               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+//             </div>
+
+//             <div>
+//               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Password
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaLock className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="password"
+//                   name="password"
+//                   type="password"
+//                   value={password}
+//                   onChange={(e) => setPassword(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E]`}
+//                   placeholder="Enter Password"
+//                 />
+//               </div>
+//               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+//             </div>
+//           </div>
+
+//           <div className="flex items-center justify-between">
+//             <div className="text-sm">
+//               <Link to="/forgot-password" className="font-medium text-[#0F766E] hover:text-[#0a5952]">
+//                 Forgot password?
+//               </Link>
+//             </div>
+//           </div>
+
+//           <div>
+//             <button
+//               type="submit"
+//               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+//             >
+//               {loading ? <Spinner /> : <span>Login</span>}
+//             </button>
+//           </div>
+//         </form>
+
+//         <div className="text-center text-sm mt-4">
+//           <span className="text-gray-600">Don't have an account? </span>
+//           <Link to="/register" className="font-medium text-[#0F766E] hover:text-[#0a5952]">
+//             Register
+//           </Link>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

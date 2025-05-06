@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -8,12 +8,18 @@ import UserAvatar from "../sections/About/UserAvatar";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const user = localStorage.getItem('userIdentity');
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
 
   return (
@@ -32,10 +38,11 @@ export default function Navbar() {
       <div className="hidden lg:flex">
 
         {
-          user ? <UserAvatar/> : 
-              <Button>
-                <Link to="/login">Login</Link>
-              </Button> 
+          user ? <UserAvatar/> :  
+          <Button>
+          <Link to="/login">Login</Link>
+        </Button>  
+              
         }
       </div>
 
