@@ -14,16 +14,15 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
     const validationErrors = {};
-  
+    
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(email)) { 
       validationErrors.email = 'Email is invalid';
     }
-  
+    
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
@@ -34,6 +33,7 @@ export default function Login() {
       setErrors(validationErrors);
       return;
     }
+    setLoading(true);
     try {
       const res = await fetch('https://scam-information-system.onrender.com/api/auth/login', {
         method: 'POST',
