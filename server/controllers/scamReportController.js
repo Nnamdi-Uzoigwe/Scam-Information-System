@@ -104,7 +104,7 @@ const getUserScamReports = async (req, res) => {
     try {
         // Explicitly use the authenticated user's ID
         const reports = await ScamReport.find({ 
-            reportedBy: req.user._id 
+            reportedBy: req.user.id 
         }).sort({ dateReported: -1 });
         
         res.status(200).json(reports);
