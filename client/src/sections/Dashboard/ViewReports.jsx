@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaSearch, FaFilter, FaFileAlt, FaClock, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import Sidebar from '../../components/Sidebar';
+import { toast } from 'react-toastify';
 
 const ViewReports = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,6 +37,10 @@ const ViewReports = () => {
         setReports(data);
       } catch (err) {
         setError(err.message || 'Failed to fetch reports');
+         toast.error('Failed to fetch reports', {
+                  position: "top-center",
+                  autoClose: 2000,
+          })
       } finally {
         setLoading(false);
       }
@@ -61,16 +66,28 @@ const ViewReports = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete report');
+        toast.error('Failed to delete report', {
+          position: "top-center",
+          autoClose: 2000,
+        })
+        throw new Error(errorData.error || 'Failed to delete report');     
       }
 
       setReports(reports.filter(report => report.caseId !== caseId));
+      toast.success('Deleted successfully!', {
+        position: "top-center",
+        autoClose: 2000,
+      })
       console.log("deleted successfully")
       setTimeout(() => {
         navigate('/dashboard')
       }, 1000)
     } catch (err) {
       setError(err.message || 'Failed to delete report');
+      toast.error('Failed to delete report', {
+        position: "top-center",
+        autoClose: 2000,
+      })
     }
   };
 

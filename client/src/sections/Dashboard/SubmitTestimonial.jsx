@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FaBars, FaPaperPlane } from 'react-icons/fa';
 import Sidebar from '../../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function SubmitTestimonial() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,16 +51,28 @@ export default function SubmitTestimonial() {
   
         if (!response.ok) {
           const errorData = await response.json();
+          toast.error('Failed to submit testimonial', {
+            position: "top-center",
+            autoClose: 2000,
+          })
           throw new Error(errorData.message || 'Failed to submit testimonial');
         }
   
         setSuccess(true);
+        toast.success('Testimonial submitted succesfully!', {
+          position: "top-center",
+          autoClose: 2000,
+        })
         setFormData({ name: '', message: '' });
         setTimeout(() => {
           navigate("/dashboard")
         }, 3000)
       } catch (err) {
         setError(err.message);
+        toast.error('Failed to submit testimonial', {
+          position: "top-center",
+          autoClose: 2000,
+        })
       } finally {
         setLoading(false);
       }

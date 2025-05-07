@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight } from 'react-icons/fa';
 import Spinner from '../components/Spinner';
 import { handleLoginSuccess } from '../components/UserAvatar';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -45,6 +46,10 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) {
         setErrors({ api: data.message || 'Login failed' });
+        toast.error('Incorrect Name or Password', {
+          position: "top-center",
+          autoClose: 2000,
+        })
         return;
       }
       sessionStorage.setItem('authToken', data.token);
@@ -53,12 +58,19 @@ export default function Login() {
         username: data.user?.username || email.split('@')[0]
       });
 
-      console.log('Login successful:', data);
+      toast.success('Login successful!', {
+        position: "top-center",
+        autoClose: 2000,
+      });
       setTimeout(() => {
         navigate('/dashboard')
       }, 2000)
     } catch (error) {
       console.error('Login error:', error);
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 2000,
+      })
       setErrors({ api: 'An unexpected error occurred' });
     } finally {
       setLoading(false)
@@ -75,7 +87,7 @@ export default function Login() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email address

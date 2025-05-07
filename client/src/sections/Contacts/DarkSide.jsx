@@ -3,6 +3,7 @@ import { MdPhoneInTalk, MdMail } from "react-icons/md";
 import { TiLocation } from "react-icons/ti";
 import { FaInstagram, FaGithubAlt, FaCheckCircle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const DarkSide = () => {
   const [selectChecked, setSelectChecked] = useState("");
@@ -28,12 +29,24 @@ const DarkSide = () => {
 
       if (response.ok) {
         setStatus("Message Sent!");
+        toast.success('Message sent!', {
+          position: "top-center",
+          autoClose: 2000,
+        })
         setFormData({ firstName: "", lastName: "", email: "", phone: "", message: "" });
       } else {
         setStatus("Something went wrong!");
+        toast.error('Something went wrong!', {
+          position: "top-center",
+          autoClose: 2000,
+        })
       }
     } catch (error) {
       setStatus("Failed to send message!");
+      toast.error('Failed to send message!', {
+        position: "top-center",
+        autoClose: 2000,
+      })
     }
   };
 

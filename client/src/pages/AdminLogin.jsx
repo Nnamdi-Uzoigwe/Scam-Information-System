@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -25,14 +26,26 @@ const AdminLogin = () => {
       const data = await response.json();
 
       if (!response.ok) {
+        toast.error('Login failed', {
+          position: "top-center",
+          autoClose: 2000,
+        })
         throw new Error(data.message || 'Login failed');
       }
       localStorage.setItem('adminToken', data.token);
-      
-
-      navigate('/admin/dashboard');
+      toast.success('Admin login successful!', {
+        position: "top-center",
+        autoClose: 2000,
+      })
+      setTimeout(() => {
+        navigate('/admin/dashboard');
+      }, 2000)
     } catch (err) {
       setError(err.message);
+      toast.error(err.message, {
+        position: "top-center",
+        autoClose: 2000,
+      })
     } finally {
       setLoading(false);
     }

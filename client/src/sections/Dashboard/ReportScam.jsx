@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import { FaBars } from "react-icons/fa"; 
+import { toast } from 'react-toastify';
 
 const ScamReportPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -58,7 +59,11 @@ const toggleSidebar = () => {
   
         if (error) {
           console.error('Error uploading image:', error.message);
-          throw new Error('Failed to upload evidence image.');
+          toast.error('Failed to upload evidence image.', {
+            position: "top-center",
+            autoClose: 2000,
+          })
+          throw new Error('Failed to upload evidence image.')
         }
 
         const { data: publicData } = supabase
@@ -96,13 +101,25 @@ const toggleSidebar = () => {
           scammerAccountNumber: '',
           evidence: '',
         });
+        toast.success("Scam report submitted sucessfully!", {
+          position: "top-center",
+          autoClose: 2000,
+        })
         setTimeout(() => navigate('/dashboard'), 3000);
       } else {
         const errorData = await response.json();
         setMessage(errorData.message || 'Failed to submit report. Please try again.');
+        toast.error('Failed to submit report. Please try again.', {
+          position: "top-center",
+          autoClose: 2000,
+        })
       }
     } catch (error) {
       console.error('Error:', error);
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 2000,
+      });
       setMessage('Something went wrong. Please try again later.');
     } finally {
       setIsSubmitting(false);
@@ -237,7 +254,7 @@ const toggleSidebar = () => {
                           onChange={handleChange}
                           required
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          placeholder='Write a detailed description of how you were defrauded...'
+                          placeholder='Write...'
                           />
                       </div>
 

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -58,19 +59,27 @@ export default function Register() {
   
       if (!res.ok) {
         setErrors({ api: data.message || 'Registration failed' });
+        toast.error("Registration failed", {
+          position: "top-center",
+          autoClose: 2000,
+        })
         return;
       }
   
-      // Store token or navigate based on your app flow
-      localStorage.setItem('token', data.token);
-  
-      console.log('Registration successful:', data);
+      // localStorage.setItem('token', data.token);
+      toast.success("Registration successful! Redirecting to login", {
+        position: "top-center",
+        autoClose: 2000,
+      })
       setTimeout(() => {
         navigate('/login')
       }, 2000)
-      // Optionally redirect or update UI here
     } catch (error) {
       console.error('Registration error:', error);
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 2000,
+      })
       setErrors({ api: 'An unexpected error occurred' });
     } finally {
       setLoading(false)
@@ -195,7 +204,7 @@ export default function Register() {
               onClick={handleSubmit}
               className=" cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
-              {loading ? <Spinner /> : <span>"Sign in"</span>}
+              {loading ? <Spinner /> : <span>Sign in</span>}
             </button>
           </div>
         </form>
