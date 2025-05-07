@@ -18,6 +18,8 @@ import SearchDatabase from "./pages/SearchDatabase";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewReports from "./sections/Dashboard/ViewReports";
 import SubmitTestimonial from "./sections/Dashboard/SubmitTestimonial";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const location = useLocation();
@@ -72,6 +74,7 @@ function AppWrapper() {
     <BrowserRouter>
       <ScrollToTop />
       <App />
+      <ToastContainer />
     </BrowserRouter>
   );
 }
