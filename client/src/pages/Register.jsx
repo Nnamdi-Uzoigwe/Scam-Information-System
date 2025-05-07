@@ -153,12 +153,12 @@ export default function Register() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
                   autoComplete="off"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
+                  inputMode="text"
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
-                  placeholder="••••••••"
+                  className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
                 />
                 <div 
                   className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
