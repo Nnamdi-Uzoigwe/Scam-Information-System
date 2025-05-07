@@ -139,16 +139,13 @@ const Sidebar = ({ toggleSidebar, isSidebarOpen }) => {
           >
             Submit Testimonial
           </Link>
-          <Link
-            to=""
-            onClick={() => {
-              toggleSidebar();
+          <div onClick={(e) => { 
+            e.stopPropagation();
               setShowLogoutModal(true);
-            }}
-            className="text-white text-xl"
-          >
+          }}
+            className="text-white text-xl">
             Logout
-          </Link>
+          </div>
         </div>
       </div>
 

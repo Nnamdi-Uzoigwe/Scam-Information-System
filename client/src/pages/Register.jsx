@@ -6,10 +6,10 @@ import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 
 export default function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -17,26 +17,25 @@ export default function Register() {
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault();
     const validationErrors = {};
-  
+    
     if (!name.trim()) {
       validationErrors.name = 'Name is required';
     }
-  
+    
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       validationErrors.email = 'Email is invalid';
     }
-  
+    
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 6) {
       validationErrors.password = 'Password should be at least 6 characters';
     }
-  
+    
     if (password !== confirmPassword) {
       validationErrors.confirmPassword = 'Passwords do not match';
     }
@@ -45,7 +44,8 @@ export default function Register() {
       setErrors(validationErrors);
       return;
     }
-  
+    setLoading(true)
+
     try {
       const res = await fetch('https://scam-information-system.onrender.com/api/auth/register', {
         method: 'POST',
@@ -154,7 +154,7 @@ export default function Register() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
+                  autoComplete="off"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
