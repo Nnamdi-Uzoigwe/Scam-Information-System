@@ -28,45 +28,7 @@ const getScamReportById = async (req, res) => {
     }
 };
 
-// // Submit a new scam report
-// const submitScamReport = async (req, res) => {
-//     const { 
-//         scammerName, 
-//         scamType, 
-//         description, 
-//         scammerEmail, 
-//         scammerAccountNumber,
-//          reportedBy, 
-//          status, 
-//          evidence
-//         } = req.body;
-
-//     if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
-//         return res.status(400).json({ message: 'All required fields must be provided' });
-//     }
-
-//     try {
-//         const reportCount = await ScamReport.countDocuments();
-//         const caseId = (reportCount + 1).toString().padStart(3, '0');
-//         const newReport = new ScamReport({
-//             scammerName,
-//             scamType,
-//             description,
-//             scammerEmail,
-//             scammerAccountNumber,
-//             reportedBy,
-//             status: status || 'pending', 
-//             evidence, 
-//             caseId,
-//         });
-//         await newReport.save();
-//         res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Error submitting scam report' });
-//     }
-// };
-
+//submit scam report
 const submitScamReport = async (req, res) => {
     const { 
         scammerName, 
@@ -75,7 +37,7 @@ const submitScamReport = async (req, res) => {
         scammerEmail, 
         scammerAccountNumber,
         evidence,
-        reportedBy, // Optional (must be valid ObjectId if provided)
+        reportedBy,
     } = req.body;
 
     if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
@@ -83,7 +45,6 @@ const submitScamReport = async (req, res) => {
     }
 
     try {
-        // Generate a unique caseId (safer than countDocuments)
         const latestReport = await ScamReport.findOne().sort({ caseId: -1 }).limit(1);
         const lastCaseId = latestReport ? parseInt(latestReport.caseId) : 0;
         const caseId = (lastCaseId + 1).toString().padStart(3, '0');
@@ -94,10 +55,9 @@ const submitScamReport = async (req, res) => {
             description,
             scammerEmail,
             scammerAccountNumber,
-            reportedBy, // Must be valid ObjectId (or null)
-            evidence,   // Must be a String (URL)
+            reportedBy,
+            evidence,   
             caseId,
-            // status & dateReported are auto-set by default
         });
 
         await newReport.save();
@@ -158,23 +118,42 @@ const getUserScamReports = async (req, res) => {
     }
 };
 
-//deleteScamreport
+//delete scam report
 const deleteScamReport = async (req, res) => {
     try {
-      const report = await ScamReport.findOneAndDelete({ 
-        caseId: req.params.id,
-        reportedBy: req.user._id 
-      });
-      
-      if (!report) {
-        return res.status(404).json({ error: 'Report not found' });
-      }
-      
-      res.status(200).json({ message: 'Report deleted successfully' });
+        const report = await ScamReport.findOneAndDelete({ 
+            caseId: req.params.id,
+            reportedBy: req.user._id
+        });
+
+        if (!report) {
+            return res.status(404).json({ error: 'Report not found or unauthorized' });
+        }
+
+        const deletedCaseId = parseInt(req.params.id);
+        const reportsToUpdate = await ScamReport.find({
+            caseId: { $gt: req.params.id }
+        }).sort({ caseId: 1 }); 
+
+        for (const report of reportsToUpdate) {
+            const newCaseId = (parseInt(report.caseId) - 1).toString().padStart(3, '0');
+            report.caseId = newCaseId;
+            await report.save();
+        }
+        const highestReport = await ScamReport.findOne().sort({ caseId: -1 }).limit(1);
+        if (!highestReport || parseInt(highestReport.caseId) < deletedCaseId) {
+            await Counter.findOneAndUpdate(
+                { name: "caseId" },
+                { $inc: { value: -1 } }
+            );
+        }
+
+        res.status(200).json({ message: 'Report deleted and case IDs reordered' });
     } catch (error) {
-      res.status(500).json({ error: 'Error deleting report' });
+        console.error("Delete error:", error);
+        res.status(500).json({ error: 'Error deleting report', details: error.message });
     }
-}
+};
 
 module.exports = {
     getAllScamReports,
