@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // Get all scam reports
 const getAllScamReports = async (req, res) => {
     try {
-        const reports = await ScamReport.find().populate('reportedBy', 'name email'); // Optional: Populate user details
+        const reports = await ScamReport.find().populate('reportedBy', 'name email');
         res.status(200).json(reports);
     } catch (error) {
         console.error(error);
@@ -17,7 +17,7 @@ const getScamReportById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const report = await ScamReport.findOne({ caseId: id }); // Optional: Populate user details
+        const report = await ScamReport.findOne({ caseId: id });
         if (!report) {
             return res.status(404).json({ message: 'Scam report not found' });
         }
@@ -28,7 +28,45 @@ const getScamReportById = async (req, res) => {
     }
 };
 
-// Submit a new scam report
+// // Submit a new scam report
+// const submitScamReport = async (req, res) => {
+//     const { 
+//         scammerName, 
+//         scamType, 
+//         description, 
+//         scammerEmail, 
+//         scammerAccountNumber,
+//          reportedBy, 
+//          status, 
+//          evidence
+//         } = req.body;
+
+//     if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
+//         return res.status(400).json({ message: 'All required fields must be provided' });
+//     }
+
+//     try {
+//         const reportCount = await ScamReport.countDocuments();
+//         const caseId = (reportCount + 1).toString().padStart(3, '0');
+//         const newReport = new ScamReport({
+//             scammerName,
+//             scamType,
+//             description,
+//             scammerEmail,
+//             scammerAccountNumber,
+//             reportedBy,
+//             status: status || 'pending', 
+//             evidence, 
+//             caseId,
+//         });
+//         await newReport.save();
+//         res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Error submitting scam report' });
+//     }
+// };
+
 const submitScamReport = async (req, res) => {
     const { 
         scammerName, 
@@ -36,39 +74,44 @@ const submitScamReport = async (req, res) => {
         description, 
         scammerEmail, 
         scammerAccountNumber,
-         reportedBy, 
-         status, 
-         evidence
-        } = req.body;
+        evidence,
+        reportedBy, // Optional (must be valid ObjectId if provided)
+    } = req.body;
 
-    // Validate that required fields are provided
     if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
         return res.status(400).json({ message: 'All required fields must be provided' });
     }
 
     try {
-        const reportCount = await ScamReport.countDocuments();
-        const caseId = (reportCount + 1).toString().padStart(3, '0');
+        // Generate a unique caseId (safer than countDocuments)
+        const latestReport = await ScamReport.findOne().sort({ caseId: -1 }).limit(1);
+        const lastCaseId = latestReport ? parseInt(latestReport.caseId) : 0;
+        const caseId = (lastCaseId + 1).toString().padStart(3, '0');
+
         const newReport = new ScamReport({
             scammerName,
             scamType,
             description,
             scammerEmail,
             scammerAccountNumber,
-            reportedBy, // This can be a user ID from the logged-in user
-            status: status || 'pending', // Default to 'pending'
-            evidence, // This can be a URL of the image file
+            reportedBy, // Must be valid ObjectId (or null)
+            evidence,   // Must be a String (URL)
             caseId,
+            // status & dateReported are auto-set by default
         });
+
         await newReport.save();
         res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error submitting scam report' });
+        console.error("Database save error:", error);
+        res.status(500).json({ 
+            message: 'Error submitting scam report',
+            error: error.message 
+        });
     }
 };
 
-// Update an existing scam report (e.g., change status or add evidence)
+// Update an existing scam report 
 const updateScamReport = async (req, res) => {
     const { id } = req.params;
     const { scammerName, scamType, description, status, evidence } = req.body;
@@ -84,7 +127,6 @@ const updateScamReport = async (req, res) => {
             return res.status(404).json({ message: 'Scam report not found' });
         }
 
-        // Update fields as needed
         report.scammerName = scammerName || report.scammerName;
         report.scamType = scamType || report.scamType;
         report.description = description || report.description;
@@ -102,7 +144,6 @@ const updateScamReport = async (req, res) => {
 // Find user specific scam report
 const getUserScamReports = async (req, res) => {
     try {
-        // Explicitly use the authenticated user's ID
         const reports = await ScamReport.find({ 
             reportedBy: req.user.id 
         }).sort({ dateReported: -1 });
@@ -117,8 +158,7 @@ const getUserScamReports = async (req, res) => {
     }
 };
 
-
-// In your scamReportController
+//deleteScamreport
 const deleteScamReport = async (req, res) => {
     try {
       const report = await ScamReport.findOneAndDelete({ 
