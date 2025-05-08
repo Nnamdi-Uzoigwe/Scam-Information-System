@@ -18,7 +18,6 @@ const authenticateUser = (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Check token expiration separately
     const now = Math.floor(Date.now() / 1000);
     if (decoded.exp && decoded.exp < now) {
       return res.status(401).json({
@@ -27,11 +26,9 @@ const authenticateUser = (req, res, next) => {
       });
     }
 
-    // Attach user to request
     req.user = decoded;
     next();
   } catch (error) {
-    // Handle specific JWT errors
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
         error: 'Invalid token',
@@ -45,7 +42,6 @@ const authenticateUser = (req, res, next) => {
       });
     }
     
-    // Generic error fallback
     console.error('Authentication error:', error);
     return res.status(401).json({
       error: 'Authentication failed',
