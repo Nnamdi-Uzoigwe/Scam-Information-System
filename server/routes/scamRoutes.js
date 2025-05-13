@@ -7,7 +7,7 @@ const authenticateUser = require('../middleware/authMiddleware');
 router.get('/', scamReportController.getAllScamReports);
 router.get('/my-reports', authenticateUser, scamReportController.getUserScamReports); 
 router.get('/:id', scamReportController.getScamReportById);
-router.post('/', scamReportController.submitScamReport);
+router.post('/', authenticateUser, scamReportController.submitScamReport);
 router.patch('/:id', scamReportController.updateScamReport);
 router.delete('/:id', authenticateUser, scamReportController.deleteScamReport);
 
