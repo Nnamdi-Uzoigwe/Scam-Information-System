@@ -55,7 +55,7 @@ const submitScamReport = async (req, res) => {
             description,
             scammerEmail,
             scammerAccountNumber,
-            reportedBy,
+            reportedBy: req.user.id,
             evidence,   
             caseId,
         });
