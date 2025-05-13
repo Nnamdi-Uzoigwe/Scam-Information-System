@@ -68,7 +68,7 @@ const toggleSidebar = () => {
 
         const { data: publicData } = supabase
           .storage
-          .from('evidences')
+          .from('fraud-report-site')
           .getPublicUrl(fileName);
   
         evidenceUrl = publicData.publicUrl;
@@ -83,9 +83,11 @@ const toggleSidebar = () => {
         evidence: evidenceUrl, 
       };
   
+      const token = sessionStorage.getItem("authToken")
       const response = await fetch('https://scam-information-system.onrender.com/api/scam-reports', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newReport),
@@ -115,7 +117,7 @@ const toggleSidebar = () => {
         })
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.message);
       toast.error(error, {
         position: "top-center",
         autoClose: 2000,
