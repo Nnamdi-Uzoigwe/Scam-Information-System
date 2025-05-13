@@ -8,28 +8,28 @@ export default function LiveStatistics() {
             <section className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 <div className="flex gap-2 items-center justify-center lg:justify-start">
                     <p className="text-[#EA580C] font-medium text-2xl">
-                        <AnimatedCounter value={12483} duration={2} />
+                        <AnimatedCounter value={22} duration={2} />
                     </p>
                     <p className="font-medium text-2xl">Reports Submitted</p>
                 </div>
 
                 <div className="flex gap-2 items-center justify-center lg:justify-start">
                     <p className="text-[#EA580C] font-medium text-2xl">
-                        <AnimatedCounter value={8712} duration={1.8} />
+                        <AnimatedCounter value={2} duration={1.8} />
                     </p>
                     <p className="font-medium text-2xl">Verified Scammers</p>
                 </div>
 
                 <div className="flex gap-2 items-center justify-center lg:justify-start">
                     <p className="text-[#EA580C] font-medium text-2xl">
-                        <AnimatedCounter value={5934} duration={1.6} />
+                        <AnimatedCounter value={15} duration={1.6} />
                     </p>
                     <p className="font-medium text-2xl">Users Protected</p>
                 </div>
 
                 <div className="flex gap-2 items-center justify-center lg:justify-start">
                     <p className="text-[#EA580C] font-medium text-2xl">
-                        <AnimatedCounter value={10} duration={1} />+
+                        <AnimatedCounter value={4} duration={1} />+
                     </p>
                     <p className="font-medium text-2xl">Agencies Trust Us</p>
                 </div>
