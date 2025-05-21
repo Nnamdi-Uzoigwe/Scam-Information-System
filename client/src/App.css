@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+* {
+  font-family: "Montserrat", "Manrope", sans-serif;
+}
 
 .swiper-pagination-bullet {
     background-color: gray !important;  /* Change this to any color you want */

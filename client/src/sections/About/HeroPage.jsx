@@ -26,7 +26,6 @@ const HeroPage = () => {
         <div className="bg-white shadow-md w-full h-[250px] flex flex-col justify-center items-center rounded-md p-5 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#0F766E] mb-2">About Us</h1>
           <p className="text-gray-600 text-sm sm:text-base">
-            The Scam Information System raises awareness and helps prevent fraud
             through scam alerts, user reports, and education. It empowers individuals
             to report scams and stay protected from threats like phishing and identity theft.
           </p>
