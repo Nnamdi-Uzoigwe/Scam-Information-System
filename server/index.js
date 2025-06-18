@@ -17,7 +17,15 @@ const MONGO_DB_URI = process.env.MONGO_DB_URI
 app.use(express.json());
 app.use(helmet())
 app.use(bodyParser.json());
-app.use(cors())
+
+const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:5173"];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/scam-reports', scamRoutes);
 app.use('/api/testimonial', testimonialRoutes)
