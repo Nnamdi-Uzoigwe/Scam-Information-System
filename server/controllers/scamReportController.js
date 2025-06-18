@@ -30,17 +30,23 @@ const getScamReportById = async (req, res) => {
 
 //submit scam report
 const submitScamReport = async (req, res) => {
-    const { 
-        scammerName, 
-        scamType, 
-        description, 
-        scammerEmail, 
+  const { 
+        scammerName,
+        telephoneNumbers,
+        emailAddress,
+        physicalAddress,
+        scamType,
+        scamLocation,
+        firstContact,
+        scamValue,
+        description,
         scammerAccountNumber,
         evidence,
-        reportedBy,
+        scammerPhotos
     } = req.body;
 
-    if (!scammerName || !scamType || !description || !scammerEmail || !scammerAccountNumber) {
+    if (!scammerName || !scamType || !description || !scamLocation || !firstContact || 
+        !scamValue?.amount || !scamValue?.currency)  {
         return res.status(400).json({ message: 'All required fields must be provided' });
     }
 
@@ -49,15 +55,24 @@ const submitScamReport = async (req, res) => {
         const lastCaseId = latestReport ? parseInt(latestReport.caseId) : 0;
         const caseId = (lastCaseId + 1).toString().padStart(3, '0');
 
-        const newReport = new ScamReport({
+         const newReport = new ScamReport({
             scammerName,
+            telephoneNumbers: telephoneNumbers || [],
+            emailAddress: emailAddress || '',
+            physicalAddress: physicalAddress || '',
             scamType,
+            scamLocation,
+            firstContact,
+            scamValue: {
+                amount: parseFloat(scamValue.amount),
+                currency: scamValue.currency
+            },
             description,
-            scammerEmail,
-            scammerAccountNumber,
-            reportedBy: req.user.id,
-            evidence,   
-            caseId,
+            scammerAccountNumber: scammerAccountNumber || '',
+            evidence: evidence || [],
+            scammerPhotos: scammerPhotos || [],
+            reportedBy: req.user?.id || null,
+            status: 'pending'
         });
 
         await newReport.save();
@@ -74,7 +89,21 @@ const submitScamReport = async (req, res) => {
 // Update an existing scam report 
 const updateScamReport = async (req, res) => {
     const { id } = req.params;
-    const { scammerName, scamType, description, status, evidence } = req.body;
+     const { 
+        scammerName,
+        telephoneNumbers,
+        emailAddress,
+        physicalAddress,
+        scamType,
+        scamLocation,
+        firstContact,
+        scamValue,
+        description,
+        scammerAccountNumber,
+        evidence,
+        scammerPhotos,
+        status
+    } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: 'Invalid scam report ID' });
@@ -88,10 +117,25 @@ const updateScamReport = async (req, res) => {
         }
 
         report.scammerName = scammerName || report.scammerName;
+        report.telephoneNumbers = telephoneNumbers || report.telephoneNumbers;
+        report.emailAddress = emailAddress || report.emailAddress;
+        report.physicalAddress = physicalAddress || report.physicalAddress;
         report.scamType = scamType || report.scamType;
+        report.scamLocation = scamLocation || report.scamLocation;
+        report.firstContact = firstContact || report.firstContact;
+        if (scamValue) {
+            report.scamValue = {
+                amount: scamValue.amount ? parseFloat(scamValue.amount) : report.scamValue.amount,
+                currency: scamValue.currency || report.scamValue.currency
+            };
+        }
+        
         report.description = description || report.description;
-        report.status = status || report.status;
+        report.scammerAccountNumber = scammerAccountNumber || report.scammerAccountNumber;
         report.evidence = evidence || report.evidence;
+        report.scammerPhotos = scammerPhotos || report.scammerPhotos;
+        report.status = status || report.status;
+        report.lastUpdated = new Date();
 
         await report.save();
         res.status(200).json({ message: 'Scam report updated successfully', report });
