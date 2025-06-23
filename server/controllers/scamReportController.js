@@ -46,7 +46,7 @@ const submitScamReport = async (req, res) => {
     } = req.body;
 
     if (!scammerName || !scamType || !description || !scamLocation || !firstContact || 
-        !scamValue?.amount || !scamValue?.currency)  {
+        scamValue?.amount === undefined || !scamValue?.currency)  {
         return res.status(400).json({ message: 'All required fields must be provided' });
     }
 
