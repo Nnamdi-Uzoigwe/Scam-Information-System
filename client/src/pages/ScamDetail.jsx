@@ -56,19 +56,23 @@ useEffect(() => {
     //         console.error("Error fetching images:", imageError);
     //       }
     //     }
-    if (data?.evidence) {
+    // Replace your evidence processing section with this:
+if (data?.evidence) {
   try {
-    // Safely handle cases where evidence might be an array or string
     let filePaths = [];
     
+    console.log('Raw evidence data:', data.evidence, 'Type:', typeof data.evidence);
+    
     if (Array.isArray(data.evidence)) {
+      // Evidence is already an array
       filePaths = data.evidence;
     } else if (typeof data.evidence === 'string') {
+      // Evidence is a string, split by comma
       filePaths = data.evidence.split(',');
     } else {
+      // Evidence is some other type, try to convert to string first
       console.warn('Evidence is in an unexpected format:', data.evidence);
-      setImageUrls([]);
-      return;
+      filePaths = String(data.evidence).split(',');
     }
 
     const urls = filePaths
@@ -77,23 +81,34 @@ useEffect(() => {
         const trimmedPath = String(path).trim();
         if (!trimmedPath) return null;
 
-        // Remove leading slashes if present
-        const cleanPath = trimmedPath.replace(/^\//, '');
-        
-        return `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${cleanPath}`;
-      })
-      .filter(url => url !== null); // Remove any null entries
+        console.log("Processing path:", trimmedPath);
 
-    console.log('Generated image URLs:', urls);
+        // Remove leading slashes if present
+        const cleanPath = trimmedPath.replace(/^\/+/, '');
+        
+        // Extract filename if it's a full path
+        const fileName = cleanPath.includes('/') ? cleanPath.split('/').pop() : cleanPath;
+        
+        console.log("Final filename:", fileName);
+        
+        const finalUrl = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fileName}`;
+        console.log("Generated URL:", finalUrl);
+        
+        return finalUrl;
+      })
+      .filter(url => url !== null && url !== ''); // Remove any null or empty entries
+
+    console.log('Final image URLs:', urls);
     setImageUrls(urls);
     
   } catch (imageError) {
     console.error("Error processing image URLs:", imageError);
     setImageUrls([]); // Fallback to empty array
   } 
-    } else {
-      setImageUrls([]); // No evidence available
-    }
+} else {
+  console.log('No evidence data found');
+  setImageUrls([]); // No evidence available
+}
       } catch (err) {
         setError(err.message);
         console.error("Fetch error:", err);
