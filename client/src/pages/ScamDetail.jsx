@@ -206,8 +206,17 @@ if (data?.evidence) {
             </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
-              {console.log('scamValue:', scamDetail.scamValue)}
-              <p className="mt-1 text-gray-900">{scamDetail.scamValue?.amount}{scamDetail.scamValue?.currency}</p>
+              {scamDetail?.scamValue ? (
+    <p className="mt-1 text-lg font-semibold text-gray-900">
+      {new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency: scamDetail.scamValue.currency,
+      }).format(scamDetail.scamValue.amount)}
+    </p>
+  ) : (
+    <p className="mt-1 text-gray-500">Not specified</p>
+  )}
+
             </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
