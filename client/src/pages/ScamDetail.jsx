@@ -32,30 +32,55 @@ useEffect(() => {
         
         setScamDetail(data);
 
-        if (data?.evidence) {
-          try {
-            const filePaths = data?.evidence.split(',');
+    //     if (data?.evidence) {
+    //       try {
+    //         const filePaths = data?.evidence.split(',');
       
-            const urls = await Promise.all(
-                filePaths.map(async (path) => {
-                  const trimmedPath = path.trim();
-                  console.log("Processing path:", trimmedPath);
-                  const fileName = trimmedPath.split('/').pop();
-                  console.log("Extracted filename:", fileName);
+    //         const urls = await Promise.all(
+    //             filePaths.map(async (path) => {
+    //               const trimmedPath = path.trim();
+    //               console.log("Processing path:", trimmedPath);
+    //               const fileName = trimmedPath.split('/').pop();
+    //               console.log("Extracted filename:", fileName);
           
-                  const correctUrl = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fileName}`;
-                  console.log("Constructed correct URL:", correctUrl);
+    //               const correctUrl = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fileName}`;
+    //               console.log("Constructed correct URL:", correctUrl);
           
-                  return correctUrl;
-                })
-              );
+    //               return correctUrl;
+    //             })
+    //           );
         
-            console.log("Fetched URLs:", urls);
-            setImageUrls(urls.filter(url => url));
-          } catch (imageError) {
-            console.error("Error fetching images:", imageError);
-          }
-        }
+    //         console.log("Fetched URLs:", urls);
+    //         setImageUrls(urls.filter(url => url));
+    //       } catch (imageError) {
+    //         console.error("Error fetching images:", imageError);
+    //       }
+    //     }
+    if (data?.evidence) {
+      try {
+        const filePaths = data.evidence.split(',');
+  
+        const urls = filePaths
+          .map(path => path.trim())
+          .filter(path => path.length > 0)
+          .map(path => {
+            // Preserve the full path structure
+            const fullPath = path.startsWith('/') ? path.substring(1) : path;
+            const url = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fullPath}`;
+            
+            console.log('Generated URL:', url); // Debug log
+            return url;
+          });
+    
+        console.log("Final image URLs:", urls);
+        setImageUrls(urls);
+      } catch (imageError) {
+        console.error("Error processing image URLs:", imageError);
+        setImageUrls([]); // Set empty array on error
+      }
+    } else {
+      setImageUrls([]); // No evidence available
+    }
       } catch (err) {
         setError(err.message);
         console.error("Fetch error:", err);
