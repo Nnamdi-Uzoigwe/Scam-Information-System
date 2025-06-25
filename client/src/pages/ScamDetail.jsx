@@ -57,22 +57,32 @@ useEffect(() => {
     //       }
     //     }
     // Replace your evidence processing section with this:
+// Replace your evidence processing section with this:
 if (data?.evidence) {
   try {
-    let filePaths = [];
-    
     console.log('Raw evidence data:', data.evidence, 'Type:', typeof data.evidence);
     
+    let filePaths = [];
+    
     if (Array.isArray(data.evidence)) {
-      // Evidence is already an array
-      filePaths = data.evidence;
+      // Evidence is an array of objects with 'type' property
+      filePaths = data.evidence.map(item => {
+        if (typeof item === 'object' && item.type) {
+          return item.type; // Extract the filename from the object
+        } else if (typeof item === 'string') {
+          return item; // It's already a string
+        } else {
+          console.warn('Unexpected evidence item format:', item);
+          return String(item); // Convert to string as fallback
+        }
+      });
     } else if (typeof data.evidence === 'string') {
       // Evidence is a string, split by comma
       filePaths = data.evidence.split(',');
     } else {
       // Evidence is some other type, try to convert to string first
       console.warn('Evidence is in an unexpected format:', data.evidence);
-      filePaths = String(data.evidence).split(',');
+      filePaths = [String(data.evidence)];
     }
 
     const urls = filePaths
