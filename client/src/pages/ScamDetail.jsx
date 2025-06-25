@@ -32,9 +32,9 @@ useEffect(() => {
         
         setScamDetail(data);
 
-        if (data.evidence) {
+        if (data?.evidence) {
           try {
-            const filePaths = data.evidence.split(',');
+            const filePaths = data?.evidence.split(',');
       
             const urls = await Promise.all(
                 filePaths.map(async (path) => {
@@ -126,19 +126,31 @@ useEffect(() => {
           <h2 className="text-xl font-semibold mb-4">Report Information</h2>
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Scammer Contact</h3>
-              <p className="mt-1 text-gray-900">{scamDetail.scammerEmail}</p>
+              <h3 className="text-sm font-bold text-gray-500">Scammer Contact</h3>
+              <p className="mt-1 text-gray-900">{scamDetail.telephoneNumbers?.join(',  ')}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Account Details</h3>
+              <h3 className="text-sm font-bold text-gray-500">Scammer Email Address</h3>
+              <p className="mt-1 text-gray-900">{scamDetail.emailAddress}</p>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-500">Point of First Contact:</h3>
+              <p className="mt-1 text-gray-900">{scamDetail.firstContact}</p>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-500">Account Details</h3>
               <p className="mt-1 text-gray-900">{scamDetail.scammerAccountNumber}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Reported On</h3>
+              <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
+              <p className="mt-1 text-gray-900">{scamDetail.amount}</p>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
               <p className="mt-1 text-gray-900">{reportedDate}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Status</h3>
+              <h3 className="text-sm font-bold text-gray-500">Status</h3>
               <p className={`mt-1 ${
                 scamDetail.status === 'verified' 
                   ? 'text-green-600' 
