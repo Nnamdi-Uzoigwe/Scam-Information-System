@@ -57,27 +57,40 @@ useEffect(() => {
     //       }
     //     }
     if (data?.evidence) {
-      try {
-        const filePaths = data.evidence.split(',');
-  
-        const urls = filePaths
-          .map(path => path.trim())
-          .filter(path => path.length > 0)
-          .map(path => {
-            // Preserve the full path structure
-            const fullPath = path.startsWith('/') ? path.substring(1) : path;
-            const url = `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${fullPath}`;
-            
-            console.log('Generated URL:', url); // Debug log
-            return url;
-          });
+  try {
+    // Safely handle cases where evidence might be an array or string
+    let filePaths = [];
     
-        console.log("Final image URLs:", urls);
-        setImageUrls(urls);
-      } catch (imageError) {
-        console.error("Error processing image URLs:", imageError);
-        setImageUrls([]); // Set empty array on error
-      }
+    if (Array.isArray(data.evidence)) {
+      filePaths = data.evidence;
+    } else if (typeof data.evidence === 'string') {
+      filePaths = data.evidence.split(',');
+    } else {
+      console.warn('Evidence is in an unexpected format:', data.evidence);
+      setImageUrls([]);
+      return;
+    }
+
+    const urls = filePaths
+      .map(path => {
+        // Ensure path is a string and trim whitespace
+        const trimmedPath = String(path).trim();
+        if (!trimmedPath) return null;
+
+        // Remove leading slashes if present
+        const cleanPath = trimmedPath.replace(/^\//, '');
+        
+        return `https://nwoubihqkqhynhaqbssi.supabase.co/storage/v1/object/public/fraud-report-site/${cleanPath}`;
+      })
+      .filter(url => url !== null); // Remove any null entries
+
+    console.log('Generated image URLs:', urls);
+    setImageUrls(urls);
+    
+  } catch (imageError) {
+    console.error("Error processing image URLs:", imageError);
+    setImageUrls([]); // Fallback to empty array
+  } 
     } else {
       setImageUrls([]); // No evidence available
     }
