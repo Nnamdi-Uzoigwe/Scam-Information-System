@@ -206,7 +206,8 @@ if (data?.evidence) {
             </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
-              <p className="mt-1 text-gray-900">{scamDetail.amount}</p>
+              {console.log('scamValue:', scamDetail.scamValue)}
+              <p className="mt-1 text-gray-900">{scamDetail.scamValue?.amount}{scamDetail.scamValue?.currency}</p>
             </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
