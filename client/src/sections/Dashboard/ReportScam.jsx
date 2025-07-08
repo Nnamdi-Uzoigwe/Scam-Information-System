@@ -420,28 +420,28 @@ const ScamReportPage = () => {
                     placeholder="Amount lost"
                   />
                   <select
-  id="scamCurrency"
-  name="scamCurrency"
-  value={formData.scamValue?.currency} 
-  onChange={(e) =>
-    setFormData((prev) => ({
-      ...prev,
-      scamValue: {
-        ...prev.scamValue,
-        currency: e.target.value,
-      },
-    }))
-  }
-  required
-  className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
->
-  <option value="USD">USD</option>
-  <option value="NGN">NGN</option>
-</select>
-                </div>
-              </div>
+                    id="scamCurrency"
+                    name="scamCurrency"
+                    value={formData.scamValue?.currency} 
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        scamValue: {
+                          ...prev.scamValue,
+                          currency: e.target.value,
+                        },
+                     }))
+                      }
+                      required
+                      className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
+                    >
+                                <option value="USD">USD</option>
+                                <option value="NGN">NGN</option>
+                   </select>
+                      </div>
+                  </div>
 
-              {/* Existing Field: Description */}
+                {/* Existing Field: Description */}
               <div>
                 <label
                   htmlFor="description"
