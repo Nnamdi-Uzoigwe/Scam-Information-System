@@ -8,14 +8,6 @@ import { toast } from "react-toastify";
 const ScamReportPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  // const [formData, setFormData] = useState({
-  //   scammerName: '',
-  //   scamType: '',
-  //   description: '',
-  //   scammerEmail: '',
-  //   scammerAccountNumber: '',
-  //   evidence: '',
-  // });
   const [formData, setFormData] = useState({
     scammerName: "",
     telephoneNumber1: "",
@@ -82,6 +74,111 @@ const ScamReportPage = () => {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+  //   console.log("Submitting data", formData);
+  //   setMessage("");
+
+  //   try {
+  //     let evidenceUrl = "";
+
+  //     if (formData.evidence) {
+  //       const file = formData.evidence;
+  //       const fileName = `${Date.now()}_${file.name}`;
+
+  //       const { data, error } = await supabase.storage
+  //         .from("fraud-report-site")
+  //         .upload(fileName, file);
+
+  //       if (error) {
+  //         console.error("Error uploading image:", error.message);
+  //         toast.error("Failed to upload evidence image.", {
+  //           position: "top-center",
+  //           autoClose: 2000,
+  //         });
+  //         throw new Error("Failed to upload evidence image.");
+  //       }
+
+  //       const { data: publicData } = supabase.storage
+  //         .from("fraud-report-site")
+  //         .getPublicUrl(fileName);
+
+  //       evidenceUrl = publicData.publicUrl;
+  //     }
+
+  //     const newReport = {
+  //       scammerName: formData.scammerName,
+  //       scamType: formData.scamType,
+  //       description: formData.description,
+  //       emailAddress: formData.emailAddress,
+  //       scammerAccountNumber: formData.scammerAccountNumber,
+  //       telephoneNumbers: [
+  //         formData.telephoneNumber1,
+  //         formData.telephoneNumber2,
+  //       ].filter(Boolean),
+  //       scamLocation: formData.scamLocation,
+  //       firstContact: formData.firstContact,
+  //       physicalAddress: formData.physicalAddress,
+  //       scamValue: {
+  //         amount: parseFloat(formData.scamValue.amount),
+  //         currency: formData.scamValue.currency,
+  //       },
+  //       evidence: evidenceUrl,
+  //       scammerPhotos: formData.scammerPhotos || [],
+  //     };
+
+  //     const token = sessionStorage.getItem("authToken");
+  //     const response = await fetch(
+  //       "https://scam-information-system.onrender.com/api/scam-reports",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(newReport),
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       setMessage("Scam reported successfully!");
+  //       console.log(newReport)
+  //       setFormData({
+  //         scammerName: "",
+  //         scamType: "",
+  //         description: "",
+  //         emailAddress: "",
+  //         scammerAccountNumber: "",
+  //         evidence: "",
+  //       });
+  //       toast.success("Scam report submitted sucessfully!", {
+  //         position: "top-center",
+  //         autoClose: 2000,
+  //       });
+  //       setTimeout(() => navigate("/dashboard"), 3000);
+  //     } else {
+  //       const errorData = await response.json();
+  //       setMessage(
+  //         errorData.message || "Failed to submit report. Please try again."
+  //       );
+  //       toast.error("Failed to submit report. Please try again.", {
+  //         position: "top-center",
+  //         autoClose: 2000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error.message);
+  //     toast.error(error, {
+  //       position: "top-center",
+  //       autoClose: 2000,
+  //     });
+  //     setMessage("Something went wrong. Please try again later.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -90,7 +187,9 @@ const ScamReportPage = () => {
 
     try {
       let evidenceUrl = "";
+      let scammerPhotoUrls = [];
 
+      // Upload Evidence File
       if (formData.evidence) {
         const file = formData.evidence;
         const fileName = `${Date.now()}_${file.name}`;
@@ -115,6 +214,32 @@ const ScamReportPage = () => {
         evidenceUrl = publicData.publicUrl;
       }
 
+      // Upload Scammer Photos
+      if (formData.scammerPhotos && formData.scammerPhotos.length > 0) {
+        for (const file of formData.scammerPhotos) {
+          const fileName = `scammer_${Date.now()}_${file.name}`;
+
+          const { data, error } = await supabase.storage
+            .from("fraud-report-site")
+            .upload(fileName, file);
+
+          if (error) {
+            console.error("Error uploading scammer photo:", error.message);
+            toast.error(`Failed to upload ${file.name}`, {
+              position: "top-center",
+              autoClose: 2000,
+            });
+            continue;
+          }
+
+          const { data: publicData } = supabase.storage
+            .from("fraud-report-site")
+            .getPublicUrl(fileName);
+
+          scammerPhotoUrls.push(publicData.publicUrl);
+        }
+      }
+
       const newReport = {
         scammerName: formData.scammerName,
         scamType: formData.scamType,
@@ -133,7 +258,7 @@ const ScamReportPage = () => {
           currency: formData.scamValue.currency,
         },
         evidence: evidenceUrl,
-        scammerPhotos: formData.scammerPhotos || [],
+        scammerPhotos: scammerPhotoUrls, // ✅ Set the uploaded image URLs here
       };
 
       const token = sessionStorage.getItem("authToken");
@@ -151,16 +276,27 @@ const ScamReportPage = () => {
 
       if (response.ok) {
         setMessage("Scam reported successfully!");
-        console.log(newReport)
+        console.log("Submitted Report:", newReport);
+
         setFormData({
           scammerName: "",
-          scamType: "",
-          description: "",
+          telephoneNumber1: "",
+          telephoneNumber2: "",
           emailAddress: "",
+          physicalAddress: "",
+          scamType: "",
+          scamLocation: "",
+          firstContact: "",
+          scamValue: { amount: "", currency: "USD" },
+          description: "",
           scammerAccountNumber: "",
-          evidence: "",
+          evidence: null,
+          scammerPhotos: [],
         });
-        toast.success("Scam report submitted sucessfully!", {
+        setImagePreview(null);
+        setScammerPhotosPreview([]);
+
+        toast.success("Scam report submitted successfully!", {
           position: "top-center",
           autoClose: 2000,
         });
@@ -177,7 +313,7 @@ const ScamReportPage = () => {
       }
     } catch (error) {
       console.error("Error:", error.message);
-      toast.error(error, {
+      toast.error(error.message || "Something went wrong.", {
         position: "top-center",
         autoClose: 2000,
       });
@@ -238,7 +374,7 @@ const ScamReportPage = () => {
                 {message}
               </div>
             )}
-               
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Existing Fields */}
               <div>
@@ -422,7 +558,7 @@ const ScamReportPage = () => {
                   <select
                     id="scamCurrency"
                     name="scamCurrency"
-                    value={formData.scamValue?.currency} 
+                    value={formData.scamValue?.currency}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
@@ -430,18 +566,18 @@ const ScamReportPage = () => {
                           ...prev.scamValue,
                           currency: e.target.value,
                         },
-                     }))
-                      }
-                      required
-                      className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
-                    >
-                                <option value="USD">USD</option>
-                                <option value="NGN">NGN</option>
-                   </select>
-                      </div>
-                  </div>
+                      }))
+                    }
+                    required
+                    className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="USD">USD</option>
+                    <option value="NGN">NGN</option>
+                  </select>
+                </div>
+              </div>
 
-                {/* Existing Field: Description */}
+              {/* Existing Field: Description */}
               <div>
                 <label
                   htmlFor="description"
