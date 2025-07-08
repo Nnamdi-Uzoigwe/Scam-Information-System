@@ -151,6 +151,7 @@ const ScamReportPage = () => {
 
       if (response.ok) {
         setMessage("Scam reported successfully!");
+        console.log(newReport)
         setFormData({
           scammerName: "",
           scamType: "",
@@ -237,137 +238,7 @@ const ScamReportPage = () => {
                 {message}
               </div>
             )}
-
-            {/* <form onSubmit={handleSubmit} className="space-y-6">
-                      <div>
-                        <label htmlFor="scammerName" className="block text-md font-medium text-gray-500 mb-1">
-                          Scammer's Name
-                        </label>
-                        <input
-                          id="scammerName"
-                          name="scammerName"
-                          type="text"
-                          value={formData.scammerName}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          placeholder='Name of Scammer'
-                          />
-                      </div>
-
-                      <div>
-                        <label htmlFor="scamType" className="block text-md font-medium text-gray-500 mb-1">
-                          Type of Scam
-                        </label>
-                        <select
-                          id="scamType"
-                          name="scamType"
-                          value={formData.scamType}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          >
-                          <option value="">Select scam type</option>
-                          <option value="Phishing">Phishing</option>
-                          <option value="Investment Scam">Investment Scam</option>
-                          <option value="Romance Scam">Romance Scam</option>
-                          <option value="Fake Marketplace">Fake Marketplace</option>
-                          <option value="Impersonation">Impersonation</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label htmlFor="scammerEmail" className="block text-md font-medium text-gray-500 mb-1">
-                          Scammer's Email/Contact Info
-                        </label>
-                        <input
-                          id="scammerEmail"
-                          name="scammerEmail"
-                          type="text"
-                          value={formData.scammerEmail}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          placeholder='Scammer Email or Contact'
-                          />
-                      </div>
-
-                      <div>
-                        <label htmlFor="scammerAccountNumber" className="block text-md font-medium text-gray-500 mb-1">
-                          Scammer's Bank Account Details
-                        </label>
-                        <input
-                          id="scammerAccountNumber"
-                          name="scammerAccountNumber"
-                          type="text"
-                          value={formData.scammerAccountNumber}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          placeholder='Enter Scammer Account Info...'
-                          />
-                      </div>
-
-                      <div>
-                        <label htmlFor="description" className="block text-md font-medium text-gray-500 mb-1">
-                          Description of the Scam
-                        </label>
-                        <textarea
-                          id="description"
-                          name="description"
-                          rows={4}
-                          value={formData.description}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          placeholder='Write...'
-                          />
-                      </div>
-
-                    
-                      <div>
-                          <label htmlFor="evidence" className="block text-md font-medium text-gray-500 mb-1">
-                            Upload Evidence (Image file)
-                          </label>
-                          <input
-                            type="file"
-                            id="evidence"
-                            name="evidence"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                            />
-                      </div>
-
-                      {imagePreview && (
-                        <div className="mt-4 flex justify-between items-center">
-                        <img
-                          src={imagePreview}
-                          alt="Image Preview"
-                          className="max-w-[200px] h-auto rounded-md"
-                          />
-                        <button
-                          type="button"
-                          onClick={handleImageDelete}
-                          className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
-                          >
-                          DELETE
-                        </button>
-                      </div>
-                    )}
-
-                      <div className="flex justify-start">
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="px-6 py-2 cursor-pointer bg-[#0F766E] text-white font-medium rounded-md hover:bg-[#0F766E] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:ring-offset-2 disabled:opacity-50"
-                          >
-                          {isSubmitting ? 'Submitting...' : 'Submit Report'}
-                        </button>
-                      </div>
-                    </form> */}
-
+               
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Existing Fields */}
               <div>
@@ -551,7 +422,7 @@ const ScamReportPage = () => {
                   <select
                     id="scamCurrency"
                     name="scamCurrency"
-                    value={formData.scamCurrency?.currency}
+                    value={formData.scamValue?.currency} 
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
@@ -559,18 +430,18 @@ const ScamReportPage = () => {
                           ...prev.scamValue,
                           currency: e.target.value,
                         },
-                      }))
-                    }
-                    required
-                    className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="USD">USD</option>
-                    <option value="NGN">NGN</option>
-                  </select>
-                </div>
-              </div>
+                     }))
+                      }
+                      required
+                      className="w-1/4 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-blue-500 focus:border-blue-500"
+                    >
+                                <option value="USD">USD</option>
+                                <option value="NGN">NGN</option>
+                   </select>
+                      </div>
+                  </div>
 
-              {/* Existing Field: Description */}
+                {/* Existing Field: Description */}
               <div>
                 <label
                   htmlFor="description"
