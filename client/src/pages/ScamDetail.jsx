@@ -1265,15 +1265,22 @@ export default function ScamDetail() {
 
 <div>
   <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
-  {scamDetail?.scamValue ? (
-    <p className="mt-1 text-lg font-semibold text-gray-900">
-      {scamDetail.scamValue.currency === 'NGN' ? '₦' : ''}
-      {parseFloat(scamDetail.scamValue.amount).toLocaleString()}
-      {scamDetail.scamValue.currency !== 'NGN' ? ` ${scamDetail.scamValue.currency}` : ''}
-    </p>
-  ) : (
-    <p className="mt-1 text-gray-500">Not specified</p>
-  )}
+  <p className="mt-1 text-lg font-semibold text-gray-900">
+    {/* Nuclear verification */}
+    {(() => {
+      const val = scamDetail?.scamValue;
+      console.log('Scam value debug:', val); // Check browser console
+      
+      if (!val || typeof val !== 'object') return "Not specified";
+      
+      // Explicit check for our expected structure
+      if ('amount' in val && 'currency' in val) {
+        return `${val.currency} ${val.amount}`;
+      }
+      
+      return "Invalid format";
+    })()}
+  </p>
 </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
