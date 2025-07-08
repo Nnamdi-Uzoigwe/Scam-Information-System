@@ -65,7 +65,8 @@ const scamReportSchema = mongoose.Schema({
         type: String
     },
     physicalAddress: {
-        type: String
+        type: String,
+        require: false
     },
 
     // Scam Details
