@@ -1255,12 +1255,26 @@ export default function ScamDetail() {
               <h3 className="text-sm font-bold text-gray-500">Account Details</h3>
               <p className="mt-1 text-gray-900">{scamDetail.scammerAccountNumber || "Not provided"}</p>
             </div>
-            <div>
+            {/* <div>
               <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
               <p className="mt-1 text-lg font-semibold text-gray-900">
-                {formatScamValue(scamDetail.scamValue)}
+                <span className="bg-red-500">{formatScamValue(scamDetail.scamValue)}</span>
               </p>
-            </div>
+            </div> */}
+            // In your ScamDetail component, replace the scam value section with:
+
+<div>
+  <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
+  {scamDetail?.scamValue ? (
+    <p className="mt-1 text-lg font-semibold text-gray-900">
+      {scamDetail.scamValue.currency === 'NGN' ? '₦' : ''}
+      {parseFloat(scamDetail.scamValue.amount).toLocaleString()}
+      {scamDetail.scamValue.currency !== 'NGN' ? ` ${scamDetail.scamValue.currency}` : ''}
+    </p>
+  ) : (
+    <p className="mt-1 text-gray-500">Not specified</p>
+  )}
+</div>
             <div>
               <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
               <p className="mt-1 text-gray-900">{reportedDate}</p>
