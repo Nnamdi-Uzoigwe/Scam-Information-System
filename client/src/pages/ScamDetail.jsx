@@ -627,13 +627,13 @@ export default function ScamDetail() {
 
   useEffect(() => {
     const fetchScamDetail = async () => {
+      console.log(`Starting fetch for ID: ${id}`);
       try {
         setLoading(true);
         setError(null);
         
         // Fetch scam report data
         const response = await fetch(`https://scam-information-system.onrender.com/api/scam-reports/${id}`);
-        
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || "Failed to fetch scam details");
