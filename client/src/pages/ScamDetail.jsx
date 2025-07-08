@@ -1255,47 +1255,12 @@ export default function ScamDetail() {
               <h3 className="text-sm font-bold text-gray-500">Account Details</h3>
               <p className="mt-1 text-gray-900">{scamDetail.scammerAccountNumber || "Not provided"}</p>
             </div>
-            {/* <div>
+            <div>
               <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
               <p className="mt-1 text-lg font-semibold text-gray-900">
                 <span className="bg-red-500">{formatScamValue(scamDetail.scamValue)}</span>
               </p>
-            </div> */}
-            // In your ScamDetail component, replace the scam value section with:
-<div style={{
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  background: 'red',
-  color: 'white',
-  padding: '10px',
-  zIndex: 9999
-}}>
-  <pre>
-    ScamValue EXISTS: {JSON.stringify(!!scamDetail?.scamValue)}<br />
-    ScamValue TYPE: {typeof scamDetail?.scamValue}<br />
-    ScamValue CONTENT: {JSON.stringify(scamDetail?.scamValue)}
-  </pre>
-</div>
-<div>
-  <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
-  <p className="mt-1 text-lg font-semibold text-gray-900">
-    {/* Nuclear verification */}
-    {(() => {
-      const val = scamDetail?.scamValue;
-      console.log('Scam value debug:', val); // Check browser console
-      
-      if (!val || typeof val !== 'object') return "Not specified";
-      
-      // Explicit check for our expected structure
-      if ('amount' in val && 'currency' in val) {
-        return `${val.currency} ${val.amount}`;
-      }
-      
-      return "Invalid format";
-    })()}
-  </p>
-</div>
+            </div> 
             <div>
               <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
               <p className="mt-1 text-gray-900">{reportedDate}</p>
