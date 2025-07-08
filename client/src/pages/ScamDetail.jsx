@@ -1262,7 +1262,21 @@ export default function ScamDetail() {
               </p>
             </div> */}
             // In your ScamDetail component, replace the scam value section with:
-
+<div style={{
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  background: 'red',
+  color: 'white',
+  padding: '10px',
+  zIndex: 9999
+}}>
+  <pre>
+    ScamValue EXISTS: {JSON.stringify(!!scamDetail?.scamValue)}<br />
+    ScamValue TYPE: {typeof scamDetail?.scamValue}<br />
+    ScamValue CONTENT: {JSON.stringify(scamDetail?.scamValue)}
+  </pre>
+</div>
 <div>
   <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
   <p className="mt-1 text-lg font-semibold text-gray-900">
