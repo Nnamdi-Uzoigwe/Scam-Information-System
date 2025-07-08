@@ -52,132 +52,27 @@ const ScamReportPage = () => {
     setIsSidebarOpen((prev) => !prev); // Using functional update for safety
   };
 
-  const handleScammerPhotosChange = (e) => {
-    const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setScammerPhotosPreview((prev) => [...prev, ...previews]);
+const handleScammerPhotosChange = (e) => {
+  const files = Array.from(e.target.files);
 
-    const handleScammerPhotoDelete = (index) => {
-      setScammerPhotosPreview((prev) => prev.filter((_, i) => i !== index));
+  // Generate preview URLs for display
+  const previews = files.map((file) => URL.createObjectURL(file));
+  setScammerPhotosPreview((prev) => [...prev, ...previews]);
 
-      // If you stored the files:
-      setFormData((prev) => ({
-        ...prev,
-        scammerPhotos: prev.scammerPhotos.filter((_, i) => i !== index),
-      }));
-    };
+  // Store the actual files in formData for uploading
+  setFormData((prev) => ({
+    ...prev,
+    scammerPhotos: [...prev.scammerPhotos, ...files],
+  }));
+};
 
-    // If you need to store the actual files for submission:
-    setFormData((prev) => ({
-      ...prev,
-      scammerPhotos: [...prev.scammerPhotos, ...files],
-    }));
-  };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
-  //   console.log("Submitting data", formData);
-  //   setMessage("");
-
-  //   try {
-  //     let evidenceUrl = "";
-
-  //     if (formData.evidence) {
-  //       const file = formData.evidence;
-  //       const fileName = `${Date.now()}_${file.name}`;
-
-  //       const { data, error } = await supabase.storage
-  //         .from("fraud-report-site")
-  //         .upload(fileName, file);
-
-  //       if (error) {
-  //         console.error("Error uploading image:", error.message);
-  //         toast.error("Failed to upload evidence image.", {
-  //           position: "top-center",
-  //           autoClose: 2000,
-  //         });
-  //         throw new Error("Failed to upload evidence image.");
-  //       }
-
-  //       const { data: publicData } = supabase.storage
-  //         .from("fraud-report-site")
-  //         .getPublicUrl(fileName);
-
-  //       evidenceUrl = publicData.publicUrl;
-  //     }
-
-  //     const newReport = {
-  //       scammerName: formData.scammerName,
-  //       scamType: formData.scamType,
-  //       description: formData.description,
-  //       emailAddress: formData.emailAddress,
-  //       scammerAccountNumber: formData.scammerAccountNumber,
-  //       telephoneNumbers: [
-  //         formData.telephoneNumber1,
-  //         formData.telephoneNumber2,
-  //       ].filter(Boolean),
-  //       scamLocation: formData.scamLocation,
-  //       firstContact: formData.firstContact,
-  //       physicalAddress: formData.physicalAddress,
-  //       scamValue: {
-  //         amount: parseFloat(formData.scamValue.amount),
-  //         currency: formData.scamValue.currency,
-  //       },
-  //       evidence: evidenceUrl,
-  //       scammerPhotos: formData.scammerPhotos || [],
-  //     };
-
-  //     const token = sessionStorage.getItem("authToken");
-  //     const response = await fetch(
-  //       "https://scam-information-system.onrender.com/api/scam-reports",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(newReport),
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       setMessage("Scam reported successfully!");
-  //       console.log(newReport)
-  //       setFormData({
-  //         scammerName: "",
-  //         scamType: "",
-  //         description: "",
-  //         emailAddress: "",
-  //         scammerAccountNumber: "",
-  //         evidence: "",
-  //       });
-  //       toast.success("Scam report submitted sucessfully!", {
-  //         position: "top-center",
-  //         autoClose: 2000,
-  //       });
-  //       setTimeout(() => navigate("/dashboard"), 3000);
-  //     } else {
-  //       const errorData = await response.json();
-  //       setMessage(
-  //         errorData.message || "Failed to submit report. Please try again."
-  //       );
-  //       toast.error("Failed to submit report. Please try again.", {
-  //         position: "top-center",
-  //         autoClose: 2000,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error.message);
-  //     toast.error(error, {
-  //       position: "top-center",
-  //       autoClose: 2000,
-  //     });
-  //     setMessage("Something went wrong. Please try again later.");
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
+const handleScammerPhotoDelete = (index) => {
+  setScammerPhotosPreview((prev) => prev.filter((_, i) => i !== index));
+  setFormData((prev) => ({
+    ...prev,
+    scammerPhotos: prev.scammerPhotos.filter((_, i) => i !== index),
+  }));
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -610,7 +505,7 @@ const ScamReportPage = () => {
                   id="scammerPhotos"
                   name="scammerPhotos"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={handleScammerPhotosChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   multiple
                 />
