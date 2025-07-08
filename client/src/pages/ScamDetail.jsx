@@ -660,9 +660,10 @@ export default function ScamDetail() {
             let filePaths = [];
             
             if (Array.isArray(data.evidence)) {
+              console.log('Evidence is an array');
               // Evidence is an array of objects with 'type' property
               filePaths = data.evidence.map(item => {
-                if (typeof item === 'object' && item.type) {
+                if (typeof item === 'object' && item !== null && item.type) {
                   return item.type; // Extract the filename from the object
                 } else if (typeof item === 'string') {
                   return item; // It's already a string
@@ -672,8 +673,22 @@ export default function ScamDetail() {
                 }
               });
             } else if (typeof data.evidence === 'string') {
+              console.log('Evidence is a string');
               // Evidence is a string, split by comma
               filePaths = data.evidence.split(',');
+            } else if (typeof data.evidence === 'object' && data.evidence !== null) {
+              console.log('Evidence is an object');
+              // Evidence is an object, try to extract meaningful data
+              if (data.evidence.type) {
+                filePaths = [data.evidence.type];
+              } else if (data.evidence.url) {
+                filePaths = [data.evidence.url];
+              } else if (data.evidence.path) {
+                filePaths = [data.evidence.path];
+              } else {
+                console.warn('Evidence object format not recognized:', data.evidence);
+                filePaths = [];
+              }
             } else {
               // Evidence is some other type, try to convert to string first
               console.warn('Evidence is in an unexpected format:', data.evidence);
