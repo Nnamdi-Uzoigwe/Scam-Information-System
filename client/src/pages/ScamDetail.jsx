@@ -1258,7 +1258,7 @@ export default function ScamDetail() {
             <div>
               <h3 className="text-sm font-bold text-gray-500">Total Value of Alleged Scam</h3>
               <p className="mt-1 text-lg font-semibold text-gray-900">
-                <span className="bg-red-500">{formatScamValue(scamDetail.scamValue)}</span>
+                {formatScamValue(scamDetail.scamValue)}
               </p>
             </div> 
             <div>
