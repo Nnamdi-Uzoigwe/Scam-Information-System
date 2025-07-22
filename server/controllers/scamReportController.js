@@ -28,72 +28,101 @@ const getScamReportById = async (req, res) => {
     }
 };
 
-// //submit scam report
+// // Submit scam report
 // const submitScamReport = async (req, res) => {
-//   const { 
-//         scammerName,
-//         telephoneNumbers,
-//         emailAddress,
-//         physicalAddress,
-//         scamType,
-//         scamLocation,
-//         firstContact,
-//         scamValue,
-//         description,
-//         scammerAccountNumber,
-//         evidence,
-//         scammerPhotos
-//     } = req.body;
+//   const {
+//     scammerName,
+//     telephoneNumbers,
+//     emailAddress,
+//     physicalAddress,
+//     scamType,
+//     scamLocation,
+//     firstContact,
+//     scamValue,
+//     description,
+//     scammerAccountNumber,
+//     evidence,
+//     scammerPhotos
+//   } = req.body;
 
-//     if (!scammerName || !scamType || !description || !scamLocation || !firstContact || 
-//         scamValue?.amount === undefined || !scamValue?.currency)  {
-//         return res.status(400).json({ message: 'All required fields must be provided' });
+//   // Validate required fields
+//   if (
+//     !scammerName ||
+//     !scamType ||
+//     !description ||
+//     !scamLocation ||
+//     !firstContact ||
+//     scamValue?.amount === undefined ||
+//     scamValue?.amount === '' ||
+//     isNaN(parseFloat(scamValue.amount)) ||
+//     !scamValue?.currency
+//   ) {
+//     return res.status(400).json({ message: 'All required fields must be provided and valid' });
+//   }
+
+//   try {
+//     // Fetch the most recent report with a valid numeric caseId
+//     const latestReport = await ScamReport.findOne({ caseId: { $regex: /^\d+$/ } })
+//       .sort({ caseId: -1 })
+//       .limit(1);
+
+//     let lastCaseId = 0;
+
+//     if (latestReport && /^\d+$/.test(latestReport.caseId)) {
+//       lastCaseId = parseInt(latestReport.caseId);
 //     }
 
-//     try {
-//         const latestReport = await ScamReport.findOne().sort({ caseId: -1 }).limit(1);
-//         const lastCaseId = latestReport ? parseInt(latestReport.caseId) : 0;
-//         const caseId = (lastCaseId + 1).toString().padStart(3, '0');
+//     const caseId = (lastCaseId + 1).toString().padStart(3, '0');
 
-//          const newReport = new ScamReport({
-//             scammerName,
-//             telephoneNumbers: telephoneNumbers || [],
-//             emailAddress: emailAddress || '',
-//             physicalAddress: physicalAddress || '',
-//             scamType,
-//             scamLocation,
-//             firstContact,
-//             scamValue: {
-//                 amount: parseFloat(scamValue.amount),
-//                 currency: scamValue.currency
-//             },
-//             description,
-//             scammerAccountNumber: scammerAccountNumber || '',
-//             evidence: evidence || [],
-//             scammerPhotos: scammerPhotos || [],
-//             reportedBy: req.user?.id || null,
-//             status: 'pending'
-//         });
+//     // Create the new report
+//     const newReport = new ScamReport({
+//       caseId,
+//       scammerName,
+//       telephoneNumbers: telephoneNumbers || [],
+//       emailAddress: emailAddress || '',
+//       physicalAddress: physicalAddress || '',
+//       scamType,
+//       scamLocation,
+//       firstContact,
+//       scamValue: {
+//         amount: parseFloat(scamValue.amount),
+//         currency: scamValue.currency
+//       },
+//       description,
+//       scammerAccountNumber: scammerAccountNumber || '',
+//       evidence: evidence || [],
+//       scammerPhotos: scammerPhotos || [],
+//       reportedBy: req.user?.id || null,
+//       status: 'pending'
+//     });
 
-//         await newReport.save();
-//         res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
-//     } catch (error) {
-//         console.error("Database save error:", error);
-//         res.status(500).json({ 
-//             message: 'Error submitting scam report',
-//             error: error.message 
-//         });
-//     }
+//     await newReport.save();
+
+//     return res.status(201).json({
+//       message: 'Scam report submitted successfully',
+//       report: newReport
+//     });
+
+//   } catch (error) {
+//     console.error("Database save error:", error);
+//     return res.status(500).json({
+//       message: 'Error submitting scam report',
+//       error: error.message
+//     });
+//   }
 // };
 
-// Submit scam report
+const ScamReport = require("../models/ScamReport"); // Adjust the path as needed
+
 const submitScamReport = async (req, res) => {
   const {
     scammerName,
+    gender,
     telephoneNumbers,
-    emailAddress,
+    emailAddresses,
     physicalAddress,
     scamType,
+    scamLocationType,
     scamLocation,
     firstContact,
     scamValue,
@@ -103,55 +132,59 @@ const submitScamReport = async (req, res) => {
     scammerPhotos
   } = req.body;
 
-  // Validate required fields
+  // Basic validation
   if (
-    !scammerName ||
+    !scammerName?.firstName ||
+    !scammerName?.surname ||
+    !gender ||
     !scamType ||
-    !description ||
-    !scamLocation ||
+    !scamLocationType ||
     !firstContact ||
+    !description ||
     scamValue?.amount === undefined ||
-    scamValue?.amount === '' ||
-    isNaN(parseFloat(scamValue.amount)) ||
-    !scamValue?.currency
+    scamValue?.currency === undefined
   ) {
-    return res.status(400).json({ message: 'All required fields must be provided and valid' });
+    return res.status(400).json({ message: 'Missing required fields' });
   }
 
   try {
-    // Fetch the most recent report with a valid numeric caseId
-    const latestReport = await ScamReport.findOne({ caseId: { $regex: /^\d+$/ } })
-      .sort({ caseId: -1 })
-      .limit(1);
-
-    let lastCaseId = 0;
-
-    if (latestReport && /^\d+$/.test(latestReport.caseId)) {
-      lastCaseId = parseInt(latestReport.caseId);
-    }
-
-    const caseId = (lastCaseId + 1).toString().padStart(3, '0');
-
-    // Create the new report
     const newReport = new ScamReport({
-      caseId,
-      scammerName,
+      scammerName: {
+        firstName: scammerName.firstName,
+        surname: scammerName.surname,
+        otherNames: scammerName.otherNames || ''
+      },
+      gender,
       telephoneNumbers: telephoneNumbers || [],
-      emailAddress: emailAddress || '',
-      physicalAddress: physicalAddress || '',
+      emailAddresses: emailAddresses || [],
+      physicalAddress: {
+        line1: physicalAddress?.line1 || '',
+        line2: physicalAddress?.line2 || '',
+        city: physicalAddress?.city || '',
+        state: physicalAddress?.state || '',
+        country: physicalAddress?.country || ''
+      },
       scamType,
-      scamLocation,
+      scamLocationType,
+      scamLocation: {
+        physical: {
+          address: scamLocation?.physical?.address || ''
+        },
+        website: {
+          url: scamLocation?.website?.url || ''
+        }
+      },
       firstContact,
+      description,
       scamValue: {
         amount: parseFloat(scamValue.amount),
         currency: scamValue.currency
       },
-      description,
       scammerAccountNumber: scammerAccountNumber || '',
       evidence: evidence || [],
       scammerPhotos: scammerPhotos || [],
       reportedBy: req.user?.id || null,
-      status: 'pending'
+      status: 'pending',
     });
 
     await newReport.save();
@@ -162,9 +195,9 @@ const submitScamReport = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Database save error:", error);
+    console.error("Error submitting scam report:", error);
     return res.status(500).json({
-      message: 'Error submitting scam report',
+      message: 'Internal server error',
       error: error.message
     });
   }
