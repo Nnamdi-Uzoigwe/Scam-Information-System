@@ -789,7 +789,7 @@ export default function ScamDetail() {
           <p className="text-gray-700 mb-6 whitespace-pre-line">{scamDetail.description}</p>
         </div>
 
-        <div className="bg-gray-50 p-6 rounded-lg">
+        {/* <div className="bg-gray-50 p-6 rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Report Information</h2>
           <div className="space-y-4">
             <div>
@@ -823,7 +823,71 @@ export default function ScamDetail() {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
+        <div className="bg-gray-50 p-6 rounded-lg">
+  <h2 className="text-xl font-semibold mb-4">Report Information</h2>
+  <div className="space-y-4">
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scammer Contact</h3>
+      <p className="mt-1 text-gray-900">{scamDetail.telephoneNumbers?.join(', ') || "Not provided"}</p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scammer Email Address(es)</h3>
+      <p className="mt-1 text-gray-900">
+        {Array.isArray(scamDetail.emailAddresses) && scamDetail.emailAddresses.length > 0
+          ? scamDetail.emailAddresses.join(', ')
+          : "Not provided"}
+      </p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">First Contact</h3>
+      <p className="mt-1 text-gray-900">{scamDetail.firstContact || "Not provided"}</p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scammer Account Number</h3>
+      <p className="mt-1 text-gray-900">{scamDetail.scammerAccountNumber || "Not provided"}</p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scammer Physical Address</h3>
+      <p className="mt-1 text-gray-900">
+        {scamDetail.physicalAddress
+          ? `${scamDetail.physicalAddress.line1 || ''}, ${scamDetail.physicalAddress.line2 || ''}, ${scamDetail.physicalAddress.city || ''}, ${scamDetail.physicalAddress.state || ''}, ${scamDetail.physicalAddress.country || ''}`
+          : "Not provided"}
+      </p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scam Location</h3>
+      <p className="mt-1 text-gray-900">
+        {scamDetail.scamLocationType === 'physical'
+          ? scamDetail.scamLocation?.physical?.address
+          : scamDetail.scamLocation?.website?.url || "Not provided"}
+      </p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Scam Value</h3>
+      <p className="mt-1 text-lg font-semibold text-gray-900">{formatScamValue(scamDetail.scamValue)}</p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Reported On</h3>
+      <p className="mt-1 text-gray-900">{reportedDate}</p>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-bold text-gray-500">Status</h3>
+      <p className={`mt-1 ${scamDetail.status === 'verified' ? 'text-green-600' : 'text-yellow-600'}`}>
+        {scamDetail.status?.charAt(0)?.toUpperCase() + scamDetail.status?.slice(1) || "Unknown"}
+      </p>
+    </div>
+  </div>
+</div>
+
       </div>
 
       {scammerPhotoUrls.length > 0 && (
