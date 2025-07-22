@@ -112,8 +112,6 @@ const getScamReportById = async (req, res) => {
 //   }
 // };
 
-const ScamReport = require("../models/ScamReport"); // Adjust the path as needed
-
 const submitScamReport = async (req, res) => {
   const {
     scammerName,
