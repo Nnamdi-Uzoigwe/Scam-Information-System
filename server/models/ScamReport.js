@@ -1,104 +1,3 @@
-// const mongoose = require("mongoose");
-// const User = require("./User");
-
-// const scamReportSchema = mongoose.Schema({
-//     // Basic Information
-//     scammerName: {
-//         type: String,
-//         required: true
-//     },
-//     telephoneNumbers: [{
-//         type: String
-//     }],
-//     emailAddress: {
-//         type: String
-//     },
-//     physicalAddress: {
-//         type: String,
-//         require: false
-//     },
-
-//     // Scam Details
-//     scamType: {
-//         type: String,
-//         required: true,
-//         enum: ['Phishing', 'Investment Scam', 'Romance Scam', 'Fake Marketplace', 'Impersonation', 'Other']
-//     },
-//     scamLocation: {
-//         type: String,
-//         required: true
-//     },
-//     firstContact: {
-//         type: String,
-//         required: true
-//     },
-//     description: {
-//         type: String,
-//         required: true
-//     },
-//     scamValue: {
-//         amount: {
-//             type: Number,
-//             required: true
-//         },
-//         currency: {
-//             type: String,
-//             enum: ['USD', 'NGN'],
-//             required: true
-//         }
-//     },
-
-//     // Financial Information
-//     scammerAccountNumber: {
-//         type: String
-//     },
-
-//     // Evidence
-//     evidence: [{
-//         type: String  
-//     }],
-//     scammerPhotos: [{
-//         type: String  
-//     }],
-
-//     dateReported: {
-//         type: Date,
-//         default: Date.now,
-//     },
-//     reportedBy: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'User',
-//         required: false,
-//     },
-//     status: {
-//         type: String,
-//         enum: ['pending', 'verified', 'rejected'],
-//         default: 'pending',
-//     },
-//     caseId: {
-//         type: String,
-//         unique: true
-//     },
-
-//     lastUpdated: {
-//         type: Date,
-//         default: Date.now
-//     }
-// }, {
-//     timestamps: true  
-// });
-
-// // // Pre-save hook to generate case ID
-// // scamReportSchema.pre('save', function(next) {
-// //     if (!this.caseId) {
-// //         const prefix = 'SCAM';
-// //         const randomNum = Math.floor(10000 + Math.random() * 90000);
-// //         this.caseId = `${prefix}-${randomNum}`;
-// //     }
-// //     next();
-// // });
-
-// module.exports = mongoose.models.ScamReport || mongoose.model("ScamReport", scamReportSchema);
 
 const mongoose = require("mongoose");
 const User = require("./User");
@@ -182,9 +81,29 @@ const scamReportSchema = mongoose.Schema({
             }
         }
     },
-    firstContact: {
+   firstContact: {
+    type: String,
+    required: true,
+    trim: true
+    },
+    wasThoughAd: {
         type: String,
-        required: true
+        enum: ['yes', 'no'],
+        required: false
+    },
+    adUrl: {
+        type: String,
+        required: false,
+        trim: true,
+        validate: {
+            validator: function(v) {
+                if (this.wasThoughAd === 'yes' && v) {
+                    return /^https?:\/\/.+/.test(v);
+                }
+                return true;
+            },
+            message: 'Please provide a valid URL starting with http:// or https://'
+        }
     },
     description: {
         type: String,
@@ -202,9 +121,13 @@ const scamReportSchema = mongoose.Schema({
         }
     },
 
-    // Financial Information
+   scammerBankName: {
+        type: String,
+        trim: true
+    },
     scammerAccountNumber: {
-        type: String
+        type: String,
+        trim: true
     },
 
     // Evidence

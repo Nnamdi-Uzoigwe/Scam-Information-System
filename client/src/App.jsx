@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Repost from "./pages/Repost";
 import Register from "./pages/Register";
 import PageNotFound from "./pages/PageNotFound";
 import ReportScam from "./sections/Dashboard/ReportScam";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/repost" element={<Repost />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/report-scam" element={<ReportScam />} />
