@@ -133,7 +133,7 @@ const filteredScams = scamData.filter(scam => {
                     <div className="flex items-start">
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: Alleged Scammer: {scam.scammerName.firstName} {scam.scammerName.surname}</h3>
+                          <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: {scam.scammerName.firstName} {scam.scammerName.surname}</h3>
                         </div>
                         <div className="my-2">
                           <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="text-xs bg-pink-100 text-red-400 py-[4px] px-2 rounded-2xl">{scam.scamType}</span></span>
