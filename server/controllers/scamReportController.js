@@ -162,64 +162,64 @@ const getScamReportById = async (req, res) => {
 
 
 
-// // Update an existing scam report 
-// const updateScamReport = async (req, res) => {
-//     const { id } = req.params;
-//      const { 
-//         scammerName,
-//         telephoneNumbers,
-//         emailAddress,
-//         physicalAddress,
-//         scamType,
-//         scamLocation,
-//         firstContact,
-//         scamValue,
-//         description,
-//         scammerAccountNumber,
-//         evidence,
-//         scammerPhotos,
-//         status
-//     } = req.body;
+// Update an existing scam report 
+const updateScamReport = async (req, res) => {
+    const { id } = req.params;
+     const { 
+        scammerName,
+        telephoneNumbers,
+        emailAddress,
+        physicalAddress,
+        scamType,
+        scamLocation,
+        firstContact,
+        scamValue,
+        description,
+        scammerAccountNumber,
+        evidence,
+        scammerPhotos,
+        status
+    } = req.body;
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//         return res.status(400).json({ message: 'Invalid scam report ID' });
-//     }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid scam report ID' });
+    }
 
-//     try {
-//         const report = await ScamReport.findById(id);
+    try {
+        const report = await ScamReport.findById(id);
 
-//         if (!report) {
-//             return res.status(404).json({ message: 'Scam report not found' });
-//         }
+        if (!report) {
+            return res.status(404).json({ message: 'Scam report not found' });
+        }
 
-//         report.scammerName = scammerName || report.scammerName;
-//         report.telephoneNumbers = telephoneNumbers || report.telephoneNumbers;
-//         report.emailAddress = emailAddress || report.emailAddress;
-//         report.physicalAddress = physicalAddress || report.physicalAddress;
-//         report.scamType = scamType || report.scamType;
-//         report.scamLocation = scamLocation || report.scamLocation;
-//         report.firstContact = firstContact || report.firstContact;
-//         if (scamValue) {
-//             report.scamValue = {
-//                 amount: scamValue.amount ? parseFloat(scamValue.amount) : report.scamValue.amount,
-//                 currency: scamValue.currency || report.scamValue.currency
-//             };
-//         }
+        report.scammerName = scammerName || report.scammerName;
+        report.telephoneNumbers = telephoneNumbers || report.telephoneNumbers;
+        report.emailAddress = emailAddress || report.emailAddress;
+        report.physicalAddress = physicalAddress || report.physicalAddress;
+        report.scamType = scamType || report.scamType;
+        report.scamLocation = scamLocation || report.scamLocation;
+        report.firstContact = firstContact || report.firstContact;
+        if (scamValue) {
+            report.scamValue = {
+                amount: scamValue.amount ? parseFloat(scamValue.amount) : report.scamValue.amount,
+                currency: scamValue.currency || report.scamValue.currency
+            };
+        }
         
-//         report.description = description || report.description;
-//         report.scammerAccountNumber = scammerAccountNumber || report.scammerAccountNumber;
-//         report.evidence = evidence || report.evidence;
-//         report.scammerPhotos = scammerPhotos || report.scammerPhotos;
-//         report.status = status || report.status;
-//         report.lastUpdated = new Date();
+        report.description = description || report.description;
+        report.scammerAccountNumber = scammerAccountNumber || report.scammerAccountNumber;
+        report.evidence = evidence || report.evidence;
+        report.scammerPhotos = scammerPhotos || report.scammerPhotos;
+        report.status = status || report.status;
+        report.lastUpdated = new Date();
 
-//         await report.save();
-//         res.status(200).json({ message: 'Scam report updated successfully', report });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Error updating scam report' });
-//     }
-// };
+        await report.save();
+        res.status(200).json({ message: 'Scam report updated successfully', report });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating scam report' });
+    }
+};
 
 const submitScamReport = async (req, res) => {
   const {
