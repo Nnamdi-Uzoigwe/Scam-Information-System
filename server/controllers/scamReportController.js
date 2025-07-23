@@ -221,6 +221,64 @@ const updateScamReport = async (req, res) => {
     }
 };
 
+// const submitScamReport = async (req, res) => {
+//   const {
+//     scammerName,
+//     gender,
+//     telephoneNumbers,
+//     emailAddresses,
+//     physicalAddress,
+//     scamType,
+//     scamLocationType,
+//     scamLocation,
+//     firstContact,
+//     wasThoughAd,
+//     adUrl,
+//     description,
+//     scamValue,
+//     scammerBankName,
+//     scammerAccountNumber,
+//     evidence,
+//     scammerPhotos,
+//     reportedBy,
+//   } = req.body;
+
+//   if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description || !gender) {
+//     return res.status(400).json({ message: 'Required fields are missing.' });
+//   }
+
+//   try {
+//     const newReport = new ScamReport({
+//       caseId: generateCaseId(),
+//       scammerName,
+//       gender,
+//       telephoneNumbers,
+//       emailAddresses,
+//       physicalAddress,
+//       scamType,
+//       scamLocationType,
+//       scamLocation,
+//       firstContact,
+//       wasThoughAd,
+//       adUrl,
+//       description,
+//       scamValue,
+//       scammerBankName,
+//       scammerAccountNumber,
+//       evidence,
+//       scammerPhotos,
+//       reportedBy,
+//     });
+
+//     await newReport.save();
+
+//     res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
+//   } catch (error) {
+//     console.error('Error submitting scam report:', error.message);
+//     res.status(500).json({ message: 'Error submitting scam report' });
+//   }
+// };
+
 const submitScamReport = async (req, res) => {
   const {
     scammerName,
@@ -243,8 +301,27 @@ const submitScamReport = async (req, res) => {
     reportedBy,
   } = req.body;
 
-  if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description || !gender) {
-    return res.status(400).json({ message: 'Required fields are missing.' });
+  // Enhanced validation
+  if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description || !gender || !firstContact || !scamLocationType) {
+    return res.status(400).json({ 
+      message: 'Required fields are missing.',
+      missing: {
+        firstName: !scammerName?.firstName,
+        surname: !scammerName?.surname,
+        scamType: !scamType,
+        description: !description,
+        gender: !gender,
+        firstContact: !firstContact,
+        scamLocationType: !scamLocationType
+      }
+    });
+  }
+
+  // Validate scamValue if provided
+  if (scamValue && (!scamValue.amount || !scamValue.currency)) {
+    return res.status(400).json({ 
+      message: 'scamValue requires both amount and currency' 
+    });
   }
 
   try {
@@ -252,8 +329,8 @@ const submitScamReport = async (req, res) => {
       caseId: generateCaseId(),
       scammerName,
       gender,
-      telephoneNumbers,
-      emailAddresses,
+      telephoneNumbers: telephoneNumbers || [],
+      emailAddresses: emailAddresses || [],
       physicalAddress,
       scamType,
       scamLocationType,
@@ -265,17 +342,37 @@ const submitScamReport = async (req, res) => {
       scamValue,
       scammerBankName,
       scammerAccountNumber,
-      evidence,
-      scammerPhotos,
+      evidence: evidence || [],
+      scammerPhotos: scammerPhotos || [],
       reportedBy,
     });
 
     await newReport.save();
 
-    res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
+    res.status(201).json({ 
+      message: 'Scam report submitted successfully', 
+      report: newReport 
+    });
   } catch (error) {
-    console.error('Error submitting scam report:', error.message);
-    res.status(500).json({ message: 'Error submitting scam report' });
+    console.error('Error submitting scam report:', error);
+    
+    // Return more detailed error information
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.keys(error.errors).map(key => ({
+        field: key,
+        message: error.errors[key].message
+      }));
+      
+      return res.status(400).json({ 
+        message: 'Validation error', 
+        errors: validationErrors 
+      });
+    }
+    
+    res.status(500).json({ 
+      message: 'Error submitting scam report',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 
