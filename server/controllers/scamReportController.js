@@ -379,32 +379,22 @@ const updateScamReport = async (req, res) => {
 
 const generateCaseId = async () => {
   try {
-    // Find the highest existing caseId in the database
     const lastReport = await ScamReport.findOne().sort('-caseId');
+    if (!lastReport) return '001'; // Starting point
     
-    if (!lastReport) {
-      return '001'; // Starting caseId if no reports exist
-    }
-
-    // Extract numeric part and increment
-    const lastCaseId = lastReport.caseId;
-    const nextNumber = parseInt(lastCaseId, 10) + 1;
-    
-    // Format with leading zeros (e.g., 33 becomes "033")
-    return nextNumber.toString().padStart(2, '0');
+    const lastId = parseInt(lastReport.caseId, 10);
+    return (lastId + 1).toString().padStart(3, '0'); // Returns "033" etc.
   } catch (error) {
-    console.error('Error generating caseId:', error);
-    // Fallback to timestamp-based ID if there's an error
-    const timestamp = Date.now().toString().slice(-6);
-    return `F${timestamp}`;
+    console.error('CaseId generation failed:', error);
+    return Date.now().toString().slice(-6); // Fallback
   }
 };
-
-
 
 const submitScamReport = async (req, res) => {
   try {
     // Destructure only what we actually need
+     const caseId = await generateCaseId();
+
     const { 
       scammerName, 
       gender, 
@@ -483,7 +473,7 @@ const submitScamReport = async (req, res) => {
 
     // Clean and prepare data
     const reportData = {
-      caseId: generateCaseId(),
+      caseId,
       scammerName: {
         firstName: scammerName.firstName.trim(),
         surname: scammerName.surname.trim(),
