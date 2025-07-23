@@ -8,6 +8,44 @@ import { toast } from "react-toastify";
 const ScamReport = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  // const [formData, setFormData] = useState({
+  //   scammerName: {
+  //     firstName: "",
+  //     surname: "",
+  //     otherNames: "",
+  //   },
+  //   gender: "",
+  //   telephoneNumber1: "",
+  //   telephoneNumber2: "",
+  //   emailAddresses: [""],
+  //   physicalAddress: {
+  //     line1: "",
+  //     line2: "",
+  //     city: "",
+  //     state: "",
+  //     country: "",
+  //   },
+  //   scamType: "",
+  //   scamLocationType: "", // 'physical' or 'website'
+  //   scamLocation: {
+  //     physical: {
+  //       address: "",
+  //     },
+  //     website: {
+  //       url: "",
+  //     },
+  //   },
+  //   firstContact: "",
+  //   scamValue: {
+  //     amount: "",
+  //     currency: "USD",
+  //   },
+  //   description: "",
+  //   scammerAccountNumber: "",
+  //   evidence: null,
+  //   scammerPhotos: [],
+  // });
+
   const [formData, setFormData] = useState({
     scammerName: {
       firstName: "",
@@ -36,12 +74,15 @@ const ScamReport = () => {
       },
     },
     firstContact: "",
+    wasThoughAd: "", // 🆕
+    adUrl: "", // 🆕
     scamValue: {
       amount: "",
       currency: "USD",
     },
     description: "",
     scammerAccountNumber: "",
+    scammerBankName: "", // 🆕
     evidence: null,
     scammerPhotos: [],
   });
@@ -220,6 +261,48 @@ const ScamReport = () => {
         }
       }
 
+      // const newReport = {
+      //   scammerName: {
+      //     firstName: formData.scammerName.firstName,
+      //     surname: formData.scammerName.surname,
+      //     otherNames: formData.scammerName.otherNames,
+      //   },
+      //   gender: formData.gender,
+      //   scamType: formData.scamType,
+      //   description: formData.description,
+      //   emailAddresses: formData.emailAddresses.filter(
+      //     (email) => email.trim() !== ""
+      //   ),
+      //   scammerAccountNumber: formData.scammerAccountNumber,
+      //   telephoneNumbers: [
+      //     formData.telephoneNumber1,
+      //     formData.telephoneNumber2,
+      //   ].filter(Boolean),
+      //   scamLocationType: formData.scamLocationType,
+      //   scamLocation: {
+      //     physical: {
+      //       address: formData.scamLocation.physical.address,
+      //     },
+      //     website: {
+      //       url: formData.scamLocation.website.url,
+      //     },
+      //   },
+      //   firstContact: formData.firstContact,
+      //   physicalAddress: {
+      //     line1: formData.physicalAddress.line1,
+      //     line2: formData.physicalAddress.line2,
+      //     city: formData.physicalAddress.city,
+      //     state: formData.physicalAddress.state,
+      //     country: formData.physicalAddress.country,
+      //   },
+      //   scamValue: {
+      //     amount: parseFloat(formData.scamValue.amount),
+      //     currency: formData.scamValue.currency,
+      //   },
+      //   evidence: evidenceUrl ? [evidenceUrl] : [],
+      //   scammerPhotos: scammerPhotoUrls,
+      // };
+
       const newReport = {
         scammerName: {
           firstName: formData.scammerName.firstName,
@@ -233,6 +316,7 @@ const ScamReport = () => {
           (email) => email.trim() !== ""
         ),
         scammerAccountNumber: formData.scammerAccountNumber,
+        scammerBankName: formData.scammerBankName, // 🆕
         telephoneNumbers: [
           formData.telephoneNumber1,
           formData.telephoneNumber2,
@@ -247,6 +331,8 @@ const ScamReport = () => {
           },
         },
         firstContact: formData.firstContact,
+        wasThoughAd: formData.wasThoughAd, // 🆕
+        adUrl: formData.adUrl, // 🆕
         physicalAddress: {
           line1: formData.physicalAddress.line1,
           line2: formData.physicalAddress.line2,
@@ -280,6 +366,40 @@ const ScamReport = () => {
         console.log("Submitted Report:", newReport);
 
         // Reset form
+        // setFormData({
+        //   scammerName: {
+        //     firstName: "",
+        //     surname: "",
+        //     otherNames: "",
+        //   },
+        //   gender: "",
+        //   telephoneNumber1: "",
+        //   telephoneNumber2: "",
+        //   emailAddresses: [""],
+        //   physicalAddress: {
+        //     line1: "",
+        //     line2: "",
+        //     city: "",
+        //     state: "",
+        //     country: "",
+        //   },
+        //   scamType: "",
+        //   scamLocationType: "",
+        //   scamLocation: {
+        //     physical: {
+        //       address: "",
+        //     },
+        //     website: {
+        //       url: "",
+        //     },
+        //   },
+        //   firstContact: "",
+        //   scamValue: { amount: "", currency: "USD" },
+        //   description: "",
+        //   scammerAccountNumber: "",
+        //   evidence: null,
+        //   scammerPhotos: [],
+        // });
         setFormData({
           scammerName: {
             firstName: "",
@@ -308,12 +428,16 @@ const ScamReport = () => {
             },
           },
           firstContact: "",
+          wasThoughAd: "", // 🆕 included
+          adUrl: "", // 🆕 included
           scamValue: { amount: "", currency: "USD" },
           description: "",
           scammerAccountNumber: "",
+          scammerBankName: "", // 🆕 included
           evidence: null,
           scammerPhotos: [],
         });
+
         setImagePreview(null);
         setScammerPhotosPreview([]);
 
@@ -379,8 +503,10 @@ const ScamReport = () => {
             <div className="flex justify-center">
               <p className="mb-8 text-sm w-[80%] text-center text-gray-500">
                 Please provide details of the fraud case you are a victim of in
-                the form below if any. <span className="font-semibold">Note that until verified, this is an
-                allegation.</span>
+                the form below if any.{" "}
+                <span className="font-semibold">
+                  Note that until verified, this is an allegation.
+                </span>
               </p>
             </div>
 
@@ -647,15 +773,144 @@ const ScamReport = () => {
                 <label className="block text-md font-medium text-gray-500 mb-1">
                   Point of First Contact
                 </label>
-                <input
-                  name="firstContact"
-                  type="text"
-                  value={formData.firstContact}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="How did the scammer first contact you?"
-                />
+                <div className="space-y-2">
+                  {/* Predefined Options */}
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      "WhatsApp",
+                      "Telegram",
+                      "TikTok",
+                      "YouTube",
+                      "Facebook",
+                      "Instagram",
+                    ].map((platform) => (
+                      <label
+                        key={platform}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="firstContact"
+                          value={platform}
+                          checked={formData.firstContact === platform}
+                          onChange={handleChange}
+                          className="text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-gray-700">
+                          {platform}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+
+                  {/* Other Option */}
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="firstContact"
+                      value="other"
+                      checked={
+                        formData.firstContact === "other" ||
+                        (formData.firstContact &&
+                          ![
+                            "WhatsApp",
+                            "Telegram",
+                            "TikTok",
+                            "YouTube",
+                            "Facebook",
+                            "Instagram",
+                          ].includes(formData.firstContact))
+                      }
+                      onChange={handleChange}
+                      className="text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">Other</span>
+                  </label>
+
+                  {/* Custom Input Field */}
+                  {(formData.firstContact === "other" ||
+                    (formData.firstContact &&
+                      ![
+                        "WhatsApp",
+                        "Telegram",
+                        "TikTok",
+                        "YouTube",
+                        "Facebook",
+                        "Instagram",
+                      ].includes(formData.firstContact))) && (
+                    <input
+                      name="firstContactOther"
+                      type="text"
+                      value={formData.firstContactOther || ""}
+                      onChange={(e) => {
+                        handleChange(e);
+                        // Also update the main firstContact field with the custom value
+                        handleChange({
+                          target: {
+                            name: "firstContact",
+                            value: e.target.value,
+                          },
+                        });
+                      }}
+                      placeholder="Please specify..."
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ml-6"
+                    />
+                  )}
+                </div>
+
+                {/* Ad-related Questions */}
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="mb-3">
+                    <label className="block text-md font-medium text-gray-500 mb-2">
+                      Was this contact through an advertisement?
+                    </label>
+                    <div className="flex space-x-4">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="wasThoughAd"
+                          value="yes"
+                          checked={formData.wasThoughAd === "yes"}
+                          onChange={handleChange}
+                          className="text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-gray-700">Yes</span>
+                      </label>
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="wasThoughAd"
+                          value="no"
+                          checked={formData.wasThoughAd === "no"}
+                          onChange={handleChange}
+                          className="text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-gray-700">No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Ad URL Input - shown only if "Yes" is selected */}
+                  {formData.wasThoughAd === "yes" && (
+                    <div>
+                      <label className="block text-md font-medium text-gray-500 mb-1">
+                        Advertisement URL
+                      </label>
+                      <input
+                        name="adUrl"
+                        type="url"
+                        value={formData.adUrl || ""}
+                        onChange={handleChange}
+                        placeholder="https://example.com/ad-link"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Please provide the URL of the advertisement where you
+                        first encountered the scammer
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Value of Scam */}
@@ -744,18 +999,40 @@ const ScamReport = () => {
               </div>
 
               {/* Bank Account Details */}
-              <div>
-                <label className="block text-md font-medium text-gray-500 mb-1">
+              <div className="space-y-3">
+                <label className="block text-md font-medium text-gray-500 mb-2">
                   Scammer's Bank Account Details (if applicable)
                 </label>
-                <input
-                  name="scammerAccountNumber"
-                  type="text"
-                  value={formData.scammerAccountNumber}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Bank name, account number, etc."
-                />
+
+                {/* Bank Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Bank Name
+                  </label>
+                  <input
+                    name="scammerBankName"
+                    type="text"
+                    value={formData.scammerBankName || ""}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g., Fidelity Bank, GTB Bank, Kuda MFB"
+                  />
+                </div>
+
+                {/* Account Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Account Number
+                  </label>
+                  <input
+                    name="scammerAccountNumber"
+                    type="text"
+                    value={formData.scammerAccountNumber || ""}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Account number used in scam"
+                  />
+                </div>
               </div>
 
               {/* Image Preview Section */}
