@@ -33,14 +33,32 @@ export default function SearchDatabase() {
     fetchScams();
   }, []);
 
-  // Filter scams based on search query
-  const filteredScams = scamData.filter(scam =>
-    (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.scammerName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
+  // // Filter scams based on search query
+  // const filteredScams = scamData.filter(scam =>
+  //   (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   (scam.scammerName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+
+  // Improved search filter
+const filteredScams = scamData.filter(scam => {
+  const searchTerm = searchQuery.toLowerCase();
+  const fullName = `${scam.scammerName?.firstName || ''} ${scam.scammerName?.surname || ''}`.toLowerCase();
+  const otherNames = scam.scammerName?.otherNames || '';
+  
+  return (
+    (scam.title || '').toLowerCase().includes(searchTerm) ||
+    fullName.includes(searchTerm) ||
+    otherNames.toLowerCase().includes(searchTerm) ||
+    (scam.scamType || '').toLowerCase().includes(searchTerm) ||
+    (scam.caseId || '').toLowerCase().includes(searchTerm) ||
+    (scam.description || '').toLowerCase().includes(searchTerm) ||
+    (scam.scammerBankName || '').toLowerCase().includes(searchTerm) ||
+    (scam.scammerAccountNumber || '').toLowerCase().includes(searchTerm)
   );
+});
 
   // Calculate pagination values
   const indexOfLastScam = currentPage * scamsPerPage;
