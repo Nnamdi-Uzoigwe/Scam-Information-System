@@ -46,7 +46,7 @@ const ScamReport = () => {
   //   scammerPhotos: [],
   // });
 
-  const [formData, setFormData] = useState({
+ const [formData, setFormData] = useState({
     scammerName: {
       firstName: "",
       surname: "",
@@ -64,7 +64,7 @@ const ScamReport = () => {
       country: "",
     },
     scamType: "",
-    scamLocationType: "", // 'physical' or 'website'
+    scamLocationType: "",
     scamLocation: {
       physical: {
         address: "",
@@ -74,15 +74,15 @@ const ScamReport = () => {
       },
     },
     firstContact: "",
-    wasThoughAd: "", // 🆕
-    adUrl: "", // 🆕
+    wasThoughAd: "",
+    adUrl: "",
     scamValue: {
       amount: "",
       currency: "USD",
     },
     description: "",
     scammerAccountNumber: "",
-    scammerBankName: "", // 🆕
+    scammerBankName: "",
     evidence: null,
     scammerPhotos: [],
   });
@@ -200,11 +200,260 @@ const ScamReport = () => {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+  //   console.log("Submitting data", formData);
+  //   setMessage("");
+
+  //   try {
+  //     let evidenceUrl = "";
+  //     let scammerPhotoUrls = [];
+
+  //     // Upload Evidence File
+  //     if (formData.evidence) {
+  //       const file = formData.evidence;
+  //       const fileName = `${Date.now()}_${file.name}`;
+
+  //       const { data, error } = await supabase.storage
+  //         .from("fraud-report-site")
+  //         .upload(fileName, file);
+
+  //       if (error) {
+  //         console.error("Error uploading image:", error.message);
+  //         toast.error("Failed to upload evidence image.", {
+  //           position: "top-center",
+  //           autoClose: 2000,
+  //         });
+  //         throw new Error("Failed to upload evidence image.");
+  //       }
+
+  //       const { data: publicData } = supabase.storage
+  //         .from("fraud-report-site")
+  //         .getPublicUrl(fileName);
+
+  //       evidenceUrl = publicData.publicUrl;
+  //     }
+
+  //     // Upload Scammer Photos
+  //     if (formData.scammerPhotos && formData.scammerPhotos.length > 0) {
+  //       for (const file of formData.scammerPhotos) {
+  //         const fileName = `scammer_${Date.now()}_${file.name}`;
+
+  //         const { data, error } = await supabase.storage
+  //           .from("fraud-report-site")
+  //           .upload(fileName, file);
+
+  //         if (error) {
+  //           console.error("Error uploading scammer photo:", error.message);
+  //           toast.error(`Failed to upload ${file.name}`, {
+  //             position: "top-center",
+  //             autoClose: 2000,
+  //           });
+  //           continue;
+  //         }
+
+  //         const { data: publicData } = supabase.storage
+  //           .from("fraud-report-site")
+  //           .getPublicUrl(fileName);
+
+  //         scammerPhotoUrls.push(publicData.publicUrl);
+  //       }
+  //     }
+
+  //     const telephoneNumbers = [];
+  //     if (telephoneNumber1) telephoneNumbers.push(telephoneNumber1);
+  //     if (telephoneNumber2) telephoneNumbers.push(telephoneNumber2);
+
+  //     const newReport = {
+  //       scammerName: {
+  //         firstName: formData.scammerName.firstName,
+  //         surname: formData.scammerName.surname,
+  //         otherNames: formData.scammerName.otherNames,
+  //       },
+  //       gender: formData.gender,
+  //       scamType: formData.scamType,
+  //       description: formData.description,
+  //       emailAddresses: formData.emailAddresses.filter(
+  //         (email) => email.trim() !== ""
+  //       ),
+  //       scammerAccountNumber: formData.scammerAccountNumber,
+  //       scammerBankName: formData.scammerBankName, // 🆕
+  //       telephoneNumbers: [
+  //         formData.telephoneNumber1,
+  //         formData.telephoneNumber2,
+  //       ].filter(Boolean),
+  //       scamLocationType: formData.scamLocationType,
+  //       scamLocation: {
+  //         physical: {
+  //           address: formData.scamLocation.physical.address,
+  //         },
+  //         website: {
+  //           url: formData.scamLocation.website.url,
+  //         },
+  //       },
+  //       firstContact: formData.firstContact,
+  //       wasThoughAd: formData.wasThoughAd, // 🆕
+  //       adUrl: formData.adUrl, // 🆕
+  //       physicalAddress: {
+  //         line1: formData.physicalAddress.line1,
+  //         line2: formData.physicalAddress.line2,
+  //         city: formData.physicalAddress.city,
+  //         state: formData.physicalAddress.state,
+  //         country: formData.physicalAddress.country,
+  //       },
+  //       scamValue: {
+  //         amount: parseFloat(formData.scamValue.amount),
+  //         currency: formData.scamValue.currency,
+  //       },
+  //       evidence: evidenceUrl ? [evidenceUrl] : [],
+  //       scammerPhotos: scammerPhotoUrls,
+  //     };
+
+  //     const token = sessionStorage.getItem("authToken");
+  //     const response = await fetch(
+  //       "https://scam-information-system.onrender.com/api/scam-reports",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(newReport),
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       setMessage("Scam reported successfully!");
+  //       console.log("Submitted Report:", newReport);
+
+  //       setFormData({
+  //         scammerName: {
+  //           firstName: "",
+  //           surname: "",
+  //           otherNames: "",
+  //         },
+  //         gender: "",
+  //         telephoneNumbers: [""],
+  //         emailAddresses: [""],
+  //         physicalAddress: {
+  //           line1: "",
+  //           line2: "",
+  //           city: "",
+  //           state: "",
+  //           country: "",
+  //         },
+  //         scamType: "",
+  //         scamLocationType: "",
+  //         scamLocation: {
+  //           physical: {
+  //             address: "",
+  //           },
+  //           website: {
+  //             url: "",
+  //           },
+  //         },
+  //         firstContact: "",
+  //         wasThoughAd: "", // 🆕 included
+  //         adUrl: "", // 🆕 included
+  //         scamValue: { amount: "", currency: "USD" },
+  //         description: "",
+  //         scammerAccountNumber: "",
+  //         scammerBankName: "", // 🆕 included
+  //         evidence: null,
+  //         scammerPhotos: [],
+  //       });
+
+  //       setImagePreview(null);
+  //       setScammerPhotosPreview([]);
+
+  //       toast.success("Scam report submitted successfully!", {
+  //         position: "top-center",
+  //         autoClose: 2000,
+  //       });
+  //       setTimeout(() => navigate("/dashboard"), 3000);
+  //     } else {
+  //       const errorData = await response.json();
+  //       setMessage(
+  //         errorData.message || "Failed to submit report. Please try again."
+  //       );
+  //       toast.error("Failed to submit report. Please try again.", {
+  //         position: "top-center",
+  //         autoClose: 2000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error.message);
+  //     toast.error(error.message || "Something went wrong.", {
+  //       position: "top-center",
+  //       autoClose: 2000,
+  //     });
+  //     setMessage("Something went wrong. Please try again later.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     console.log("Submitting data", formData);
     setMessage("");
+
+    // Validation before submission
+    if (!formData.scammerName.firstName || !formData.scammerName.surname) {
+      toast.error("Scammer name is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.gender) {
+      toast.error("Gender is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.scamType) {
+      toast.error("Scam type is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.scamLocationType) {
+      toast.error("Scam location type is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.firstContact) {
+      toast.error("First contact method is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.description) {
+      toast.error("Description is required", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       let evidenceUrl = "";
@@ -261,92 +510,91 @@ const ScamReport = () => {
         }
       }
 
-      // const newReport = {
-      //   scammerName: {
-      //     firstName: formData.scammerName.firstName,
-      //     surname: formData.scammerName.surname,
-      //     otherNames: formData.scammerName.otherNames,
-      //   },
-      //   gender: formData.gender,
-      //   scamType: formData.scamType,
-      //   description: formData.description,
-      //   emailAddresses: formData.emailAddresses.filter(
-      //     (email) => email.trim() !== ""
-      //   ),
-      //   scammerAccountNumber: formData.scammerAccountNumber,
-      //   telephoneNumbers: [
-      //     formData.telephoneNumber1,
-      //     formData.telephoneNumber2,
-      //   ].filter(Boolean),
-      //   scamLocationType: formData.scamLocationType,
-      //   scamLocation: {
-      //     physical: {
-      //       address: formData.scamLocation.physical.address,
-      //     },
-      //     website: {
-      //       url: formData.scamLocation.website.url,
-      //     },
-      //   },
-      //   firstContact: formData.firstContact,
-      //   physicalAddress: {
-      //     line1: formData.physicalAddress.line1,
-      //     line2: formData.physicalAddress.line2,
-      //     city: formData.physicalAddress.city,
-      //     state: formData.physicalAddress.state,
-      //     country: formData.physicalAddress.country,
-      //   },
-      //   scamValue: {
-      //     amount: parseFloat(formData.scamValue.amount),
-      //     currency: formData.scamValue.currency,
-      //   },
-      //   evidence: evidenceUrl ? [evidenceUrl] : [],
-      //   scammerPhotos: scammerPhotoUrls,
-      // };
+      // Build telephone numbers array properly
+      const telephoneNumbers = [];
+      if (formData.telephoneNumber1 && formData.telephoneNumber1.trim()) {
+        telephoneNumbers.push(formData.telephoneNumber1.trim());
+      }
+      if (formData.telephoneNumber2 && formData.telephoneNumber2.trim()) {
+        telephoneNumbers.push(formData.telephoneNumber2.trim());
+      }
+
+      // Build email addresses array properly
+      const emailAddresses = formData.emailAddresses
+        .filter(email => email && email.trim() !== "")
+        .map(email => email.trim());
 
       const newReport = {
         scammerName: {
-          firstName: formData.scammerName.firstName,
-          surname: formData.scammerName.surname,
-          otherNames: formData.scammerName.otherNames,
+          firstName: formData.scammerName.firstName.trim(),
+          surname: formData.scammerName.surname.trim(),
+          ...(formData.scammerName.otherNames && formData.scammerName.otherNames.trim() && {
+            otherNames: formData.scammerName.otherNames.trim()
+          })
         },
         gender: formData.gender,
         scamType: formData.scamType,
-        description: formData.description,
-        emailAddresses: formData.emailAddresses.filter(
-          (email) => email.trim() !== ""
-        ),
-        scammerAccountNumber: formData.scammerAccountNumber,
-        scammerBankName: formData.scammerBankName, // 🆕
-        telephoneNumbers: [
-          formData.telephoneNumber1,
-          formData.telephoneNumber2,
-        ].filter(Boolean),
+        description: formData.description.trim(),
+        telephoneNumbers,
+        emailAddresses,
         scamLocationType: formData.scamLocationType,
-        scamLocation: {
-          physical: {
-            address: formData.scamLocation.physical.address,
-          },
-          website: {
-            url: formData.scamLocation.website.url,
-          },
-        },
-        firstContact: formData.firstContact,
-        wasThoughAd: formData.wasThoughAd, // 🆕
-        adUrl: formData.adUrl, // 🆕
-        physicalAddress: {
-          line1: formData.physicalAddress.line1,
-          line2: formData.physicalAddress.line2,
-          city: formData.physicalAddress.city,
-          state: formData.physicalAddress.state,
-          country: formData.physicalAddress.country,
-        },
-        scamValue: {
-          amount: parseFloat(formData.scamValue.amount),
-          currency: formData.scamValue.currency,
-        },
+        firstContact: formData.firstContact.trim(),
+        
+        // Only include scamLocation if there's actual data
+        ...(formData.scamLocationType === 'physical' && formData.scamLocation.physical.address && {
+          scamLocation: {
+            physical: {
+              address: formData.scamLocation.physical.address.trim()
+            }
+          }
+        }),
+        ...(formData.scamLocationType === 'website' && formData.scamLocation.website.url && {
+          scamLocation: {
+            website: {
+              url: formData.scamLocation.website.url.trim()
+            }
+          }
+        }),
+
+        // Only include optional fields if they have values
+        ...(formData.wasThoughAd && formData.wasThoughAd !== "" && {
+          wasThoughAd: formData.wasThoughAd
+        }),
+        ...(formData.adUrl && formData.adUrl.trim() && {
+          adUrl: formData.adUrl.trim()
+        }),
+        ...(formData.scammerBankName && formData.scammerBankName.trim() && {
+          scammerBankName: formData.scammerBankName.trim()
+        }),
+        ...(formData.scammerAccountNumber && formData.scammerAccountNumber.trim() && {
+          scammerAccountNumber: formData.scammerAccountNumber.trim()
+        }),
+
+        // Handle physical address - only include if there's data
+        ...((formData.physicalAddress.line1 || formData.physicalAddress.city || 
+            formData.physicalAddress.state || formData.physicalAddress.country) && {
+          physicalAddress: {
+            ...(formData.physicalAddress.line1 && { line1: formData.physicalAddress.line1.trim() }),
+            ...(formData.physicalAddress.line2 && { line2: formData.physicalAddress.line2.trim() }),
+            ...(formData.physicalAddress.city && { city: formData.physicalAddress.city.trim() }),
+            ...(formData.physicalAddress.state && { state: formData.physicalAddress.state.trim() }),
+            ...(formData.physicalAddress.country && { country: formData.physicalAddress.country.trim() })
+          }
+        }),
+
+        // Only include scamValue if amount is provided
+        ...(formData.scamValue.amount && formData.scamValue.amount.trim() && {
+          scamValue: {
+            amount: parseFloat(formData.scamValue.amount),
+            currency: formData.scamValue.currency
+          }
+        }),
+
         evidence: evidenceUrl ? [evidenceUrl] : [],
         scammerPhotos: scammerPhotoUrls,
       };
+
+      console.log("Final payload:", newReport);
 
       const token = sessionStorage.getItem("authToken");
       const response = await fetch(
@@ -366,40 +614,6 @@ const ScamReport = () => {
         console.log("Submitted Report:", newReport);
 
         // Reset form
-        // setFormData({
-        //   scammerName: {
-        //     firstName: "",
-        //     surname: "",
-        //     otherNames: "",
-        //   },
-        //   gender: "",
-        //   telephoneNumber1: "",
-        //   telephoneNumber2: "",
-        //   emailAddresses: [""],
-        //   physicalAddress: {
-        //     line1: "",
-        //     line2: "",
-        //     city: "",
-        //     state: "",
-        //     country: "",
-        //   },
-        //   scamType: "",
-        //   scamLocationType: "",
-        //   scamLocation: {
-        //     physical: {
-        //       address: "",
-        //     },
-        //     website: {
-        //       url: "",
-        //     },
-        //   },
-        //   firstContact: "",
-        //   scamValue: { amount: "", currency: "USD" },
-        //   description: "",
-        //   scammerAccountNumber: "",
-        //   evidence: null,
-        //   scammerPhotos: [],
-        // });
         setFormData({
           scammerName: {
             firstName: "",
@@ -428,12 +642,12 @@ const ScamReport = () => {
             },
           },
           firstContact: "",
-          wasThoughAd: "", // 🆕 included
-          adUrl: "", // 🆕 included
+          wasThoughAd: "",
+          adUrl: "",
           scamValue: { amount: "", currency: "USD" },
           description: "",
           scammerAccountNumber: "",
-          scammerBankName: "", // 🆕 included
+          scammerBankName: "",
           evidence: null,
           scammerPhotos: [],
         });
@@ -448,10 +662,11 @@ const ScamReport = () => {
         setTimeout(() => navigate("/dashboard"), 3000);
       } else {
         const errorData = await response.json();
+        console.error("Server error:", errorData);
         setMessage(
           errorData.message || "Failed to submit report. Please try again."
         );
-        toast.error("Failed to submit report. Please try again.", {
+        toast.error(errorData.message || "Failed to submit report. Please try again.", {
           position: "top-center",
           autoClose: 2000,
         });
@@ -1095,3 +1310,5 @@ const ScamReport = () => {
 };
 
 export default ScamReport;
+
+
