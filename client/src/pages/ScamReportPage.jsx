@@ -770,19 +770,42 @@ const ScamReportPage = () => {
               </div>
 
               {/* Bank Account Details */}
-              <div>
-                <label className="block text-md font-medium text-gray-500 mb-1">
+              <div className="space-y-3">
+                <label className="block text-md font-medium text-gray-500 mb-2">
                   Scammer's Bank Account Details (if applicable)
                 </label>
-                <input
-                  name="scammerAccountNumber"
-                  type="text"
-                  value={formData.scammerAccountNumber}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Bank name, account number, etc."
-                />
+
+                {/* Bank Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Bank Name
+                  </label>
+                  <input
+                    name="scammerBankName"
+                    type="text"
+                    value={formData.scammerBankName || ""}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g., Fidelity Bank, GTB Bank, Kuda MFB"
+                  />
+                </div>
+
+                {/* Account Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Account Number
+                  </label>
+                  <input
+                    name="scammerAccountNumber"
+                    type="text"
+                    value={formData.scammerAccountNumber || ""}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Account number used in scam"
+                  />
+                </div>
               </div>
+
 
               {/* Image Preview Section */}
               {(imagePreview || scammerPhotosPreview.length > 0) && (
