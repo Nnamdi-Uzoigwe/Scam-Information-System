@@ -519,7 +519,7 @@ const submitScamReport = async (req, res) => {
       };
     }
 
-    if (wasThroughAd) reportData.wasThroughAd = wasTheoughAd;
+    if (wasThroughAd) reportData.wasThroughAd = wasThroughAd;
     if (adUrl) reportData.adUrl = adUrl.trim();
     if (scammerBankName) reportData.scammerBankName = scammerBankName.trim();
     if (scammerAccountNumber) reportData.scammerAccountNumber = scammerAccountNumber.trim();
