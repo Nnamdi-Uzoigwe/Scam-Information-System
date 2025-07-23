@@ -539,6 +539,8 @@ const ScamReport = () => {
         emailAddresses,
         scamLocationType: formData.scamLocationType,
         firstContact: formData.firstContact.trim(),
+
+        reportedBy: formData.reportedBy?.trim() || "Anonymous", 
         
         // Only include scamLocation if there's actual data
         ...(formData.scamLocationType === 'physical' && formData.scamLocation.physical.address && {
