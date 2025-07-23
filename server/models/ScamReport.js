@@ -144,9 +144,8 @@ const scamReportSchema = mongoose.Schema({
         default: Date.now,
     },
     reportedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: false,
+        type: String,
+        default: 'Anonymous'
     },
     status: {
         type: String,
