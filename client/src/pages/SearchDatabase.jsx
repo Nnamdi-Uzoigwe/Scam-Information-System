@@ -16,13 +16,15 @@ export default function SearchDatabase() {
       try {
         setLoading(true);
 
-        const response = await fetch("https://scam-information-system.onrender.com/api/scam-reports"); 
+        const response = await fetch(
+          "https://scam-information-system.onrender.com/api/scam-reports"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch scam data");
         }
 
         const data = await response.json();
-        setScamData(data); 
+        setScamData(data);
       } catch (err) {
         setError("Failed to load scam data");
       } finally {
@@ -42,23 +44,47 @@ export default function SearchDatabase() {
   //   (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   // );
 
-  // Improved search filter
-const filteredScams = scamData.filter(scam => {
+  // // Improved search filter
+  // const filteredScams = scamData.filter((scam) => {
+  //   const searchTerm = searchQuery.toLowerCase();
+  //   const fullName = `${scam.scammerName?.firstName || ""} ${
+  //     scam.scammerName?.surname || ""
+  //   }`.toLowerCase();
+  //   const otherNames = scam.scammerName?.otherNames || "";
+
+  //   return (
+  //     (scam.title || "").toLowerCase().includes(searchTerm) ||
+  //     fullName.includes(searchTerm) ||
+  //     otherNames.toLowerCase().includes(searchTerm) ||
+  //     (scam.scamType || "").toLowerCase().includes(searchTerm) ||
+  //     (scam.caseId || "").toLowerCase().includes(searchTerm) ||
+  //     (scam.description || "").toLowerCase().includes(searchTerm) ||
+  //     (scam.scammerBankName || "").toLowerCase().includes(searchTerm) ||
+  //     (scam.scammerAccountNumber || "").toLowerCase().includes(searchTerm)
+  //   );
+  // });
+
+  const filteredScams = scamData.filter((scam) => {
   const searchTerm = searchQuery.toLowerCase();
-  const fullName = `${scam.scammerName?.firstName || ''} ${scam.scammerName?.surname || ''}`.toLowerCase();
-  const otherNames = scam.scammerName?.otherNames || '';
-  
+
+  let fullName = "";
+  if (typeof scam.scammerName === "string") {
+    fullName = scam.scammerName.toLowerCase();
+  } else if (typeof scam.scammerName === "object" && scam.scammerName !== null) {
+    fullName = `${scam.scammerName.firstName || ""} ${scam.scammerName.otherNames || ""} ${scam.scammerName.surname || ""}`.toLowerCase();
+  }
+
   return (
-    (scam.title || '').toLowerCase().includes(searchTerm) ||
+    (scam.title || "").toLowerCase().includes(searchTerm) ||
     fullName.includes(searchTerm) ||
-    otherNames.toLowerCase().includes(searchTerm) ||
-    (scam.scamType || '').toLowerCase().includes(searchTerm) ||
-    (scam.caseId || '').toLowerCase().includes(searchTerm) ||
-    (scam.description || '').toLowerCase().includes(searchTerm) ||
-    (scam.scammerBankName || '').toLowerCase().includes(searchTerm) ||
-    (scam.scammerAccountNumber || '').toLowerCase().includes(searchTerm)
+    (scam.scamType || "").toLowerCase().includes(searchTerm) ||
+    (scam.caseId || "").toLowerCase().includes(searchTerm) ||
+    (scam.description || "").toLowerCase().includes(searchTerm) ||
+    (scam.scammerBankName || "").toLowerCase().includes(searchTerm) ||
+    (scam.scammerAccountNumber || "").toLowerCase().includes(searchTerm)
   );
 });
+
 
   // Calculate pagination values
   const indexOfLastScam = currentPage * scamsPerPage;
@@ -72,14 +98,14 @@ const filteredScams = scamData.filter(scam => {
   return (
     // <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
-
       <div className="max-w-[700px] mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-[#0F766E] sm:text-4xl">
             Search Scam Database
           </h1>
           <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Look up known scams and fraudulent activities reported by our community
+            Look up known scams and fraudulent activities reported by our
+            community
           </p>
         </div>
         <div className="max-w-3xl mx-auto mb-16">
@@ -96,22 +122,26 @@ const filteredScams = scamData.filter(scam => {
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <span className="text-gray-500 text-sm">
-                {filteredScams.length > 1 ? <b>{filteredScams.length} results</b> : <b>{filteredScams.length} result</b>}
+                {filteredScams.length > 1 ? (
+                  <b>{filteredScams.length} results</b>
+                ) : (
+                  <b>{filteredScams.length} result</b>
+                )}
               </span>
             </div>
           </div>
         </div>
 
         {/* Loading State */}
-        {loading && (
-          <LoadingState />
-        )}
+        {loading && <LoadingState />}
 
         {/* Error State */}
         {error && (
           <div className="text-center py-12">
             <FiAlertTriangle className="mx-auto h-12 w-12 text-red-500" />
-            <h3 className="mt-2 text-lg font-medium text-gray-900">Error loading data</h3>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">
+              Error loading data
+            </h3>
             <p className="mt-1 text-sm text-gray-500">{error}</p>
             <button
               onClick={() => window.location.reload()}
@@ -128,33 +158,53 @@ const filteredScams = scamData.filter(scam => {
             {/* Scam Results */}
             <div className="grid gap-6 md:grid-cols-2">
               {currentScams.map((scam) => (
-                <div key={scam.caseId} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
+                <div
+                  key={scam.caseId}
+                  className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-start">
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h3 className="text-lg leading-6 font-medium text-[#0F766E]">Alleged Scammer: {scam.scammerName.firstName} {scam.scammerName.surname}</h3>
+                          <h3 className="text-lg leading-6 font-medium text-[#0F766E]">
+                            Alleged Scammer:{" "}
+                            {typeof scam.scammerName === "string"
+                              ? scam.scammerName
+                              : `${scam.scammerName.firstName ?? ""} ${
+                                  scam.scammerName.otherNames ?? ""
+                                } ${scam.scammerName.surname ?? ""}`}
+                          </h3>
                         </div>
                         <div className="my-2">
-                          <span className="text-sm text-gray-600 font-semibold">Scam type: <span className="text-xs bg-pink-100 text-red-400 py-[4px] px-2 rounded-2xl">{scam.scamType}</span></span>
+                          <span className="text-sm text-gray-600 font-semibold">
+                            Scam type:{" "}
+                            <span className="text-xs bg-pink-100 text-red-400 py-[4px] px-2 rounded-2xl">
+                              {scam.scamType}
+                            </span>
+                          </span>
                         </div>
                         <div className="mt-1 text-sm text-gray-600 font-bold">
-                          Case No: <span className="text-amber-600">{scam.caseId}</span>
+                          Case No:{" "}
+                          <span className="text-amber-600">{scam.caseId}</span>
                         </div>
                         <div className="mt-1 text-sm text-gray-600 font-semibold">
-                          <span className="">Reported on {scam.dateReported.split('T')[0]}</span>
+                          <span className="">
+                            Reported on {scam.dateReported.split("T")[0]}
+                          </span>
                         </div>
                       </div>
                     </div>
                     <div className="mt-4 w-full">
-                      <p className="text-sm text-gray-600 truncate">{scam.description}</p>
+                      <p className="text-sm text-gray-600 truncate">
+                        {scam.description}
+                      </p>
                     </div>
                     <div className="mt-5 flex justify-between items-center">
                       <Link
-                         to={`/scam/${scam.caseId}`}
-                         className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-[#063F3A] hover:bg-[#063F3A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-[#063F3A]"
+                        to={`/scam/${scam.caseId}`}
+                        className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-[#063F3A] hover:bg-[#063F3A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-[#063F3A]"
                       >
-                         View Details
+                        View Details
                       </Link>
                     </div>
                   </div>
@@ -166,9 +216,12 @@ const filteredScams = scamData.filter(scam => {
             {filteredScams.length === 0 && !loading && (
               <div className="text-center py-12">
                 <FiSearch className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-lg font-medium text-gray-900">No scams found</h3>
+                <h3 className="mt-2 text-lg font-medium text-gray-900">
+                  No scams found
+                </h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  Try adjusting your search or filter to find what you're looking for.
+                  Try adjusting your search or filter to find what you're
+                  looking for.
                 </p>
               </div>
             )}
