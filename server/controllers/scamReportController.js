@@ -344,7 +344,7 @@ const submitScamReport = async (req, res) => {
       scammerAccountNumber,
       evidence: evidence || [],
       scammerPhotos: scammerPhotos || [],
-      reportedBy,
+      reportedBy:reportedBy || "Anonymous",
     });
 
     await newReport.save();
