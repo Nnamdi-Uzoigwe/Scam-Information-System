@@ -162,6 +162,7 @@ const getScamReportById = async (req, res) => {
 
 
 
+
 // Update an existing scam report 
 const updateScamReport = async (req, res) => {
     const { id } = req.params;
@@ -376,6 +377,30 @@ const updateScamReport = async (req, res) => {
 //   }
 // };
 
+const generateCaseId = async () => {
+  try {
+    // Find the highest existing caseId in the database
+    const lastReport = await ScamReport.findOne().sort('-caseId');
+    
+    if (!lastReport) {
+      return '001'; // Starting caseId if no reports exist
+    }
+
+    // Extract numeric part and increment
+    const lastCaseId = lastReport.caseId;
+    const nextNumber = parseInt(lastCaseId, 10) + 1;
+    
+    // Format with leading zeros (e.g., 33 becomes "033")
+    return nextNumber.toString().padStart(2, '0');
+  } catch (error) {
+    console.error('Error generating caseId:', error);
+    // Fallback to timestamp-based ID if there's an error
+    const timestamp = Date.now().toString().slice(-6);
+    return `F${timestamp}`;
+  }
+};
+
+
 
 const submitScamReport = async (req, res) => {
   try {
@@ -392,7 +417,7 @@ const submitScamReport = async (req, res) => {
       emailAddresses = [],
       physicalAddress = {},
       scamLocation = {},
-      wasThoughAd = '',
+      wasThroughAd = '',
       adUrl = '',
       scamValue = null,
       scammerBankName = '',
@@ -494,7 +519,7 @@ const submitScamReport = async (req, res) => {
       };
     }
 
-    if (wasThoughAd) reportData.wasThoughAd = wasThoughAd;
+    if (wasThroughAd) reportData.wasThroughAd = wasTheoughAd;
     if (adUrl) reportData.adUrl = adUrl.trim();
     if (scammerBankName) reportData.scammerBankName = scammerBankName.trim();
     if (scammerAccountNumber) reportData.scammerAccountNumber = scammerAccountNumber.trim();
