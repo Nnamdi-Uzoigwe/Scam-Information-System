@@ -39,18 +39,32 @@ export default function SearchDatabase() {
     const searchTerm = searchQuery.toLowerCase();
 
     let fullName = "";
-    if (typeof scam.scammerName === "object") {
-      if (Array.isArray(scam.scammerName.names)) {
-        fullName = scam.scammerName.names.join(" ").toLowerCase();
-      } else {
-        const first = scam.scammerName.firstName || "";
-        const other = scam.scammerName.otherNames || "";
-        const last = scam.scammerName.surname || "";
-        fullName = `${first} ${other} ${last}`.trim().toLowerCase();
-      }
-    } else if (typeof scam.scammerName === "string") {
-      fullName = scam.scammerName.toLowerCase().trim();
-    }
+    // if (typeof scam.scammerName === "object" && scam.scammerName !== null) {
+    //   if (Array.isArray(scam.scammerName.names)) {
+    //     fullName = scam.scammerName.names.join(" ").toLowerCase();
+    //   } else {
+    //     const first = scam.scammerName.firstName || "";
+    //     const other = scam.scammerName.otherNames || "";
+    //     const last = scam.scammerName.surname || "";
+    //     fullName = `${first} ${other} ${last}`.trim().toLowerCase();
+    //   }
+    // } else if (typeof scam.scammerName === "string") {
+    //   fullName = scam.scammerName.toLowerCase().trim();
+    // }
+
+    
+if (typeof scam.scammerName === "object" && scam.scammerName !== null) {
+  if (Array.isArray(scam.scammerName.names)) {
+    fullName = scam.scammerName.names.join(" ").toLowerCase();
+  } else {
+    const first = scam.scammerName.firstName || "";
+    const other = scam.scammerName.otherNames || "";
+    const last = scam.scammerName.surname || "";
+    fullName = `${first} ${other} ${last}`.trim().toLowerCase();
+  }
+} else if (typeof scam.scammerName === "string") {
+  fullName = scam.scammerName.toLowerCase().trim();
+}
 
     return (
       (scam.title || "").toLowerCase().includes(searchTerm) ||
