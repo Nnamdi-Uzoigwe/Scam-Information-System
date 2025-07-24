@@ -50,6 +50,10 @@ const ScamReport = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [scammerPhotosPreview, setScammerPhotosPreview] = useState([]);
+  const photoInputRef = useRef(null);
+  const evidenceInputRef = useRef(null);
+  const [photoFiles, setPhotoFiles] = useState([]);
+  const [evidenceFiles, setEvidenceFiles] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,25 +63,18 @@ const ScamReport = () => {
     }));
   };
 
-  const photoInputRef = useRef(null);
-    const evidenceInputRef = useRef(null);
-  
-    const [photoFiles, setPhotoFiles] = useState([]);
-    const [evidenceFiles, setEvidenceFiles] = useState([]);
-  
-  
-    const handleEvidenceFilesChange = (e) => {
-      const files = Array.from(e.target.files);
-      setEvidenceFiles((prev) => [...prev, ...files]);
-    };
-  
-    const removePhoto = (index) => {
-      setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
-    };
-  
-    const removeEvidence = (index) => {
-      setEvidenceFiles((prev) => prev.filter((_, i) => i !== index));
-    };
+  const handleEvidenceFilesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setEvidenceFiles((prev) => [...prev, ...files]);
+  };
+
+  const removePhoto = (index) => {
+    setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const removeEvidence = (index) => {
+    setEvidenceFiles((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const addScammerName = () => {
     setFormData((prev) => ({
@@ -172,30 +169,18 @@ const ScamReport = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  // const handleScammerPhotosChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   const previews = files.map((file) => URL.createObjectURL(file));
-  //   setScammerPhotosPreview((prev) => [...prev, ...previews]);
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     scammerPhotos: [...prev.scammerPhotos, ...files],
-  //   }));
-  // };
- const handleScammerPhotosChange = (e) => {
+  const handleScammerPhotosChange = (e) => {
     const files = Array.from(e.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
     setScammerPhotosPreview((prev) => [...prev, ...previews]);
+
+    setFormData((prev) => ({
+      ...prev,
+      scammerPhotos: [...prev.scammerPhotos, ...files],
+    }));
   };
 
-  // const handleScammerPhotoDelete = (index) => {
-  //   setScammerPhotosPreview((prev) => prev.filter((_, i) => i !== index));
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     scammerPhotos: prev.scammerPhotos.filter((_, i) => i !== index),
-  //   }));
-  // };
-  
-    const handleScammerPhotoDelete = (index) => {
+  const handleScammerPhotoDelete = (index) => {
     setScammerPhotosPreview((prev) => prev.filter((_, i) => i !== index));
     setFormData((prev) => ({
       ...prev,
@@ -255,8 +240,6 @@ const ScamReport = () => {
           url: formData.scamLocation.website.url?.trim() || "",
         };
       }
-
-      // Prepare physical address (only include if at least one field has value)
       const physicalAddress = {};
       if (
         Object.values(formData.physicalAddress).some((val) => val && val.trim())
@@ -269,7 +252,6 @@ const ScamReport = () => {
           formData.physicalAddress.country?.trim() || "";
       }
 
-      // Prepare scam value (only if amount is provided)
       const scamValue = formData.scamValue.amount
         ? {
             amount: parseFloat(formData.scamValue.amount),
@@ -1070,8 +1052,6 @@ const ScamReport = () => {
                   )}
                 </div>
               </div>
-
-
 
               {/* Bank Account Details */}
               <div className="space-y-3">
