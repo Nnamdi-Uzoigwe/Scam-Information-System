@@ -326,7 +326,7 @@ export default function ScamDetail() {
 
       {scammerPhotoUrls.length > 0 && (
         <div className="mt-10">
-          <h2 className="text-xl font-semibold mb-4">Scammer Photos</h2>
+          <h2 className="text-xl font-semibold mb-4">Photo(s) of the Alleged Scammer</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {scammerPhotoUrls.map((url, index) => (
               <div key={index} className="bg-white rounded-lg shadow">
@@ -348,7 +348,7 @@ export default function ScamDetail() {
 
       {imageUrls.length > 0 && (
         <div className="mt-10">
-          <h2 className="text-xl font-semibold mb-4">Evidence</h2>
+          <h2 className="text-xl font-semibold mb-4">Image Evidence of Scam</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {imageUrls.map((url, index) => (
               <div key={index} className="bg-white rounded-lg shadow">
