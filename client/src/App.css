@@ -2,8 +2,12 @@
 
 * {
   font-family: "Montserrat", "Manrope", sans-serif;
+  box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+}
 .swiper-pagination-bullet {
     background-color: gray !important;  /* Change this to any color you want */
     opacity: 1;
