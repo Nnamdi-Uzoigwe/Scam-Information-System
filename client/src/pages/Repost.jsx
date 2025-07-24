@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabaseClient";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { FaBars } from "react-icons/fa";
@@ -42,6 +42,30 @@ const Repost = () => {
     scammerPhotos: [],
   });
 
+  const photoInputRef = useRef(null);
+  const evidenceInputRef = useRef(null);
+
+  const [photoFiles, setPhotoFiles] = useState([]);
+  const [evidenceFiles, setEvidenceFiles] = useState([]);
+
+  // const handleScammerPhotosChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setPhotoFiles((prev) => [...prev, ...files]);
+  // };
+
+  const handleEvidenceFilesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setEvidenceFiles((prev) => [...prev, ...files]);
+  };
+
+  const removePhoto = (index) => {
+    setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const removeEvidence = (index) => {
+    setEvidenceFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -55,28 +79,27 @@ const Repost = () => {
     }));
   };
 
- 
   const addScammerName = () => {
-  setFormData((prev) => ({
-    ...prev,
-    scammerNames: [...prev.scammerNames, ""],
-  }));
-};
-const removeScammerName = (index) => {
-  setFormData((prev) => ({
-    ...prev,
-    scammerNames: prev.scammerNames.filter((_, i) => i !== index),
-  }));
-};
+    setFormData((prev) => ({
+      ...prev,
+      scammerNames: [...prev.scammerNames, ""],
+    }));
+  };
+  const removeScammerName = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      scammerNames: prev.scammerNames.filter((_, i) => i !== index),
+    }));
+  };
 
-const handleScammerNameChange = (index, value) => {
-  const updatedNames = [...formData.scammerNames];
-  updatedNames[index] = value;
-  setFormData((prev) => ({
-    ...prev,
-    scammerNames: updatedNames,
-  }));
-};
+  const handleScammerNameChange = (index, value) => {
+    const updatedNames = [...formData.scammerNames];
+    updatedNames[index] = value;
+    setFormData((prev) => ({
+      ...prev,
+      scammerNames: updatedNames,
+    }));
+  };
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
@@ -137,11 +160,17 @@ const handleScammerNameChange = (index, value) => {
     }));
   };
 
+  const handleScammerPhotosChange = (e) => {
+    const files = Array.from(e.target.files);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setScammerPhotosPreview((prev) => [...prev, ...previews]);
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImagePreview(URL.createObjectURL(file));
-      setFormData({ ...formData, evidence: file });
+      const previewURL = URL.createObjectURL(file);
+      setImagePreview(previewURL);
     }
   };
 
@@ -149,15 +178,15 @@ const handleScammerNameChange = (index, value) => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const handleScammerPhotosChange = (e) => {
-    const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setScammerPhotosPreview((prev) => [...prev, ...previews]);
-    setFormData((prev) => ({
-      ...prev,
-      scammerPhotos: [...prev.scammerPhotos, ...files],
-    }));
-  };
+  // const handleScammerPhotosChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const previews = files.map((file) => URL.createObjectURL(file));
+  //   setScammerPhotosPreview((prev) => [...prev, ...previews]);
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     scammerPhotos: [...prev.scammerPhotos, ...files],
+  //   }));
+  // };
 
   const handleScammerPhotoDelete = (index) => {
     setScammerPhotosPreview((prev) => prev.filter((_, i) => i !== index));
@@ -315,7 +344,7 @@ const handleScammerNameChange = (index, value) => {
 
         // Reset form
         setFormData({
-          scammerNames: [''],
+          scammerNames: [""],
           gender: "",
           telephoneNumber1: "",
           telephoneNumber2: "",
@@ -430,39 +459,41 @@ const handleScammerNameChange = (index, value) => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Scammer Name Fields - Dynamic List */}
-<div className="space-y-4">
-  <label className="block text-md font-medium text-gray-500 mb-1">
-    Scammer's Name(s) / Aliases
-  </label>
-  {formData.scammerNames.map((name, index) => (
-    <div key={index} className="flex mb-2">
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => handleScammerNameChange(index, e.target.value)}
-        className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-        placeholder={`Scammer name ${index + 1}`}
-        required={index === 0} // only the first one is required
-      />
-      {index > 0 && (
-        <button
-          type="button"
-          onClick={() => removeScammerName(index)}
-          className="ml-2 px-3 bg-red-500 text-white rounded-md hover:bg-red-600"
-        >
-          Remove
-        </button>
-      )}
-    </div>
-  ))}
-  <button
-    type="button"
-    onClick={addScammerName}
-    className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-  >
-    + Add Another Name
-  </button>
-</div>
+              <div className="space-y-4">
+                <label className="block text-md font-medium text-gray-500 mb-1">
+                  Scammer's Name(s) / Aliases
+                </label>
+                {formData.scammerNames.map((name, index) => (
+                  <div key={index} className="flex mb-2">
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) =>
+                        handleScammerNameChange(index, e.target.value)
+                      }
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      placeholder={`Scammer name ${index + 1}`}
+                      required={index === 0} // only the first one is required
+                    />
+                    {index > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => removeScammerName(index)}
+                        className="ml-2 px-3 bg-red-500 text-white rounded-md hover:bg-red-600"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addScammerName}
+                  className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                >
+                  + Add Another Name
+                </button>
+              </div>
 
               {/* Gender Selection */}
               <div>
@@ -871,7 +902,7 @@ const handleScammerNameChange = (index, value) => {
                 />
               </div>
 
-              {/* Photos of Scammer */}
+              {/* Photos of Scammer
               <div>
                 <label className="block text-md font-medium text-gray-500 mb-1">
                   Photos of Scammer (if available)
@@ -885,7 +916,7 @@ const handleScammerNameChange = (index, value) => {
                 />
               </div>
 
-              {/* Upload Evidence */}
+            
               <div>
                 <label className="block text-md font-medium text-gray-500 mb-1">
                   Upload Evidence (Screenshots, documents, etc.)
@@ -896,6 +927,136 @@ const handleScammerNameChange = (index, value) => {
                   onChange={handleFileChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
+              </div> */}
+              <div className="space-y-6">
+                {/* Scammer Photos Section */}
+                <div>
+                  <label className="block text-md font-medium text-gray-500 mb-2">
+                    Photos of Scammer (if available)
+                  </label>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={photoInputRef}
+                    onChange={handleScammerPhotosChange}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current.click()}
+                    className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
+                  >
+                    Add Photo
+                  </button>
+
+                  {/* Preview List */}
+                  {photoFiles.length > 0 && (
+                    <ul className="mt-2 text-sm text-gray-700 space-y-1">
+                      {photoFiles.map((file, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center justify-between"
+                        >
+                          <span>{file.name}</span>
+                          <button
+                            onClick={() => removePhoto(index)}
+                            className="text-red-500 hover:text-red-700 text-xs"
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Image Preview Section */}
+                {(imagePreview || scammerPhotosPreview.length > 0) && (
+                  <div className="mt-4 space-y-4">
+                    {imagePreview && (
+                      <div className="flex justify-between items-center">
+                        <img
+                          src={imagePreview}
+                          alt="Evidence Preview"
+                          className="max-w-[200px] h-auto rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleImageDelete}
+                          className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
+                        >
+                          DELETE
+                        </button>
+                      </div>
+                    )}
+                    {scammerPhotosPreview.map((photo, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center"
+                      >
+                        <img
+                          src={photo}
+                          alt={`Scammer Photo ${index + 1}`}
+                          className="w-24 h-24  max-w-[200px] rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleScammerPhotoDelete(index)}
+                          className="text-lg font-semibold text-red-600 hover:text-red-700 ml-4"
+                        >
+                          DELETE
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Evidence Section */}
+                <div>
+                  <label className="block text-md font-medium text-gray-500 mb-2">
+                    Upload Evidence (Screenshots, documents, etc.)
+                  </label>
+
+                  <input
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    ref={evidenceInputRef}
+                    onChange={handleEvidenceFilesChange}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => evidenceInputRef.current.click()}
+                    className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                  >
+                    Add Evidence
+                  </button>
+
+                  {/* Preview List */}
+                  {evidenceFiles.length > 0 && (
+                    <ul className="mt-2 text-sm text-gray-700 space-y-1">
+                      {evidenceFiles.map((file, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center justify-between"
+                        >
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Evidence ${index + 1}`}
+                            className="w-24 h-24 object-cover rounded"
+                          />
+                          <button
+                            onClick={() => removeEvidence(index)}
+                            className="text-red-500 hover:text-red-700 text-lg font-semibold"
+                          >
+                            DELETE
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
 
               {/* Bank Account Details */}
@@ -934,47 +1095,6 @@ const handleScammerNameChange = (index, value) => {
                   />
                 </div>
               </div>
-
-              {/* Image Preview Section */}
-              {(imagePreview || scammerPhotosPreview.length > 0) && (
-                <div className="mt-4 space-y-4">
-                  {imagePreview && (
-                    <div className="flex justify-between items-center">
-                      <img
-                        src={imagePreview}
-                        alt="Evidence Preview"
-                        className="max-w-[200px] h-auto rounded-md"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleImageDelete}
-                        className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
-                      >
-                        DELETE
-                      </button>
-                    </div>
-                  )}
-                  {scammerPhotosPreview.map((photo, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center"
-                    >
-                      <img
-                        src={photo}
-                        alt={`Scammer Photo ${index + 1}`}
-                        className="max-w-[200px] h-auto rounded-md"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleScammerPhotoDelete(index)}
-                        className="text-xl font-semibold text-red-600 hover:text-red-700 ml-4"
-                      >
-                        DELETE
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
 
               {/* Submit Button */}
               <div className="flex justify-start">
