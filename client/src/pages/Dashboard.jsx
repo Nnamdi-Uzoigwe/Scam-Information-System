@@ -24,7 +24,7 @@ const Dashboard = () => {
           <FaBars />
         </button>
 
-        <main className="flex-1 p-6 ml-0 lg:ml-50">
+        <main className="flex-1 p-6 ml-0 lg:ml-64">
           <SearchDatabase />
         </main>
       </div>
