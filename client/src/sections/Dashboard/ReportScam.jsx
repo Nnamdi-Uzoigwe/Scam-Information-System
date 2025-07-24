@@ -157,14 +157,6 @@ const ScamReport = () => {
     }));
   };
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setImagePreview(URL.createObjectURL(file));
-  //     setFormData({ ...formData, evidence: file });
-  //   }
-  // };
-
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
@@ -216,7 +208,6 @@ const ScamReport = () => {
     }
 
     try {
-      // Prepare telephone numbers
       const telephoneNumbers = [
         formData.telephoneNumber1,
         formData.telephoneNumber2,
@@ -224,12 +215,10 @@ const ScamReport = () => {
         .filter((num) => num && num.trim())
         .map((num) => num.trim());
 
-      // Prepare email addresses
       const emailAddresses = formData.emailAddresses
         .filter((email) => email && email.trim())
         .map((email) => email.trim());
 
-      // Prepare scam location data
       const scamLocation = {};
       if (formData.scamLocationType === "physical") {
         scamLocation.physical = {
@@ -258,23 +247,6 @@ const ScamReport = () => {
             currency: formData.scamValue.currency || "USD",
           }
         : null;
-
-      // // Upload evidence if exists
-      // let evidenceUrl = "";
-      // if (formData.evidence) {
-      //   const fileName = `evidence_${Date.now()}_${formData.evidence.name}`;
-      //   const { error } = await supabase.storage
-      //     .from("fraud-report-site")
-      //     .upload(fileName, formData.evidence);
-
-      //   if (error) throw new Error("Evidence upload failed: " + error.message);
-
-      //   const {
-      //     data: { publicUrl },
-      //   } = supabase.storage.from("fraud-report-site").getPublicUrl(fileName);
-
-      //   evidenceUrl = publicUrl;
-      // }
 
       let evidenceUrls = [];
 
@@ -371,7 +343,6 @@ if (evidenceFiles.length > 0) {
         throw new Error(responseData.message || "Submission failed");
       }
 
-      // Reset form on success
       setFormData({
         scammerNames: [""],
         gender: "",
@@ -475,7 +446,6 @@ if (evidenceFiles.length > 0) {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Scammer Name Fields - Dynamic List */}
               <div className="space-y-4">
                 <label className="block text-md font-medium text-gray-500 mb-1">
                   Scammer's Name(s) / Aliases
@@ -490,7 +460,7 @@ if (evidenceFiles.length > 0) {
                       }
                       className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                       placeholder={`Scammer name ${index + 1}`}
-                      required={index === 0} // only the first one is required
+                      required={index === 0} 
                     />
                     {index > 0 && (
                       <button
@@ -791,7 +761,6 @@ if (evidenceFiles.length > 0) {
                       value={formData.firstContactOther || ""}
                       onChange={(e) => {
                         handleChange(e);
-                        // Also update the main firstContact field with the custom value
                         handleChange({
                           target: {
                             name: "firstContact",
