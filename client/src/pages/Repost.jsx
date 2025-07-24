@@ -48,10 +48,6 @@ const Repost = () => {
   const [photoFiles, setPhotoFiles] = useState([]);
   const [evidenceFiles, setEvidenceFiles] = useState([]);
 
-  // const handleScammerPhotosChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setPhotoFiles((prev) => [...prev, ...files]);
-  // };
 
   const handleEvidenceFilesChange = (e) => {
     const files = Array.from(e.target.files);
