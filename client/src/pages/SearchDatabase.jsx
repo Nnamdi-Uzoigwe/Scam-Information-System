@@ -48,6 +48,8 @@ export default function SearchDatabase() {
         const last = scam.scammerName.surname || "";
         fullName = `${first} ${other} ${last}`.trim().toLowerCase();
       }
+    } else if (typeof scam.scammerName === "string") {
+      fullName = scam.scammerName.toLowerCase().trim();
     }
 
     return (
@@ -71,7 +73,6 @@ export default function SearchDatabase() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    // <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="max-w-[700px] mx-auto">
         <div className="text-center mb-12">
@@ -146,11 +147,15 @@ export default function SearchDatabase() {
                             {Array.isArray(scam.scammerName?.names) &&
                             scam.scammerName.names.length > 0
                               ? scam.scammerName.names.join(" ")
-                              : scam.scammerName?.firstName ||
-                                scam.scammerName?.surname
+                              : typeof scam.scammerName === "object" &&
+                                (scam.scammerName.firstName ||
+                                  scam.scammerName.surname)
                               ? `${scam.scammerName.firstName || ""} ${
                                   scam.scammerName.surname || ""
                                 }`.trim()
+                              : typeof scam.scammerName === "string" &&
+                                scam.scammerName.trim() !== ""
+                              ? scam.scammerName
                               : "Unknown"}
                           </h3>
                         </div>
