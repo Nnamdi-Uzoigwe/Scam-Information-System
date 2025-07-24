@@ -157,13 +157,13 @@ const ScamReport = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-      setFormData({ ...formData, evidence: file });
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setImagePreview(URL.createObjectURL(file));
+  //     setFormData({ ...formData, evidence: file });
+  //   }
+  // };
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -259,22 +259,43 @@ const ScamReport = () => {
           }
         : null;
 
-      // Upload evidence if exists
-      let evidenceUrl = "";
-      if (formData.evidence) {
-        const fileName = `evidence_${Date.now()}_${formData.evidence.name}`;
-        const { error } = await supabase.storage
-          .from("fraud-report-site")
-          .upload(fileName, formData.evidence);
+      // // Upload evidence if exists
+      // let evidenceUrl = "";
+      // if (formData.evidence) {
+      //   const fileName = `evidence_${Date.now()}_${formData.evidence.name}`;
+      //   const { error } = await supabase.storage
+      //     .from("fraud-report-site")
+      //     .upload(fileName, formData.evidence);
 
-        if (error) throw new Error("Evidence upload failed: " + error.message);
+      //   if (error) throw new Error("Evidence upload failed: " + error.message);
 
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("fraud-report-site").getPublicUrl(fileName);
+      //   const {
+      //     data: { publicUrl },
+      //   } = supabase.storage.from("fraud-report-site").getPublicUrl(fileName);
 
-        evidenceUrl = publicUrl;
-      }
+      //   evidenceUrl = publicUrl;
+      // }
+
+      let evidenceUrls = [];
+
+if (evidenceFiles.length > 0) {
+  for (const file of evidenceFiles) {
+    const fileName = `evidence_${Date.now()}_${file.name}`;
+
+    const { error } = await supabase.storage
+      .from("fraud-report-site")
+      .upload(fileName, file);
+
+    if (error) throw new Error("Evidence upload failed: " + error.message);
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("fraud-report-site").getPublicUrl(fileName);
+
+    evidenceUrls.push(publicUrl);
+  }
+}
+
 
       const scammerPhotoUrls = [];
       for (const file of formData.scammerPhotos) {
@@ -319,7 +340,8 @@ const ScamReport = () => {
         ...(formData.scammerAccountNumber && {
           scammerAccountNumber: formData.scammerAccountNumber.trim(),
         }),
-        ...(evidenceUrl && { evidence: [evidenceUrl] }),
+        // ...(evidenceUrl && { evidence: [evidenceUrl] }),
+        ...(evidenceUrls.length > 0 && { evidence: evidenceUrls }),
         ...(scammerPhotoUrls.length > 0 && { scammerPhotos: scammerPhotoUrls }),
         reportedBy: formData.reportedBy?.trim() || "Anonymous",
       };
@@ -373,10 +395,11 @@ const ScamReport = () => {
         description: "",
         scammerAccountNumber: "",
         scammerBankName: "",
-        evidence: null,
+        evidence: [],
         scammerPhotos: [],
       });
 
+      setEvidenceFiles([]);
       setImagePreview(null);
       setScammerPhotosPreview([]);
 
