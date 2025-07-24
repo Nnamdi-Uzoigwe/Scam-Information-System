@@ -39,11 +39,15 @@ export default function SearchDatabase() {
     const searchTerm = searchQuery.toLowerCase();
 
     let fullName = "";
-    if (
-      typeof scam.scammerName === "object" &&
-      Array.isArray(scam.scammerName.names)
-    ) {
-      fullName = scam.scammerName.names.join(" ").toLowerCase();
+    if (typeof scam.scammerName === "object") {
+      if (Array.isArray(scam.scammerName.names)) {
+        fullName = scam.scammerName.names.join(" ").toLowerCase();
+      } else {
+        const first = scam.scammerName.firstName || "";
+        const other = scam.scammerName.otherNames || "";
+        const last = scam.scammerName.surname || "";
+        fullName = `${first} ${other} ${last}`.trim().toLowerCase();
+      }
     }
 
     return (
@@ -139,9 +143,15 @@ export default function SearchDatabase() {
                         <div className="flex justify-between">
                           <h3 className="text-lg leading-6 font-medium text-[#0F766E]">
                             Alleged Scammer:{" "}
-                            {Array.isArray(scam.scammerName?.names)
+                            {Array.isArray(scam.scammerName?.names) &&
+                            scam.scammerName.names.length > 0
                               ? scam.scammerName.names.join(" ")
-                              : ""}
+                              : scam.scammerName?.firstName ||
+                                scam.scammerName?.surname
+                              ? `${scam.scammerName.firstName || ""} ${
+                                  scam.scammerName.surname || ""
+                                }`.trim()
+                              : "Unknown"}
                           </h3>
                         </div>
                         <div className="my-2">
