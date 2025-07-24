@@ -28,140 +28,6 @@ const getScamReportById = async (req, res) => {
     }
 };
 
-// const submitScamReport = async (req, res) => {
-//   const {
-//     scammerName,
-//     gender,
-//     telephoneNumbers,
-//     emailAddresses,
-//     physicalAddress,
-//     scamType,
-//     scamLocationType,
-//     scamLocation,
-//     firstContact,
-//     scamValue,
-//     description,
-//     scammerAccountNumber,
-//     evidence,
-//     scammerPhotos
-//   } = req.body;
-
-//   // Basic validation
-//   if (
-//     !scammerName?.firstName ||
-//     !scammerName?.surname ||
-//     !gender ||
-//     !scamType ||
-//     !scamLocationType ||
-//     !firstContact ||
-//     !description ||
-//     scamValue?.amount === undefined ||
-//     scamValue?.currency === undefined
-//   ) {
-//     return res.status(400).json({ message: 'Missing required fields' });
-//   }
-
-//   try {
-//     const newReport = new ScamReport({
-//       scammerName: {
-//         firstName: scammerName.firstName,
-//         surname: scammerName.surname,
-//         otherNames: scammerName.otherNames || ''
-//       },
-//       gender,
-//       telephoneNumbers: telephoneNumbers || [],
-//       emailAddresses: emailAddresses || [],
-//       physicalAddress: {
-//         line1: physicalAddress?.line1 || '',
-//         line2: physicalAddress?.line2 || '',
-//         city: physicalAddress?.city || '',
-//         state: physicalAddress?.state || '',
-//         country: physicalAddress?.country || ''
-//       },
-//       scamType,
-//       scamLocationType,
-//       scamLocation: {
-//         physical: {
-//           address: scamLocation?.physical?.address || ''
-//         },
-//         website: {
-//           url: scamLocation?.website?.url || ''
-//         }
-//       },
-//       firstContact,
-//       description,
-//       scamValue: {
-//         amount: parseFloat(scamValue.amount),
-//         currency: scamValue.currency
-//       },
-//       scammerAccountNumber: scammerAccountNumber || '',
-//       evidence: evidence || [],
-//       scammerPhotos: scammerPhotos || [],
-//       reportedBy: req.user?.id || null,
-//       status: 'pending',
-//     });
-
-//     await newReport.save();
-
-//     return res.status(201).json({
-//       message: 'Scam report submitted successfully',
-//       report: newReport
-//     });
-
-//   } catch (error) {
-//     console.error("Error submitting scam report:", error);
-//     return res.status(500).json({
-//       message: 'Internal server error',
-//       error: error.message
-//     });
-//   }
-// };
-
-// const submitScamReport = async (req, res) => {
-//   const {
-//     scammerName,
-//     scamType,
-//     description,
-//     scammerPhone,
-//     scammerEmail,
-//     scammerSocials,
-//     scammerPhotos,
-//     scamLocationType,
-//     scamLocation,
-//     evidence,
-//     reportedBy,
-//   } = req.body;
-
-//   if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description) {
-//     return res.status(400).json({ message: 'Required fields are missing.' });
-//   }
-
-//   try {
-//     const newReport = new ScamReport({
-//       caseId: generateCaseId(),
-//       scammerName,
-//       scamType,
-//       description,
-//       scammerPhone,
-//       scammerEmail,
-//       scammerSocials,
-//       scammerPhotos,
-//       scamLocationType,
-//       scamLocation,
-//       evidence,
-//       reportedBy,
-//     });
-
-//     await newReport.save();
-//     res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
-//   } catch (error) {
-//     console.error('Error submitting scam report:', error.message);
-//     res.status(500).json({ message: 'Error submitting scam report' });
-//   }
-// };
-
-
-
 
 // Update an existing scam report 
 const updateScamReport = async (req, res) => {
@@ -222,160 +88,6 @@ const updateScamReport = async (req, res) => {
     }
 };
 
-// const submitScamReport = async (req, res) => {
-//   const {
-//     scammerName,
-//     gender,
-//     telephoneNumbers,
-//     emailAddresses,
-//     physicalAddress,
-//     scamType,
-//     scamLocationType,
-//     scamLocation,
-//     firstContact,
-//     wasThoughAd,
-//     adUrl,
-//     description,
-//     scamValue,
-//     scammerBankName,
-//     scammerAccountNumber,
-//     evidence,
-//     scammerPhotos,
-//     reportedBy,
-//   } = req.body;
-
-//   if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description || !gender) {
-//     return res.status(400).json({ message: 'Required fields are missing.' });
-//   }
-
-//   try {
-//     const newReport = new ScamReport({
-//       caseId: generateCaseId(),
-//       scammerName,
-//       gender,
-//       telephoneNumbers,
-//       emailAddresses,
-//       physicalAddress,
-//       scamType,
-//       scamLocationType,
-//       scamLocation,
-//       firstContact,
-//       wasThoughAd,
-//       adUrl,
-//       description,
-//       scamValue,
-//       scammerBankName,
-//       scammerAccountNumber,
-//       evidence,
-//       scammerPhotos,
-//       reportedBy,
-//     });
-
-//     await newReport.save();
-
-//     res.status(201).json({ message: 'Scam report submitted successfully', report: newReport });
-//   } catch (error) {
-//     console.error('Error submitting scam report:', error.message);
-//     res.status(500).json({ message: 'Error submitting scam report' });
-//   }
-// };
-
-// const submitScamReport = async (req, res) => {
-//   const {
-//     scammerName,
-//     gender,
-//     telephoneNumbers,
-//     emailAddresses,
-//     physicalAddress,
-//     scamType,
-//     scamLocationType,
-//     scamLocation,
-//     firstContact,
-//     wasThoughAd,
-//     adUrl,
-//     description,
-//     scamValue,
-//     scammerBankName,
-//     scammerAccountNumber,
-//     evidence,
-//     scammerPhotos,
-//     reportedBy,
-//   } = req.body;
-
-//   // Enhanced validation
-//   if (!scammerName?.firstName || !scammerName?.surname || !scamType || !description || !gender || !firstContact || !scamLocationType) {
-//     return res.status(400).json({ 
-//       message: 'Required fields are missing.',
-//       missing: {
-//         firstName: !scammerName?.firstName,
-//         surname: !scammerName?.surname,
-//         scamType: !scamType,
-//         description: !description,
-//         gender: !gender,
-//         firstContact: !firstContact,
-//         scamLocationType: !scamLocationType
-//       }
-//     });
-//   }
-
-//   // Validate scamValue if provided
-//   if (scamValue && (!scamValue.amount || !scamValue.currency)) {
-//     return res.status(400).json({ 
-//       message: 'scamValue requires both amount and currency' 
-//     });
-//   }
-
-//   try {
-//     const newReport = new ScamReport({
-//       caseId: generateCaseId(),
-//       scammerName,
-//       gender,
-//       telephoneNumbers: telephoneNumbers || [],
-//       emailAddresses: emailAddresses || [],
-//       physicalAddress,
-//       scamType,
-//       scamLocationType,
-//       scamLocation,
-//       firstContact,
-//       wasThoughAd,
-//       adUrl,
-//       description,
-//       scamValue,
-//       scammerBankName,
-//       scammerAccountNumber,
-//       evidence: evidence || [],
-//       scammerPhotos: scammerPhotos || [],
-//       reportedBy:reportedBy || "Anonymous",
-//     });
-
-//     await newReport.save();
-
-//     res.status(201).json({ 
-//       message: 'Scam report submitted successfully', 
-//       report: newReport 
-//     });
-//   } catch (error) {
-//     console.error('Error submitting scam report:', error);
-    
-//     // Return more detailed error information
-//     if (error.name === 'ValidationError') {
-//       const validationErrors = Object.keys(error.errors).map(key => ({
-//         field: key,
-//         message: error.errors[key].message
-//       }));
-      
-//       return res.status(400).json({ 
-//         message: 'Validation error', 
-//         errors: validationErrors 
-//       });
-//     }
-    
-//     res.status(500).json({ 
-//       message: 'Error submitting scam report',
-//       error: process.env.NODE_ENV === 'development' ? error.message : undefined
-//     });
-//   }
-// };
 
 const generateCaseId = async () => {
   try {
@@ -392,17 +104,15 @@ const generateCaseId = async () => {
 
 const submitScamReport = async (req, res) => {
   try {
-    // Destructure only what we actually need
      const caseId = await generateCaseId();
 
     const { 
-      scammerName, 
+      scammerNames = [], 
       gender, 
       scamType, 
       description, 
       firstContact, 
       scamLocationType,
-      // Optional fields with defaults
       telephoneNumbers = [],
       emailAddresses = [],
       physicalAddress = {},
@@ -419,8 +129,7 @@ const submitScamReport = async (req, res) => {
 
     // Validate required fields
     const requiredFields = {
-      'scammerName.firstName': scammerName?.firstName,
-      'scammerName.surname': scammerName?.surname,
+      scammerNames: scammerNames?.length > 0 ? scammerNames[0].trim() : null,
       gender,
       scamType,
       description,
@@ -474,10 +183,10 @@ const submitScamReport = async (req, res) => {
     // Clean and prepare data
     const reportData = {
       caseId,
-      scammerName: {
-        firstName: scammerName.firstName.trim(),
-        surname: scammerName.surname.trim(),
-        ...(scammerName.otherNames && { otherNames: scammerName.otherNames.trim() })
+       scammerName: {
+        names: scammerNames
+          .map(name => name.trim())
+          .filter(name => name !== "")
       },
       gender,
       telephoneNumbers: telephoneNumbers.filter(num => num.trim()).map(num => num.trim()),
