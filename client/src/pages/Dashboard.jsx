@@ -15,7 +15,7 @@ const Dashboard = () => {
       {/* Sidebar on small screens */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      <div className="flex-1 flex flex-col">
+      <div className=" flex flex-col">
         {/* Hamburger icon for mobile */}
         <button
           className="lg:hidden p-4 text-2xl text-white bg-[#063F3A] hover:bg-[#063F3A]"
@@ -24,7 +24,7 @@ const Dashboard = () => {
           <FaBars />
         </button>
 
-        <main className="flex-1 p-0 px-3 lg:p-6 lg:ml-64">
+        <main className="flex-1 p-0 lg:p-6 lg:ml-64">
           <SearchDatabase />
         </main>
       </div>
