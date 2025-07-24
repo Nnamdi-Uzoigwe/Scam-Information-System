@@ -107,7 +107,7 @@ const submitScamReport = async (req, res) => {
      const caseId = await generateCaseId();
 
     const { 
-      scammerNames = [], 
+      scammerNames = req.body.scammerName?.names || [], 
       gender, 
       scamType, 
       description, 
@@ -126,6 +126,8 @@ const submitScamReport = async (req, res) => {
       scammerPhotos = [],
       reportedBy = 'Anonymous'
     } = req.body;
+
+
 
     // Validate required fields
     const requiredFields = {
