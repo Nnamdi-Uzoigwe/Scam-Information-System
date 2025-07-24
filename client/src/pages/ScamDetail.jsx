@@ -143,8 +143,10 @@ export default function ScamDetail() {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
       <div className="border-b border-gray-200 pb-4 mb-6">
         <h1 className="text-3xl font-bold text-[#0F766E] my-3">
-          Alleged Scammer: {scamDetail.scammerName?.firstName || ""}{" "}
-          {scamDetail.scammerName?.surname || ""}
+          Alleged Scammer:
+          {scamDetail.scammerName?.names?.length > 0
+            ? " " + scamDetail.scammerName.names.join(", ")
+            : " Unknown"}
         </h1>
         <div className="mt-2 flex items-center">
           <span className="bg-pink-100 border-[2px] border-pink-300 py-[6px] px-2 rounded-full">

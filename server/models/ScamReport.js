@@ -1,168 +1,183 @@
-
 const mongoose = require("mongoose");
 const User = require("./User");
 
-const scamReportSchema = mongoose.Schema({
-    // Basic Information
+const scamReportSchema = mongoose.Schema(
+  {
     scammerName: {
-        firstName: {
-            type: String,
-            required: true
-        },
-        surname: {
-            type: String,
-            required: true
-        },
-        otherNames: {
-            type: String
-        }
+      names: {
+        type: [String],
+        required: true,
+        validate: [
+          (arr) => arr.length > 0,
+          "At least one scammer name is required",
+        ],
+      },
     },
     gender: {
-        type: String,
-        enum: ['Male', 'Female'],
-        required: true
+      type: String,
+      enum: ["Male", "Female"],
+      required: true,
     },
-    telephoneNumbers: [{
-        type: String
-    }],
-    emailAddresses: [{
+    telephoneNumbers: [
+      {
+        type: String,
+      },
+    ],
+    emailAddresses: [
+      {
         type: String,
         validate: {
-            validator: function(v) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-            },
-            message: props => `${props.value} is not a valid email address!`
-        }
-    }],
+          validator: function (v) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+          },
+          message: (props) => `${props.value} is not a valid email address!`,
+        },
+      },
+    ],
     physicalAddress: {
-        line1: {
-            type: String
-        },
-        line2: {
-            type: String
-        },
-        city: {
-            type: String
-        },
-        state: {
-            type: String
-        },
-        country: {
-            type: String
-        }
+      line1: {
+        type: String,
+      },
+      line2: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
     },
 
     // Scam Details
     scamType: {
-        type: String,
-        required: true,
-        enum: ['Phishing', 'Investment Scam', 'Romance Scam', 'Fake Marketplace', 'Impersonation', 'Other']
+      type: String,
+      required: true,
+      enum: [
+        "Phishing",
+        "Investment Scam",
+        "Romance Scam",
+        "Fake Marketplace",
+        "Impersonation",
+        "Other",
+      ],
     },
     scamLocationType: {
-        type: String,
-        enum: ['physical', 'website'],
-        required: true
+      type: String,
+      enum: ["physical", "website"],
+      required: true,
     },
     scamLocation: {
-        physical: {
-            address: {
-                type: String
-            }
+      physical: {
+        address: {
+          type: String,
         },
-        website: {
-            url: {
-                type: String,
-                validate: {
-                    validator: function(v) {
-                        return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(v);
-                    },
-                    message: props => `${props.value} is not a valid URL!`
-                }
-            }
-        }
+      },
+      website: {
+        url: {
+          type: String,
+          validate: {
+            validator: function (v) {
+              return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
+                v
+              );
+            },
+            message: (props) => `${props.value} is not a valid URL!`,
+          },
+        },
+      },
     },
-   firstContact: {
-    type: String,
-    required: true,
-    trim: true
+    firstContact: {
+      type: String,
+      required: true,
+      trim: true,
     },
     wasThoughAd: {
-        type: String,
-        enum: ['yes', 'no'],
-        required: false
+      type: String,
+      enum: ["yes", "no"],
+      required: false,
     },
     adUrl: {
-        type: String,
-        required: false,
-        trim: true,
-        validate: {
-            validator: function(v) {
-                if (this.wasThoughAd === 'yes' && v) {
-                    return /^https?:\/\/.+/.test(v);
-                }
-                return true;
-            },
-            message: 'Please provide a valid URL starting with http:// or https://'
-        }
+      type: String,
+      required: false,
+      trim: true,
+      validate: {
+        validator: function (v) {
+          if (this.wasThoughAd === "yes" && v) {
+            return /^https?:\/\/.+/.test(v);
+          }
+          return true;
+        },
+        message: "Please provide a valid URL starting with http:// or https://",
+      },
     },
     description: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     scamValue: {
-        amount: {
-            type: Number,
-            required: true
-        },
-        currency: {
-            type: String,
-            enum: ['USD', 'NGN'],
-            required: true
-        }
+      amount: {
+        type: Number,
+        required: true,
+      },
+      currency: {
+        type: String,
+        enum: ["USD", "NGN"],
+        required: true,
+      },
     },
 
-   scammerBankName: {
-        type: String,
-        trim: true
+    scammerBankName: {
+      type: String,
+      trim: true,
     },
     scammerAccountNumber: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true,
     },
 
     // Evidence
-    evidence: [{
-        type: String  
-    }],
-    scammerPhotos: [{
-        type: String  
-    }],
+    evidence: [
+      {
+        type: String,
+      },
+    ],
+    scammerPhotos: [
+      {
+        type: String,
+      },
+    ],
 
     // Metadata
     dateReported: {
-        type: Date,
-        default: Date.now,
+      type: Date,
+      default: Date.now,
     },
     reportedBy: {
-        type: String,
-        default: 'Anonymous'
+      type: String,
+      default: "Anonymous",
     },
     status: {
-        type: String,
-        enum: ['pending', 'verified', 'rejected'],
-        default: 'pending',
+      type: String,
+      enum: ["pending", "verified", "rejected"],
+      default: "pending",
     },
     caseId: {
-        type: String,
-        unique: true
+      type: String,
+      unique: true,
     },
     lastUpdated: {
-        type: Date,
-        default: Date.now
-    }
-}, {
-    timestamps: true  
-});
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // // Pre-save hook to generate caseId
 // scamReportSchema.pre('save', async function(next) {
@@ -173,4 +188,5 @@ const scamReportSchema = mongoose.Schema({
 //     next();
 // });
 
-module.exports = mongoose.models.ScamReport || mongoose.model("ScamReport", scamReportSchema);
+module.exports =
+  mongoose.models.ScamReport || mongoose.model("ScamReport", scamReportSchema);

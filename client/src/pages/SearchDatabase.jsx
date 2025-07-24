@@ -35,56 +35,27 @@ export default function SearchDatabase() {
     fetchScams();
   }, []);
 
-  // // Filter scams based on search query
-  // const filteredScams = scamData.filter(scam =>
-  //   (scam.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //   (scam.scammerName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //   (scam.scamType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //   (scam.caseId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //   (scam.description || '').toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-
-  // // Improved search filter
-  // const filteredScams = scamData.filter((scam) => {
-  //   const searchTerm = searchQuery.toLowerCase();
-  //   const fullName = `${scam.scammerName?.firstName || ""} ${
-  //     scam.scammerName?.surname || ""
-  //   }`.toLowerCase();
-  //   const otherNames = scam.scammerName?.otherNames || "";
-
-  //   return (
-  //     (scam.title || "").toLowerCase().includes(searchTerm) ||
-  //     fullName.includes(searchTerm) ||
-  //     otherNames.toLowerCase().includes(searchTerm) ||
-  //     (scam.scamType || "").toLowerCase().includes(searchTerm) ||
-  //     (scam.caseId || "").toLowerCase().includes(searchTerm) ||
-  //     (scam.description || "").toLowerCase().includes(searchTerm) ||
-  //     (scam.scammerBankName || "").toLowerCase().includes(searchTerm) ||
-  //     (scam.scammerAccountNumber || "").toLowerCase().includes(searchTerm)
-  //   );
-  // });
-
   const filteredScams = scamData.filter((scam) => {
-  const searchTerm = searchQuery.toLowerCase();
+    const searchTerm = searchQuery.toLowerCase();
 
-  let fullName = "";
-  if (typeof scam.scammerName === "string") {
-    fullName = scam.scammerName.toLowerCase();
-  } else if (typeof scam.scammerName === "object" && scam.scammerName !== null) {
-    fullName = `${scam.scammerName.firstName || ""} ${scam.scammerName.otherNames || ""} ${scam.scammerName.surname || ""}`.toLowerCase();
-  }
+    let fullName = "";
+    if (
+      typeof scam.scammerName === "object" &&
+      Array.isArray(scam.scammerName.names)
+    ) {
+      fullName = scam.scammerName.names.join(" ").toLowerCase();
+    }
 
-  return (
-    (scam.title || "").toLowerCase().includes(searchTerm) ||
-    fullName.includes(searchTerm) ||
-    (scam.scamType || "").toLowerCase().includes(searchTerm) ||
-    (scam.caseId || "").toLowerCase().includes(searchTerm) ||
-    (scam.description || "").toLowerCase().includes(searchTerm) ||
-    (scam.scammerBankName || "").toLowerCase().includes(searchTerm) ||
-    (scam.scammerAccountNumber || "").toLowerCase().includes(searchTerm)
-  );
-});
-
+    return (
+      (scam.title || "").toLowerCase().includes(searchTerm) ||
+      fullName.includes(searchTerm) ||
+      (scam.scamType || "").toLowerCase().includes(searchTerm) ||
+      (scam.caseId || "").toLowerCase().includes(searchTerm) ||
+      (scam.description || "").toLowerCase().includes(searchTerm) ||
+      (scam.scammerBankName || "").toLowerCase().includes(searchTerm) ||
+      (scam.scammerAccountNumber || "").toLowerCase().includes(searchTerm)
+    );
+  });
 
   // Calculate pagination values
   const indexOfLastScam = currentPage * scamsPerPage;
@@ -168,11 +139,9 @@ export default function SearchDatabase() {
                         <div className="flex justify-between">
                           <h3 className="text-lg leading-6 font-medium text-[#0F766E]">
                             Alleged Scammer:{" "}
-                            {typeof scam.scammerName === "string"
-                              ? scam.scammerName
-                              : `${scam.scammerName.firstName ?? ""} ${
-                                  scam.scammerName.otherNames ?? ""
-                                } ${scam.scammerName.surname ?? ""}`}
+                            {Array.isArray(scam.scammerName?.names)
+                              ? scam.scammerName.names.join(" ")
+                              : ""}
                           </h3>
                         </div>
                         <div className="my-2">

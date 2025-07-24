@@ -9,11 +9,7 @@ const Repost = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    scammerName: {
-      firstName: "",
-      surname: "",
-      otherNames: "",
-    },
+    scammerNames: [""],
     gender: "",
     telephoneNumber1: "",
     telephoneNumber2: "",
@@ -59,16 +55,28 @@ const Repost = () => {
     }));
   };
 
-  const handleScammerNameChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      scammerName: {
-        ...prev.scammerName,
-        [name]: value,
-      },
-    }));
-  };
+ 
+  const addScammerName = () => {
+  setFormData((prev) => ({
+    ...prev,
+    scammerNames: [...prev.scammerNames, ""],
+  }));
+};
+const removeScammerName = (index) => {
+  setFormData((prev) => ({
+    ...prev,
+    scammerNames: prev.scammerNames.filter((_, i) => i !== index),
+  }));
+};
+
+const handleScammerNameChange = (index, value) => {
+  const updatedNames = [...formData.scammerNames];
+  updatedNames[index] = value;
+  setFormData((prev) => ({
+    ...prev,
+    scammerNames: updatedNames,
+  }));
+};
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
@@ -307,11 +315,7 @@ const Repost = () => {
 
         // Reset form
         setFormData({
-          scammerName: {
-            firstName: "",
-            surname: "",
-            otherNames: "",
-          },
+          scammerNames: [''],
           gender: "",
           telephoneNumber1: "",
           telephoneNumber2: "",
@@ -425,46 +429,40 @@ const Repost = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Scammer Name Fields */}
-              <div className="space-y-4">
-                <label className="block text-md font-medium text-gray-500 mb-1">
-                  Scammer's Name
-                </label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <input
-                      name="firstName"
-                      type="text"
-                      value={formData.scammerName.firstName}
-                      onChange={handleScammerNameChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="First Name"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      name="surname"
-                      type="text"
-                      value={formData.scammerName.surname}
-                      onChange={handleScammerNameChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Surname"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <input
-                    name="otherNames"
-                    type="text"
-                    value={formData.scammerName.otherNames}
-                    onChange={handleScammerNameChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Other Names (optional)"
-                  />
-                </div>
-              </div>
+              {/* Scammer Name Fields - Dynamic List */}
+<div className="space-y-4">
+  <label className="block text-md font-medium text-gray-500 mb-1">
+    Scammer's Name(s) / Aliases
+  </label>
+  {formData.scammerNames.map((name, index) => (
+    <div key={index} className="flex mb-2">
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => handleScammerNameChange(index, e.target.value)}
+        className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+        placeholder={`Scammer name ${index + 1}`}
+        required={index === 0} // only the first one is required
+      />
+      {index > 0 && (
+        <button
+          type="button"
+          onClick={() => removeScammerName(index)}
+          className="ml-2 px-3 bg-red-500 text-white rounded-md hover:bg-red-600"
+        >
+          Remove
+        </button>
+      )}
+    </div>
+  ))}
+  <button
+    type="button"
+    onClick={addScammerName}
+    className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+  >
+    + Add Another Name
+  </button>
+</div>
 
               {/* Gender Selection */}
               <div>
