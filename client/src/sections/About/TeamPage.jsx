@@ -6,40 +6,10 @@ const TeamPage = () => {
   const myArr = [
     {
       id: 1,
-      image: "/burnbi.jpeg",
+      image: "/clifford.jpeg",
       name: "Clifford Eyare",
-      Title: "FullStack Developer",
-    },
-    {
-      id: 2,
-      image: "/Honorable.jpeg",
-      name: "Ofana Oboh",
-      Title: "MERN Stack Developer, Algorithm, Data Structure",
-    },
-    {
-      id: 3,
-      image: "/Passport photo.jpeg",
-      name: "Nnamdi Uzoigwe",
-      Title: "Database Engineer",
-    },
-    {
-      id: 4,
-      image: "/STANLEYimg.jpeg",
-      name: "Arikpo Stanley",
-      Title: "Full Stack Developer, Algorithm, Data Structure",
-    },
-    {
-      id: 5,
-      image: "/Passport photo.jpeg",
-      name: "Oboh Thankgod",
-      Title: "Frontend Developer, Algorithm, Data Structure",
-    },
-    {
-      id: 6,
-      image: "/burnbi.jpeg",
-      name: "K. Emmanuel",
-      Title: "MERN Stack Developer, Algorithm, Data Structure",
-    },
+      Title: "Student and Web Developer",
+    }
   ];
 
   return (
@@ -53,20 +23,25 @@ const TeamPage = () => {
       </div>
 
       {/* Team Cards Grid */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 p-4'>
+      <div className='grid grid-cols-1 gap-7 p-4'>
         {myArr.map((item, index) => (
           <div
             key={index}
-            className='bg-white flex items-start gap-4 rounded-lg shadow-md p-4 w-full max-w-sm mx-auto'
-          >
+            className='bg-white flex flex-col items-center gap-4 rounded-lg shadow-md p-4 w-full max-w-sm mx-auto'
+          > 
             <img
               src={item.image}
               alt={item.name}
-              className='h-16 w-16 object-cover rounded-full border-2 border-[#0F766E]'
+              className='h-80 w-80 object-cover rounded-full border-2 border-[#0F766E]'
             />
-            <div>
-              <h1 className='text-xl font-bold text-[#0F766E]'>{item.name}</h1>
+            <div className='text-center'>
+              <h1 className='text-2xl font-bold text-[#0F766E]'>{item.name}</h1>
               <h3 className='text-gray-600 text-sm'>{item.Title}</h3>
+            </div>
+
+            <div className='text-center'>
+              <p>Supervised by</p>
+              <h4 className=" text-gray-600 font-semibold text-2xl">Dr. John Odey</h4>
             </div>
           </div>
         ))}
