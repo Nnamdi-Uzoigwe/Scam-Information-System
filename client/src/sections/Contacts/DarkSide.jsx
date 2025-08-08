@@ -59,19 +59,18 @@ const DarkSide = () => {
         <div className="mt-10 flex flex-col gap-8">
           <p className="flex items-center gap-5">
             <MdPhoneInTalk size={23} />
-            <span>+234 004 346 4089</span>
+            <span>+234 811 172 2250</span>
           </p>
 
           <p className="flex items-center gap-5">
             <MdMail size={23} />
-            <span>help@cliffordreporters.com</span>
+            <span>cliffordeke2@gmail .com</span>
           </p>
 
           <p className="flex items-start gap-5">
             <TiLocation size={23} />
             <span>
-              123 Main Ave, Cyber City, <br />
-              Calabar, Nigeria.
+              University of Calabar (UNICAL), P.M.B. 1115, Calabar, Cross River State, Nigeria.
             </span>
           </p>
         </div>
