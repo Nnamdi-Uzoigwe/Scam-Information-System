@@ -406,7 +406,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaVenusMars className="h-5 w-5 text-gray-400" />
+                  <FaVenusMars className="hidden lg:flex h-5 w-5 text-gray-400" />
                 </div>
                 <select
                   id="gender"
@@ -430,7 +430,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+                  <FaMapMarkerAlt className="hidden lg:flex h-5 w-5 text-gray-400" />
                 </div>
                 <select
                   id="stateOfOrigin"
@@ -454,7 +454,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaBirthdayCake className="h-5 w-5 text-gray-400" />
+                  <FaBirthdayCake className="hidden lg:flex h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="age"
