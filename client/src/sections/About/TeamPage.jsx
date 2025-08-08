@@ -41,7 +41,7 @@ const TeamPage = () => {
 
             <div className='text-center'>
               <p>Supervised by</p>
-              <h4 className=" text-gray-600 font-semibold text-2xl">Dr. John Odey</h4>
+              <h4 className=" text-gray-60 font-semibold text-2xl">Dr. John Odey</h4>
             </div>
           </div>
         ))}

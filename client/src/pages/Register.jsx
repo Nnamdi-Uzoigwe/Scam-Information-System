@@ -1,6 +1,232 @@
+// import { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+// import { useNavigate } from 'react-router-dom';
+// import Spinner from '../components/Spinner';
+// import { toast } from 'react-toastify';
+
+// export default function Register() {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [confirmPassword, setConfirmPassword] = useState("");
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+//   const [errors, setErrors] = useState({});
+//   const [loading, setLoading] = useState(false)
+//   const navigate = useNavigate()
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const validationErrors = {};
+    
+//     if (!name.trim()) {
+//       validationErrors.name = 'Name is required';
+//     }
+    
+//     if (!email.trim()) {
+//       validationErrors.email = 'Email is required';
+//     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+//       validationErrors.email = 'Email is invalid';
+//     }
+    
+//     if (!password.trim()) {
+//       validationErrors.password = 'Password is required';
+//     } else if (password.length < 6) {
+//       validationErrors.password = 'Password should be at least 6 characters';
+//     }
+    
+//     if (password !== confirmPassword) {
+//       validationErrors.confirmPassword = 'Passwords do not match';
+//     }
+  
+//     if (Object.keys(validationErrors).length > 0) {
+//       setErrors(validationErrors);
+//       return;
+//     }
+//     setLoading(true)
+
+//     try {
+//       const res = await fetch('https://scam-information-system.onrender.com/api/auth/register', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username: name, email, password })
+//       });
+  
+//       const data = await res.json();
+  
+//       if (!res.ok) {
+//         setErrors({ api: data.message || 'Registration failed' });
+//         toast.error("Registration failed", {
+//           position: "top-center",
+//           autoClose: 2000,
+//         })
+//         return;
+//       }
+  
+//       // localStorage.setItem('token', data.token);
+//       toast.success("Registration successful! Redirecting to login", {
+//         position: "top-center",
+//         autoClose: 2000,
+//       })
+//       setTimeout(() => {
+//         navigate('/login')
+//       }, 2000)
+//     } catch (error) {
+//       console.error('Registration error:', error);
+//       toast.error(error, {
+//         position: "top-center",
+//         autoClose: 2000,
+//       })
+//       setErrors({ api: 'An unexpected error occurred' });
+//     } finally {
+//       setLoading(false)
+//     }
+//   };
+  
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+//       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+//         <div className="text-center">
+//           <h2 className="mt-6 text-3xl font-bold text-gray-900">
+//             Create your account
+//           </h2>
+//         </div>
+        
+//         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+//           <div className="space-y-4">
+//             <div>
+//               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Name
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaUser className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="name"
+//                   name="name"
+//                   type="text"
+//                   autoComplete="name"
+//                   value={name}
+//                   onChange={(e) => setName(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.name ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+//                   placeholder="Your Name"
+//                 />
+//               </div>
+//               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+//             </div>
+
+//             <div>
+//               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Email address
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaEnvelope className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="email"
+//                   name="email"
+//                   type="email"
+//                   autoComplete="email"
+//                   value={email}
+//                   onChange={(e) => setEmail(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+//                   placeholder="you@example.com"
+//                 />
+//               </div>
+//               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+//             </div>
+            
+//             <div>
+//               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Password
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaLock className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="password"
+//                   name="password"
+//                   autoComplete="off"
+//                   type={showPassword ? 'text' : 'password'}
+//                   value={password}
+//                   inputMode="text"
+//                   onChange={(e) => setPassword(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+//                 />
+//                 <div 
+//                   className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+//                   onClick={() => setShowPassword(!showPassword)}
+//                 >
+//                   {showPassword ? <FaEye className="h-5 w-5 text-gray-400" /> : <FaEyeSlash className="h-5 w-5 text-gray-400" />}
+//                 </div>
+//               </div>
+//               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+//             </div>
+
+//             <div>
+//               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+//                 Confirm Password
+//               </label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FaLock className="h-5 w-5 text-gray-400" />
+//                 </div>
+//                 <input
+//                   id="confirmPassword"
+//                   name="confirmPassword"
+//                   type={showConfirmPassword ? 'text' : 'password'}
+//                   value={confirmPassword}
+//                   onChange={(e) => setConfirmPassword(e.target.value)}
+//                   className={`block w-full pl-10 pr-3 py-2 border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+//                   placeholder="••••••••"
+//                 />
+//                 <div 
+//                   className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+//                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+//                 >
+//                   {showConfirmPassword ? <FaEye className="h-5 w-5 text-gray-400" /> : <FaEyeSlash className="h-5 w-5 text-gray-400" />}
+//                 </div>
+//               </div>
+//               {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
+//             </div>
+//           </div>
+
+//           <div>
+//             <button
+//               type="submit"
+//               onClick={handleSubmit}
+//               className=" cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+//             >
+//               {loading ? <Spinner /> : <span>Register</span>}
+//             </button>
+//           </div>
+//         </form>
+        
+//         <div className="text-center text-sm mt-4">
+//           <span className="text-gray-600">Already have an account? </span>
+//           <Link 
+//             to="/login" 
+//             className="cursor-pointer font-medium text-[#0F766E] hover:text-[#0a5952]"
+//           >
+//             Sign in
+//           </Link>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaVenusMars, FaMapMarkerAlt, FaBirthdayCake } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
@@ -10,11 +236,23 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [stateOfOrigin, setStateOfOrigin] = useState("");
+  const [age, setAge] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Nigerian states
+  const nigerianStates = [
+    "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
+    "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT", "Gombe", "Imo",
+    "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa",
+    "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba",
+    "Yobe", "Zamfara"
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,12 +277,26 @@ export default function Register() {
     if (password !== confirmPassword) {
       validationErrors.confirmPassword = 'Passwords do not match';
     }
+
+    if (!gender) {
+      validationErrors.gender = 'Gender is required';
+    }
+
+    if (!stateOfOrigin) {
+      validationErrors.stateOfOrigin = 'State of origin is required';
+    }
+
+    if (!age) {
+      validationErrors.age = 'Age is required';
+    } else if (age < 13 || age > 120) {
+      validationErrors.age = 'Age must be between 13 and 120';
+    }
   
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    setLoading(true)
+    setLoading(true);
 
     try {
       const res = await fetch('https://scam-information-system.onrender.com/api/auth/register', {
@@ -52,7 +304,14 @@ export default function Register() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: name, email, password })
+        body: JSON.stringify({ 
+          username: name, 
+          email, 
+          password, 
+          gender, 
+          stateOfOrigin, 
+          age: parseInt(age) 
+        })
       });
   
       const data = await res.json();
@@ -62,7 +321,7 @@ export default function Register() {
         toast.error("Registration failed", {
           position: "top-center",
           autoClose: 2000,
-        })
+        });
         return;
       }
   
@@ -70,23 +329,22 @@ export default function Register() {
       toast.success("Registration successful! Redirecting to login", {
         position: "top-center",
         autoClose: 2000,
-      })
+      });
       setTimeout(() => {
-        navigate('/login')
-      }, 2000)
+        navigate('/login');
+      }, 2000);
     } catch (error) {
       console.error('Registration error:', error);
       toast.error(error, {
         position: "top-center",
         autoClose: 2000,
-      })
+      });
       setErrors({ api: 'An unexpected error occurred' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
@@ -141,6 +399,77 @@ export default function Register() {
               </div>
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
             </div>
+
+            <div>
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+                Gender
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaVenusMars className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className={`block w-full pl-10 pr-3 py-2 border ${errors.gender ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] bg-white`}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              {errors.gender && <p className="mt-1 text-sm text-red-600">{errors.gender}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="stateOfOrigin" className="block text-sm font-medium text-gray-700 mb-1">
+                State of Origin
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  id="stateOfOrigin"
+                  name="stateOfOrigin"
+                  value={stateOfOrigin}
+                  onChange={(e) => setStateOfOrigin(e.target.value)}
+                  className={`block w-full pl-10 pr-3 py-2 border ${errors.stateOfOrigin ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] bg-white`}
+                >
+                  <option value="">Select State</option>
+                  {nigerianStates.map((state) => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
+              {errors.stateOfOrigin && <p className="mt-1 text-sm text-red-600">{errors.stateOfOrigin}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">
+                Age
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaBirthdayCake className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="age"
+                  name="age"
+                  type="number"
+                  min="13"
+                  max="120"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className={`block w-full pl-10 pr-3 py-2 border ${errors.age ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+                  placeholder="Your Age"
+                />
+              </div>
+              {errors.age && <p className="mt-1 text-sm text-red-600">{errors.age}</p>}
+            </div>
             
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -158,7 +487,7 @@ export default function Register() {
                   value={password}
                   inputMode="text"
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+                  className={`block w-full pl-10 pr-10 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
                 />
                 <div 
                   className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
@@ -184,7 +513,7 @@ export default function Register() {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
+                  className={`block w-full pl-10 pr-10 py-2 border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-[#0F766E] placeholder-transparent`}
                   placeholder="••••••••"
                 />
                 <div 
@@ -202,7 +531,7 @@ export default function Register() {
             <button
               type="submit"
               onClick={handleSubmit}
-              className=" cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
+              className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0F766E] hover:bg-[#0a5952] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors"
             >
               {loading ? <Spinner /> : <span>Register</span>}
             </button>
